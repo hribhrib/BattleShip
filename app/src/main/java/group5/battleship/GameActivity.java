@@ -25,6 +25,7 @@ public class GameActivity extends AppCompatActivity {
 
     public void colClick(View view) {
         System.out.println("colClick: "+view.getId());
+
         TextView tv = (TextView) findViewById(view.getId());
         tv.setText("clicked");
     }
