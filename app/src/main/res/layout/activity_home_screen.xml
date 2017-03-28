@@ -37,4 +37,15 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="105dp" />
 
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Enter your Name"
+        tools:layout_editor_absoluteX="85dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/button" />
+
 </android.support.constraint.ConstraintLayout>
