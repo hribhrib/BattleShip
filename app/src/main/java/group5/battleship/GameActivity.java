@@ -28,5 +28,4 @@ public class GameActivity extends AppCompatActivity {
         TextView tv = (TextView) findViewById(view.getId());
         tv.setText("clicked");
     }
-
 }
