@@ -8,4 +8,10 @@ package group5.battleship.src;
 
 public class Player {
     String name;
+    int[][] battleField;
+    int[][] ships;
+
+    public Player(String name){
+        this.name = name;
+    }
 }
