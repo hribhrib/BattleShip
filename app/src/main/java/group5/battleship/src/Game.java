@@ -21,10 +21,21 @@ public class Game {
         //this.size = size;
 
         player1.battleField = new int[this.size][this.size];
+        initBattleField(player1);
         player2.battleField = new int[this.size][this.size];
+        initBattleField(player2);
     }
 
     private void newMove(Move move){
         moves.add(move);
+    }
+
+    private void initBattleField(Player p){
+        for(int i =0 ; i<size; i++){
+            for(int j = 0; j < size; j++){
+                p.battleField[i][j] = -1;
+            }
+        }
+
     }
 }
