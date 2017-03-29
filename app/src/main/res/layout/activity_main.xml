@@ -1,25 +1,20 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0099cc"
-    tools:context="group5.battleship.MainActivity">
-
-    <!-- The primary full-screen view. This can be replaced with whatever view
-         is needed to present your content, e.g. VideoView, SurfaceView,
-         TextureView, etc. -->
-
-    <!-- This FrameLayout insets its children based on system windows using
-         android:fitsSystemWindows. -->
-
+    tools:context="group5.battleship.GameActivity">
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/table"
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="495dp"
         android:clickable="true"
         android:gravity="center"
         android:stretchColumns="0,1,2,3,4"
-        tools:clickable="true">
+        tools:clickable="true"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_editor_absoluteX="0dp">
 
         <TableRow
             android:id="@+id/tableRow0"
@@ -32,6 +27,7 @@
             >
 
             <TextView
+                android:tag="00"
                 android:id="@+id/textView00"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -43,6 +39,7 @@
                 android:text="" />
 
             <TextView
+                android:tag="01"
                 android:id="@+id/textView01"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -52,9 +49,10 @@
                 android:gravity="center"
                 android:onClick="colClick"
                 android:text=""
-                 />
+                />
 
             <TextView
+                android:tag="02"
                 android:id="@+id/textView02"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -67,6 +65,7 @@
                 />
 
             <TextView
+                android:tag="03"
                 android:id="@+id/textView03"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -79,6 +78,7 @@
                 />
 
             <TextView
+                android:tag="04"
                 android:id="@+id/textView04"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -100,6 +100,7 @@
             android:clickable="false">
 
             <TextView
+                android:tag="10"
                 android:id="@+id/textView10"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -109,9 +110,10 @@
                 android:gravity="center"
                 android:onClick="colClick"
                 android:text=""
-                 />
+                />
 
             <TextView
+                android:tag="11"
                 android:id="@+id/textView11"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -124,6 +126,7 @@
                 />
 
             <TextView
+                android:tag="12"
                 android:id="@+id/textView12"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -136,6 +139,7 @@
                 />
 
             <TextView
+                android:tag="13"
                 android:id="@+id/textView13"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -145,9 +149,10 @@
                 android:gravity="center"
                 android:onClick="colClick"
                 android:text=""
-                 />
+                />
 
             <TextView
+                android:tag="14"
                 android:id="@+id/textView14"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -157,7 +162,7 @@
                 android:gravity="center"
                 android:onClick="colClick"
                 android:text=""
-                 />
+                />
         </TableRow>
 
 
@@ -170,6 +175,7 @@
             android:background="#000000">
 
             <TextView
+                android:tag="20"
                 android:id="@+id/textView20"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -179,9 +185,10 @@
                 android:gravity="center"
                 android:onClick="colClick"
                 android:text=""
-                 />
+                />
 
             <TextView
+                android:tag="21"
                 android:id="@+id/textView21"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -191,9 +198,10 @@
                 android:gravity="center"
                 android:onClick="colClick"
                 android:text=""
-                 />
+                />
 
             <TextView
+                android:tag="22"
                 android:id="@+id/textView22"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -203,9 +211,10 @@
                 android:gravity="center"
                 android:onClick="colClick"
                 android:text=""
-                 />
+                />
 
             <TextView
+                android:tag="23"
                 android:id="@+id/textView23"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -215,9 +224,10 @@
                 android:gravity="center"
                 android:onClick="colClick"
                 android:text=""
-                 />
+                />
 
             <TextView
+                android:tag="24"
                 android:id="@+id/textView24"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -227,7 +237,7 @@
                 android:gravity="center"
                 android:onClick="colClick"
                 android:text=""
-                 />
+                />
         </TableRow>
 
         <TableRow
@@ -239,6 +249,7 @@
             android:background="#000000">
 
             <TextView
+                android:tag="30"
                 android:id="@+id/textView30"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -248,9 +259,10 @@
                 android:gravity="center"
                 android:onClick="colClick"
                 android:text=""
-                 />
+                />
 
             <TextView
+                android:tag="31"
                 android:id="@+id/textView31"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -260,9 +272,10 @@
                 android:gravity="center"
                 android:onClick="colClick"
                 android:text=""
-                 />
+                />
 
             <TextView
+                android:tag="32"
                 android:id="@+id/textView32"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -272,9 +285,10 @@
                 android:gravity="center"
                 android:onClick="colClick"
                 android:text=""
-                 />
+                />
 
             <TextView
+                android:tag="33"
                 android:id="@+id/textView33"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -287,6 +301,7 @@
                 />
 
             <TextView
+                android:tag="34"
                 android:id="@+id/textView34"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -296,7 +311,7 @@
                 android:gravity="center"
                 android:onClick="colClick"
                 android:text=""
-                 />
+                />
         </TableRow>
 
         <TableRow
@@ -308,6 +323,7 @@
             android:background="#000000">
 
             <TextView
+                android:tag="40"
                 android:id="@+id/textView40"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -317,9 +333,10 @@
                 android:gravity="center"
                 android:onClick="colClick"
                 android:text=""
-                 />
+                />
 
             <TextView
+                android:tag="41"
                 android:id="@+id/textView41"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -329,9 +346,10 @@
                 android:gravity="center"
                 android:onClick="colClick"
                 android:text=""
-                 />
+                />
 
             <TextView
+                android:tag="42"
                 android:id="@+id/textView42"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -341,9 +359,10 @@
                 android:gravity="center"
                 android:onClick="colClick"
                 android:text=""
-                 />
+                />
 
             <TextView
+                android:tag="43"
                 android:id="@+id/textView43"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -353,9 +372,10 @@
                 android:gravity="center"
                 android:onClick="colClick"
                 android:text=""
-                 />
+                />
 
             <TextView
+                android:tag="44"
                 android:id="@+id/textView44"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -365,9 +385,8 @@
                 android:gravity="center"
                 android:onClick="colClick"
                 android:text=""
-                 />
+                />
         </TableRow>
 
     </TableLayout>
-
-</FrameLayout>
+</android.support.constraint.ConstraintLayout>

@@ -36,9 +36,18 @@ public class Game {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 p.battleField[i][j] = -1;
-                    p.ships[i][j] = -1;
+                p.ships[i][j] = -1;
             }
         }
+    }
 
+    public Player getPlayer1(){
+        return player1;
+    }
+    public Player getPlayer2(){
+        return player2;
+    }
+    public int getSize(){
+        return size;
     }
 }

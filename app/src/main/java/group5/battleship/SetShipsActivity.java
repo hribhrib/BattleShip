@@ -21,15 +21,16 @@ public class SetShipsActivity extends AppCompatActivity {
 
     public void colClick(View view) {
         TextView tv = (TextView) findViewById(view.getId());
-        tv.setText("SHIP");
 
         if(currentShips<MAX_SHIPS){
             ships = (ships + (String) view.getTag());
             System.out.println(ships);
             currentShips++;
-        } else{
+            tv.setText("SHIP");
+        } else if(currentShips==MAX_SHIPS){
             Intent intent = new Intent(this, GameActivity.class);
             intent.putExtra("SHIPS", ships);
+            intent.putExtra("NAME", getIntent().getStringExtra("NAME"));
             startActivity(intent);
         }
     }

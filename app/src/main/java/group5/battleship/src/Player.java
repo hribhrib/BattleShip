@@ -18,8 +18,16 @@ public class Player {
     }
 
     public void setShips(String s){
-        ships[s.charAt(0)][s.charAt(1)]=1;
-        ships[s.charAt(2)][s.charAt(3)]=1;
-        ships[s.charAt(4)][s.charAt(5)]=1;
+        for (int i =0;i<s.length();i=i+2){
+            ships[Character.getNumericValue(s.charAt(i))][Character.getNumericValue(s.charAt(i+1))]=1;
+        }
+    }
+
+    public int[][] getShips(){
+        return this.ships;
+    }
+
+    public int[][] getBattleField(){
+        return battleField;
     }
 }
