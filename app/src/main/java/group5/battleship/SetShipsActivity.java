@@ -19,7 +19,7 @@ public class SetShipsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_set_ships);
     }
 
-    public void colClick(View view) {
+    public void cellClick(View view) {
         TextView tv = (TextView) findViewById(view.getId());
 
         if(currentShips<MAX_SHIPS){

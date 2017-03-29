@@ -35,7 +35,7 @@
             android:layout_margin="1dp"
             android:background="#FFFFFF"
             android:gravity="center"
-            android:onClick="colClick"
+            android:onClick="cellClick"
             android:text="" />
 
         <TextView
@@ -47,7 +47,7 @@
             android:layout_margin="1dp"
             android:background="#FFFFFF"
             android:gravity="center"
-            android:onClick="colClick"
+            android:onClick="cellClick"
             android:text=""
             />
 
@@ -60,7 +60,7 @@
             android:layout_margin="1dp"
             android:background="#FFFFFF"
             android:gravity="center"
-            android:onClick="colClick"
+            android:onClick="cellClick"
             android:text=""
             />
 
@@ -73,7 +73,7 @@
             android:layout_margin="1dp"
             android:background="#FFFFFF"
             android:gravity="center"
-            android:onClick="colClick"
+            android:onClick="cellClick"
             android:text=""
             />
 
@@ -86,7 +86,7 @@
             android:layout_margin="1dp"
             android:background="#FFFFFF"
             android:gravity="center"
-            android:onClick="colClick"
+            android:onClick="cellClick"
             android:text="" />
     </TableRow>
 
@@ -108,7 +108,7 @@
             android:layout_margin="1dp"
             android:background="#FFFFFF"
             android:gravity="center"
-            android:onClick="colClick"
+            android:onClick="cellClick"
             android:text=""
             />
 
@@ -121,7 +121,7 @@
             android:layout_margin="1dp"
             android:background="#FFFFFF"
             android:gravity="center"
-            android:onClick="colClick"
+            android:onClick="cellClick"
             android:text=""
             />
 
@@ -134,7 +134,7 @@
             android:layout_margin="1dp"
             android:background="#FFFFFF"
             android:gravity="center"
-            android:onClick="colClick"
+            android:onClick="cellClick"
             android:text=""
             />
 
@@ -147,7 +147,7 @@
             android:layout_margin="1dp"
             android:background="#FFFFFF"
             android:gravity="center"
-            android:onClick="colClick"
+            android:onClick="cellClick"
             android:text=""
             />
 
@@ -160,7 +160,7 @@
             android:layout_margin="1dp"
             android:background="#FFFFFF"
             android:gravity="center"
-            android:onClick="colClick"
+            android:onClick="cellClick"
             android:text=""
             />
     </TableRow>
@@ -183,7 +183,7 @@
             android:layout_margin="1dp"
             android:background="#FFFFFF"
             android:gravity="center"
-            android:onClick="colClick"
+            android:onClick="cellClick"
             android:text=""
             />
 
@@ -196,7 +196,7 @@
             android:layout_margin="1dp"
             android:background="#FFFFFF"
             android:gravity="center"
-            android:onClick="colClick"
+            android:onClick="cellClick"
             android:text=""
             />
 
@@ -209,7 +209,7 @@
             android:layout_margin="1dp"
             android:background="#FFFFFF"
             android:gravity="center"
-            android:onClick="colClick"
+            android:onClick="cellClick"
             android:text=""
             />
 
@@ -222,7 +222,7 @@
             android:layout_margin="1dp"
             android:background="#FFFFFF"
             android:gravity="center"
-            android:onClick="colClick"
+            android:onClick="cellClick"
             android:text=""
             />
 
@@ -235,7 +235,7 @@
             android:layout_margin="1dp"
             android:background="#FFFFFF"
             android:gravity="center"
-            android:onClick="colClick"
+            android:onClick="cellClick"
             android:text=""
             />
     </TableRow>
@@ -257,7 +257,7 @@
             android:layout_margin="1dp"
             android:background="#FFFFFF"
             android:gravity="center"
-            android:onClick="colClick"
+            android:onClick="cellClick"
             android:text=""
             />
 
@@ -270,7 +270,7 @@
             android:layout_margin="1dp"
             android:background="#FFFFFF"
             android:gravity="center"
-            android:onClick="colClick"
+            android:onClick="cellClick"
             android:text=""
             />
 
@@ -283,7 +283,7 @@
             android:layout_margin="1dp"
             android:background="#FFFFFF"
             android:gravity="center"
-            android:onClick="colClick"
+            android:onClick="cellClick"
             android:text=""
             />
 
@@ -296,7 +296,7 @@
             android:layout_margin="1dp"
             android:background="#FFFFFF"
             android:gravity="center"
-            android:onClick="colClick"
+            android:onClick="cellClick"
             android:text=""
             />
 
@@ -309,7 +309,7 @@
             android:layout_margin="1dp"
             android:background="#FFFFFF"
             android:gravity="center"
-            android:onClick="colClick"
+            android:onClick="cellClick"
             android:text=""
             />
     </TableRow>
@@ -331,7 +331,7 @@
             android:layout_margin="1dp"
             android:background="#FFFFFF"
             android:gravity="center"
-            android:onClick="colClick"
+            android:onClick="cellClick"
             android:text=""
             />
 
@@ -344,7 +344,7 @@
             android:layout_margin="1dp"
             android:background="#FFFFFF"
             android:gravity="center"
-            android:onClick="colClick"
+            android:onClick="cellClick"
             android:text=""
             />
 
@@ -357,7 +357,7 @@
             android:layout_margin="1dp"
             android:background="#FFFFFF"
             android:gravity="center"
-            android:onClick="colClick"
+            android:onClick="cellClick"
             android:text=""
             />
 
@@ -370,7 +370,7 @@
             android:layout_margin="1dp"
             android:background="#FFFFFF"
             android:gravity="center"
-            android:onClick="colClick"
+            android:onClick="cellClick"
             android:text=""
             />
 
@@ -383,7 +383,7 @@
             android:layout_margin="1dp"
             android:background="#FFFFFF"
             android:gravity="center"
-            android:onClick="colClick"
+            android:onClick="cellClick"
             android:text=""
             />
     </TableRow>

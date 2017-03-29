@@ -20,7 +20,7 @@ import group5.battleship.src.Player;
 public class GameActivity extends AppCompatActivity {
     public Game game;
     private Player myPlayer;
-    int[][] table;
+    int[][] routingTable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +31,8 @@ public class GameActivity extends AppCompatActivity {
         displayMyShips();
     }
 
-    public void colClick(View view) {
-        System.out.println("colClick: " + view.getId());
+    public void cellClick(View view) {
+        System.out.println("cellClick: " + view.getId());
 
         TextView tv = (TextView) findViewById(view.getId());
         tv.setText("clicked");
@@ -65,36 +65,36 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void routingToTableLayout(){
-        table = new int[game.getSize()][game.getSize()];
+        routingTable = new int[game.getSize()][game.getSize()];
         TextView tv;
 
-        table[0][0] = findViewById(R.id.textView00).getId();
-        table[0][1] = findViewById(R.id.textView01).getId();
-        table[0][2] = findViewById(R.id.textView02).getId();
-        table[0][3] = findViewById(R.id.textView03).getId();
-        table[0][4] = findViewById(R.id.textView04).getId();
-        table[1][0] = findViewById(R.id.textView10).getId();
-        table[1][1] = findViewById(R.id.textView11).getId();
-        table[1][2] = findViewById(R.id.textView12).getId();
-        table[1][3] = findViewById(R.id.textView13).getId();
-        table[1][4] = findViewById(R.id.textView14).getId();
-        table[2][0] = findViewById(R.id.textView20).getId();
-        table[2][1] = findViewById(R.id.textView21).getId();
-        table[2][2] = findViewById(R.id.textView22).getId();
-        table[2][3] = findViewById(R.id.textView23).getId();
-        table[2][4] = findViewById(R.id.textView24).getId();
-        table[3][0] = findViewById(R.id.textView30).getId();
-        table[3][1] = findViewById(R.id.textView31).getId();
-        table[3][2] = findViewById(R.id.textView32).getId();
-        table[3][3] = findViewById(R.id.textView33).getId();
-        table[3][4] = findViewById(R.id.textView34).getId();
-        table[4][0] = findViewById(R.id.textView40).getId();
-        table[4][1] = findViewById(R.id.textView41).getId();
-        table[4][2] = findViewById(R.id.textView42).getId();
-        table[4][3] = findViewById(R.id.textView43).getId();
-        table[4][4] = findViewById(R.id.textView44).getId();
+        routingTable[0][0] = findViewById(R.id.textView00).getId();
+        routingTable[0][1] = findViewById(R.id.textView01).getId();
+        routingTable[0][2] = findViewById(R.id.textView02).getId();
+        routingTable[0][3] = findViewById(R.id.textView03).getId();
+        routingTable[0][4] = findViewById(R.id.textView04).getId();
+        routingTable[1][0] = findViewById(R.id.textView10).getId();
+        routingTable[1][1] = findViewById(R.id.textView11).getId();
+        routingTable[1][2] = findViewById(R.id.textView12).getId();
+        routingTable[1][3] = findViewById(R.id.textView13).getId();
+        routingTable[1][4] = findViewById(R.id.textView14).getId();
+        routingTable[2][0] = findViewById(R.id.textView20).getId();
+        routingTable[2][1] = findViewById(R.id.textView21).getId();
+        routingTable[2][2] = findViewById(R.id.textView22).getId();
+        routingTable[2][3] = findViewById(R.id.textView23).getId();
+        routingTable[2][4] = findViewById(R.id.textView24).getId();
+        routingTable[3][0] = findViewById(R.id.textView30).getId();
+        routingTable[3][1] = findViewById(R.id.textView31).getId();
+        routingTable[3][2] = findViewById(R.id.textView32).getId();
+        routingTable[3][3] = findViewById(R.id.textView33).getId();
+        routingTable[3][4] = findViewById(R.id.textView34).getId();
+        routingTable[4][0] = findViewById(R.id.textView40).getId();
+        routingTable[4][1] = findViewById(R.id.textView41).getId();
+        routingTable[4][2] = findViewById(R.id.textView42).getId();
+        routingTable[4][3] = findViewById(R.id.textView43).getId();
+        routingTable[4][4] = findViewById(R.id.textView44).getId();
     }
     private int getRoutingByCordinate(int x, int y){
-        return table[x][y];
+        return routingTable[x][y];
     }
 }
