@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TextView;
+
 import group5.*;
 
 public class SetShipsActivity extends AppCompatActivity {
@@ -22,12 +23,31 @@ public class SetShipsActivity extends AppCompatActivity {
     public void cellClick(View view) {
         TextView tv = (TextView) findViewById(view.getId());
 
-        if(currentShips<MAX_SHIPS){
-            ships = (ships + (String) view.getTag());
-            System.out.println(ships);
-            currentShips++;
-            tv.setText("SHIP");
-        } else if(currentShips==MAX_SHIPS){
+
+        if (currentShips < MAX_SHIPS) {
+            if (ships.length() < 2) {
+                ships = (ships + (String) view.getTag());
+                currentShips++;
+                tv.setText("SHIP");
+            } else {
+                boolean shipSet = false;
+                boolean dublicate = false;
+                for (int i = 0; i < ships.length()-1; i = i + 2) {
+                    String tmp = (ships.substring(i,i+2));
+                    if (!tmp.equals((String) view.getTag())) {
+                        shipSet = true;
+                    }else{
+                        dublicate = true;
+                    }
+                }
+                if(shipSet==true && dublicate ==false){
+                    ships = (ships + (String) view.getTag());
+                    currentShips++;
+                    tv.setText("SHIP");
+                }
+            }
+
+        } else if (currentShips == MAX_SHIPS) {
             Intent intent = new Intent(this, GameActivity.class);
             intent.putExtra("SHIPS", ships);
             intent.putExtra("NAME", getIntent().getStringExtra("NAME"));
