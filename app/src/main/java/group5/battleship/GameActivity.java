@@ -1,20 +1,11 @@
 package group5.battleship;
 
-import android.annotation.SuppressLint;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TabHost;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import group5.battleship.*;
 import group5.battleship.src.Game;
 import group5.battleship.src.Player;
 
@@ -22,7 +13,8 @@ public class GameActivity extends AppCompatActivity {
     public Game game;
     private Player myPlayer;
     private Player opponent;
-    int[][] routingTable;
+    int[][] routingMyField;
+    int[][] routingOpponentField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +40,7 @@ public class GameActivity extends AppCompatActivity {
         initGame();
         initDummyOpp();
         displayMyShips();
+        displayOpponentShips();
     }
 
     public void cellClick(View view) {
@@ -76,7 +69,22 @@ public class GameActivity extends AppCompatActivity {
         TextView tv;
         for (int i = 0; i < game.getSize(); i++) {
             for (int j = 0; j < game.getSize(); j++) {
-                tv = (TextView) findViewById(getRoutingByCordinate(i,j));
+                tv = (TextView) findViewById(getRoutingByCordinateMyField(i,j));
+                if (ships[i][j] == 1) {
+                    tv.setText("o");
+                } else {
+                    tv.setText("~");
+                }
+            }
+        }
+    }
+    private void displayOpponentShips() {
+        int[][] ships = opponent.getShips();
+
+        TextView tv;
+        for (int i = 0; i < game.getSize(); i++) {
+            for (int j = 0; j < game.getSize(); j++) {
+                tv = (TextView) findViewById(getRoutingByCordinateOpponentField(i,j));
                 if (ships[i][j] == 1) {
                     tv.setText("o");
                 } else {
@@ -87,38 +95,70 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void routingToTableLayout(){
-        routingTable = new int[game.getSize()][game.getSize()];
-        TextView tv;
+        routingMyField = new int[game.getSize()][game.getSize()];
 
-        routingTable[0][0] = findViewById(R.id.textView00).getId();
-        routingTable[0][1] = findViewById(R.id.textView01).getId();
-        routingTable[0][2] = findViewById(R.id.textView02).getId();
-        routingTable[0][3] = findViewById(R.id.textView03).getId();
-        routingTable[0][4] = findViewById(R.id.textView04).getId();
-        routingTable[1][0] = findViewById(R.id.textView10).getId();
-        routingTable[1][1] = findViewById(R.id.textView11).getId();
-        routingTable[1][2] = findViewById(R.id.textView12).getId();
-        routingTable[1][3] = findViewById(R.id.textView13).getId();
-        routingTable[1][4] = findViewById(R.id.textView14).getId();
-        routingTable[2][0] = findViewById(R.id.textView20).getId();
-        routingTable[2][1] = findViewById(R.id.textView21).getId();
-        routingTable[2][2] = findViewById(R.id.textView22).getId();
-        routingTable[2][3] = findViewById(R.id.textView23).getId();
-        routingTable[2][4] = findViewById(R.id.textView24).getId();
-        routingTable[3][0] = findViewById(R.id.textView30).getId();
-        routingTable[3][1] = findViewById(R.id.textView31).getId();
-        routingTable[3][2] = findViewById(R.id.textView32).getId();
-        routingTable[3][3] = findViewById(R.id.textView33).getId();
-        routingTable[3][4] = findViewById(R.id.textView34).getId();
-        routingTable[4][0] = findViewById(R.id.textView40).getId();
-        routingTable[4][1] = findViewById(R.id.textView41).getId();
-        routingTable[4][2] = findViewById(R.id.textView42).getId();
-        routingTable[4][3] = findViewById(R.id.textView43).getId();
-        routingTable[4][4] = findViewById(R.id.textView44).getId();
+        routingMyField[0][0] = findViewById(R.id.textView00).getId();
+        routingMyField[0][1] = findViewById(R.id.textView01).getId();
+        routingMyField[0][2] = findViewById(R.id.textView02).getId();
+        routingMyField[0][3] = findViewById(R.id.textView03).getId();
+        routingMyField[0][4] = findViewById(R.id.textView04).getId();
+        routingMyField[1][0] = findViewById(R.id.textView10).getId();
+        routingMyField[1][1] = findViewById(R.id.textView11).getId();
+        routingMyField[1][2] = findViewById(R.id.textView12).getId();
+        routingMyField[1][3] = findViewById(R.id.textView13).getId();
+        routingMyField[1][4] = findViewById(R.id.textView14).getId();
+        routingMyField[2][0] = findViewById(R.id.textView20).getId();
+        routingMyField[2][1] = findViewById(R.id.textView21).getId();
+        routingMyField[2][2] = findViewById(R.id.textView22).getId();
+        routingMyField[2][3] = findViewById(R.id.textView23).getId();
+        routingMyField[2][4] = findViewById(R.id.textView24).getId();
+        routingMyField[3][0] = findViewById(R.id.textView30).getId();
+        routingMyField[3][1] = findViewById(R.id.textView31).getId();
+        routingMyField[3][2] = findViewById(R.id.textView32).getId();
+        routingMyField[3][3] = findViewById(R.id.textView33).getId();
+        routingMyField[3][4] = findViewById(R.id.textView34).getId();
+        routingMyField[4][0] = findViewById(R.id.textView40).getId();
+        routingMyField[4][1] = findViewById(R.id.textView41).getId();
+        routingMyField[4][2] = findViewById(R.id.textView42).getId();
+        routingMyField[4][3] = findViewById(R.id.textView43).getId();
+        routingMyField[4][4] = findViewById(R.id.textView44).getId();
+
+        routingOpponentField = new int[game.getSize()][game.getSize()];
+
+        routingOpponentField[0][0] = findViewById(R.id.opponentTextView00).getId();
+        routingOpponentField[0][1] = findViewById(R.id.opponentTextView01).getId();
+        routingOpponentField[0][2] = findViewById(R.id.opponentTextView02).getId();
+        routingOpponentField[0][3] = findViewById(R.id.opponentTextView03).getId();
+        routingOpponentField[0][4] = findViewById(R.id.opponentTextView04).getId();
+        routingOpponentField[1][0] = findViewById(R.id.opponentTextView10).getId();
+        routingOpponentField[1][1] = findViewById(R.id.opponentTextView11).getId();
+        routingOpponentField[1][2] = findViewById(R.id.opponentTextView12).getId();
+        routingOpponentField[1][3] = findViewById(R.id.opponentTextView13).getId();
+        routingOpponentField[1][4] = findViewById(R.id.opponentTextView14).getId();
+        routingOpponentField[2][0] = findViewById(R.id.opponentTextView20).getId();
+        routingOpponentField[2][1] = findViewById(R.id.opponentTextView21).getId();
+        routingOpponentField[2][2] = findViewById(R.id.opponentTextView22).getId();
+        routingOpponentField[2][3] = findViewById(R.id.opponentTextView23).getId();
+        routingOpponentField[2][4] = findViewById(R.id.opponentTextView24).getId();
+        routingOpponentField[3][0] = findViewById(R.id.opponentTextView30).getId();
+        routingOpponentField[3][1] = findViewById(R.id.opponentTextView31).getId();
+        routingOpponentField[3][2] = findViewById(R.id.opponentTextView32).getId();
+        routingOpponentField[3][3] = findViewById(R.id.opponentTextView33).getId();
+        routingOpponentField[3][4] = findViewById(R.id.opponentTextView34).getId();
+        routingOpponentField[4][0] = findViewById(R.id.opponentTextView40).getId();
+        routingOpponentField[4][1] = findViewById(R.id.opponentTextView41).getId();
+        routingOpponentField[4][2] = findViewById(R.id.opponentTextView42).getId();
+        routingOpponentField[4][3] = findViewById(R.id.opponentTextView43).getId();
+        routingOpponentField[4][4] = findViewById(R.id.opponentTextView44).getId();
     }
-    private int getRoutingByCordinate(int x, int y){
-        return routingTable[x][y];
+    private int getRoutingByCordinateMyField(int x, int y){
+        return routingMyField[x][y];
     }
+
+    private int getRoutingByCordinateOpponentField(int x, int y){
+        return routingOpponentField[x][y];
+    }
+
 
 
 }
