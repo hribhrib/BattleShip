@@ -41,11 +41,14 @@
         android:id="@+id/editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="7dp"
         android:ems="10"
+        android:hint="Enter your Name"
         android:inputType="textPersonName"
-        android:text="Enter your Name"
-        tools:layout_editor_absoluteX="85dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/button" />
+        app:layout_constraintBottom_toTopOf="@+id/button"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

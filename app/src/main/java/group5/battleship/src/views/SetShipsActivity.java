@@ -1,10 +1,12 @@
 package group5.battleship.src.views;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import group5.battleship.R;
 
@@ -17,6 +19,12 @@ public class SetShipsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_ships);
+
+        Context context = getApplicationContext();
+        CharSequence text = "Click on the area to set 3 ships!";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast.makeText(context, text, duration).show();
     }
 
     public void cellClick(View view) {
