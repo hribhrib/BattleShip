@@ -1,6 +1,9 @@
 package group5.battleship.src.views;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -55,20 +58,52 @@ public class GameActivity extends AppCompatActivity {
 
         Cordinate c = getRoutingByIDOpponentField(tv.getId());
 
-        int[][] tmpOpponentShips = opponent.getShips();
+        if(myPlayer.getBattleFieldByCordinate(c) == 0){
 
-        if (tmpOpponentShips[c.x][c.y] == -1) {
-            myPlayer.updateBattleField(c.x, c.y, -1);
-        } else if (tmpOpponentShips[c.x][c.y] == 1) {
-            myPlayer.updateBattleField(c.x, c.y, 1);
+            int[][] tmpOpponentShips = opponent.getShips();
+
+            if (tmpOpponentShips[c.x][c.y] == -1) {
+                myPlayer.updateBattleField(c.x, c.y, -1);
+            } else if (tmpOpponentShips[c.x][c.y] == 1) {
+                myPlayer.updateBattleField(c.x, c.y, 1);
+                if(opponent.incShipDestroyed()==opponent.getMaxShips()){
+                    endGame(myPlayer);
+                }
+            }
+
+            game.newMove(new Move(myPlayer,opponent,c));
+            displayBattleField();
+            opponentsMove();
         }
 
-        game.newMove(new Move(myPlayer,opponent,c));
-        displayBattleField();
-        opponentsMove();
 
     }
 
+    private void endGame(Player winner){
+        new AlertDialog.Builder(this)
+                .setTitle("GAME END!")
+                .setMessage("Player: "+winner.getName()+" won!\nWant to play a new one?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        initGame();
+                        initDummyOpp();
+                        displayMyShips();
+                        displayBattleField();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        toStartScreen();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
+    private void toStartScreen(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
     private void initGame() {
         myPlayer = new Player(getIntent().getStringExtra("NAME").toString());
         opponent = new Player("Opponent");
@@ -80,12 +115,30 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void initDummyOpp() {
-        opponent.setShips("132400");
+        Random r = new Random();
+        Cordinate ship1,ship2,ship3;
+
+        ship1 = new Cordinate(r.nextInt(5),r.nextInt(5));
+
+        do {
+            ship2 = new Cordinate(r.nextInt(5),r.nextInt(5));
+        } while(ship1.compareTo(ship2)==true);
+
+        do {
+            ship3 = new Cordinate(r.nextInt(5),r.nextInt(5));
+        } while(ship1.compareTo(ship3)==true && ship2.compareTo(ship3) == true);
+
+
+        opponent.setShips(ship1,ship2,ship3);
     }
 
     private void opponentsMove(){
         Random r = new Random();
-        Cordinate c = new Cordinate(r.nextInt(5),r.nextInt(5));
+        Cordinate c;
+
+        do{
+            c = new Cordinate(r.nextInt(5),r.nextInt(5));
+        }while(opponent.getBattleFieldByCordinate(c) != 0);
 
         int[][] tmpMyShips = myPlayer.getShips();
 
@@ -93,6 +146,9 @@ public class GameActivity extends AppCompatActivity {
             opponent.updateBattleField(c.x, c.y, -1);
         } else if (tmpMyShips[c.x][c.y] == 1) {
             opponent.updateBattleField(c.x, c.y, 1);
+            if(myPlayer.incShipDestroyed()==myPlayer.getMaxShips()){
+                endGame(opponent);
+            }
         }
 
         //display Opponents shot
