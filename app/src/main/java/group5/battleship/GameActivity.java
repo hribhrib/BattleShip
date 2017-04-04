@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TabHost;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ import group5.battleship.src.Player;
 public class GameActivity extends AppCompatActivity {
     public Game game;
     private Player myPlayer;
+    private Player opponent;
     int[][] routingTable;
 
     @Override
@@ -27,7 +29,24 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        TabHost host = (TabHost)findViewById(R.id.tabHost);
+        host.setup();
+
+        //Tab 1
+        TabHost.TabSpec spec = host.newTabSpec("MyField");
+        spec.setContent(R.id.MyField);
+        spec.setIndicator("MyField");
+        host.addTab(spec);
+
+        //Tab 2
+        spec = host.newTabSpec("OpponentField");
+        spec.setContent(R.id.OpponentField);
+        spec.setIndicator("OpponentField");
+        host.addTab(spec);
+
+
         initGame();
+        initDummyOpp();
         displayMyShips();
     }
 
@@ -40,12 +59,15 @@ public class GameActivity extends AppCompatActivity {
 
     private void initGame() {
         myPlayer = new Player(getIntent().getStringExtra("NAME").toString());
-        Player opponent = new Player("Opponent");
+        opponent = new Player("Opponent");
         game = new Game(myPlayer, opponent, 5); //5 = static size
 
         myPlayer.setShips(getIntent().getStringExtra("SHIPS").toString());
 
         routingToTableLayout();
+    }
+    private void initDummyOpp(){
+        opponent.setShips("132400");
     }
 
     private void displayMyShips() {
@@ -97,4 +119,6 @@ public class GameActivity extends AppCompatActivity {
     private int getRoutingByCordinate(int x, int y){
         return routingTable[x][y];
     }
+
+
 }
