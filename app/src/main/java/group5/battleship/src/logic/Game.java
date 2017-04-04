@@ -1,5 +1,6 @@
 package group5.battleship.src.logic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,9 +31,11 @@ public class Game {
         player2.battleField = new int[this.size][this.size];
         player2.ships = new int[this.size][this.size];
         initBattleField(player2);
+
+        moves = new ArrayList<>();
     }
 
-    private void newMove(Move move) {
+    public void newMove(Move move) {
         moves.add(move);
     }
 

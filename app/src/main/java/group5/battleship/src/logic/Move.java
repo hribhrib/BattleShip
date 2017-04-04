@@ -12,11 +12,11 @@ public class Move {
     int x;
     int y;
 
-    public Move(Player attacker, Player target,int x, int y){
+    public Move(Player attacker, Player target, Cordinate c){
         this.attacker = attacker;
         this.target = target;
-        this.x = x;
-        this.y = y;
+        this.x = c.x;
+        this.y = c.y;
     }
 
 }

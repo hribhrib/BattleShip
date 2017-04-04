@@ -1,14 +1,19 @@
 package group5.battleship.src.views;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.Random;
 
 import group5.battleship.R;
 import group5.battleship.src.logic.Cordinate;
 import group5.battleship.src.logic.Game;
+import group5.battleship.src.logic.Move;
 import group5.battleship.src.logic.Player;
 
 public class GameActivity extends AppCompatActivity {
@@ -58,7 +63,10 @@ public class GameActivity extends AppCompatActivity {
             myPlayer.updateBattleField(c.x, c.y, 1);
         }
 
+        game.newMove(new Move(myPlayer,opponent,c));
         displayBattleField();
+        opponentsMove();
+
     }
 
     private void initGame() {
@@ -73,6 +81,29 @@ public class GameActivity extends AppCompatActivity {
 
     private void initDummyOpp() {
         opponent.setShips("132400");
+    }
+
+    private void opponentsMove(){
+        Random r = new Random();
+        Cordinate c = new Cordinate(r.nextInt(5),r.nextInt(5));
+
+        int[][] tmpMyShips = myPlayer.getShips();
+
+        if (tmpMyShips[c.x][c.y] == -1) {
+            opponent.updateBattleField(c.x, c.y, -1);
+        } else if (tmpMyShips[c.x][c.y] == 1) {
+            opponent.updateBattleField(c.x, c.y, 1);
+        }
+
+        //display Opponents shot
+        Context context = getApplicationContext();
+        CharSequence text = c.x+""+c.y;
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast.makeText(context, text, duration).show();
+
+
+        game.newMove(new Move(opponent,myPlayer,c));
     }
 
     private void displayMyShips() {
