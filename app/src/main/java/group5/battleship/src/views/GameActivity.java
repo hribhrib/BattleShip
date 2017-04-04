@@ -23,6 +23,8 @@ public class GameActivity extends AppCompatActivity {
     int[][] routingMyField;
     int[][] routingOpponentField;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
