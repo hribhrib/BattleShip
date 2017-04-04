@@ -1,10 +1,12 @@
-package group5.battleship;
+package group5.battleship.src.views;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+
+import group5.battleship.R;
 
 public class MainActivity extends AppCompatActivity {
     EditText playername;

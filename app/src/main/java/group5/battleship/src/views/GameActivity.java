@@ -1,4 +1,4 @@
-package group5.battleship;
+package group5.battleship.src.views;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -6,8 +6,10 @@ import android.view.View;
 import android.widget.TabHost;
 import android.widget.TextView;
 
-import group5.battleship.src.Game;
-import group5.battleship.src.Player;
+import group5.battleship.R;
+import group5.battleship.src.logic.Cordinate;
+import group5.battleship.src.logic.Game;
+import group5.battleship.src.logic.Player;
 
 public class GameActivity extends AppCompatActivity {
     public Game game;
@@ -21,7 +23,7 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TabHost host = (TabHost)findViewById(R.id.tabHost);
+        TabHost host = (TabHost) findViewById(R.id.tabHost);
         host.setup();
 
         //Tab 1
@@ -40,14 +42,23 @@ public class GameActivity extends AppCompatActivity {
         initGame();
         initDummyOpp();
         displayMyShips();
-        displayOpponentShips();
+        displayBattleField();
     }
 
     public void cellClick(View view) {
-        System.out.println("cellClick: " + view.getId());
-
         TextView tv = (TextView) findViewById(view.getId());
-        tv.setText("clicked");
+
+        Cordinate c = getRoutingByIDOpponentField(tv.getId());
+
+        int[][] tmpOpponentShips = opponent.getShips();
+
+        if (tmpOpponentShips[c.x][c.y] == -1) {
+            myPlayer.updateBattleField(c.x, c.y, -1);
+        } else if (tmpOpponentShips[c.x][c.y] == 1) {
+            myPlayer.updateBattleField(c.x, c.y, 1);
+        }
+
+        displayBattleField();
     }
 
     private void initGame() {
@@ -59,7 +70,8 @@ public class GameActivity extends AppCompatActivity {
 
         routingToTableLayout();
     }
-    private void initDummyOpp(){
+
+    private void initDummyOpp() {
         opponent.setShips("132400");
     }
 
@@ -69,7 +81,7 @@ public class GameActivity extends AppCompatActivity {
         TextView tv;
         for (int i = 0; i < game.getSize(); i++) {
             for (int j = 0; j < game.getSize(); j++) {
-                tv = (TextView) findViewById(getRoutingByCordinateMyField(i,j));
+                tv = (TextView) findViewById(getRoutingByCordinateMyField(i, j));
                 if (ships[i][j] == 1) {
                     tv.setText("o");
                 } else {
@@ -78,23 +90,26 @@ public class GameActivity extends AppCompatActivity {
             }
         }
     }
-    private void displayOpponentShips() {
-        int[][] ships = opponent.getShips();
+
+    private void displayBattleField() {
+        int[][] battleField = myPlayer.getBattleField();
 
         TextView tv;
         for (int i = 0; i < game.getSize(); i++) {
             for (int j = 0; j < game.getSize(); j++) {
-                tv = (TextView) findViewById(getRoutingByCordinateOpponentField(i,j));
-                if (ships[i][j] == 1) {
+                tv = (TextView) findViewById(getRoutingByCordinateOpponentField(i, j));
+                if (battleField[i][j] == 1) {
                     tv.setText("o");
-                } else {
+                } else if (battleField[i][j] == -1) {
                     tv.setText("~");
+                } else {
+                    tv.setText("");
                 }
             }
         }
     }
 
-    private void routingToTableLayout(){
+    private void routingToTableLayout() {
         routingMyField = new int[game.getSize()][game.getSize()];
 
         routingMyField[0][0] = findViewById(R.id.textView00).getId();
@@ -151,14 +166,25 @@ public class GameActivity extends AppCompatActivity {
         routingOpponentField[4][3] = findViewById(R.id.opponentTextView43).getId();
         routingOpponentField[4][4] = findViewById(R.id.opponentTextView44).getId();
     }
-    private int getRoutingByCordinateMyField(int x, int y){
+
+    private int getRoutingByCordinateMyField(int x, int y) {
         return routingMyField[x][y];
     }
 
-    private int getRoutingByCordinateOpponentField(int x, int y){
+    private int getRoutingByCordinateOpponentField(int x, int y) {
         return routingOpponentField[x][y];
     }
 
+    private Cordinate getRoutingByIDOpponentField(int id) {
+        for (int i = 0; i < game.getSize(); i++) {
+            for (int j = 0; j < game.getSize(); j++) {
+                if (routingOpponentField[i][j] == id) {
+                    return new Cordinate(i, j);
+                }
+            }
+        }
+        return new Cordinate(-1, -1);
+    }
 
 
 }

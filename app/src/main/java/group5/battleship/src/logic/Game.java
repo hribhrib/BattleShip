@@ -1,4 +1,4 @@
-package group5.battleship.src;
+package group5.battleship.src.logic;
 
 import java.util.List;
 
@@ -6,6 +6,10 @@ import java.util.List;
  * Created by hribhrib on 28.03.2017.
  * <p>
  * This class is for one game. one game contains each move.
+ * array sates:
+ *      -1 = water
+ *       0 = undef
+ *      +1 = ship
  */
 
 public class Game {
@@ -35,7 +39,7 @@ public class Game {
     private void initBattleField(Player p) {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                p.battleField[i][j] = -1;
+                p.battleField[i][j] = 0;
                 p.ships[i][j] = -1;
             }
         }

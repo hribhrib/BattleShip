@@ -1,13 +1,12 @@
-package group5.battleship;
+package group5.battleship.src.views;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
-import group5.*;
+import group5.battleship.R;
 
 public class SetShipsActivity extends AppCompatActivity {
     String ships = ""; //XYXYXY

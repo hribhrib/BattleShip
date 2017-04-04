@@ -1,4 +1,4 @@
-package group5.battleship.src;
+package group5.battleship.src.logic;
 
 /**
  * Created by hribhrib on 28.03.2017.
@@ -25,6 +25,12 @@ public class Player {
 
     public int[][] getShips(){
         return this.ships;
+    }
+
+    public void updateBattleField(int x, int y, int state){
+        //-1 = water
+        //+1 = ship
+        battleField[x][y] = state;
     }
 
     public int[][] getBattleField(){

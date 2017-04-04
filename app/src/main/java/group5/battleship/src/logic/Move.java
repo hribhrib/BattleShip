@@ -1,4 +1,4 @@
-package group5.battleship.src;
+package group5.battleship.src.logic;
 
 /**
  * Created by hribhrib on 28.03.2017.
