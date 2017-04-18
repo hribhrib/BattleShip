@@ -88,19 +88,20 @@ public class WifiManagerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 System.out.println("Click");
-                //startActivity(playIntent);
+
             }
         }));
 
         myManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         myChannel = myManager.initialize(this, getMainLooper(), null);
         myReceiver = new WifiBroadcastReciever(myManager, myChannel, this);
-
-    }
-
-    public void itemClickListener() {
-        int position = myListView.getSelectedItemPosition();
-        myReceiver.connect(position);
+        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                position = myListView.getSelectedItemPosition();
+                myReceiver.connect(position);
+            }
+        });
 
     }
 
