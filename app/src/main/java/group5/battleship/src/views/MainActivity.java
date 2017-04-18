@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import group5.battleship.R;
+import group5.battleship.src.wifi.WifiRecieverManager;
 
 public class MainActivity extends AppCompatActivity {
     EditText playername;
@@ -22,7 +23,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void startGame(View view) {
-        Intent intent = new Intent(this, SetShipsActivity.class);
+
+        Intent intent = new Intent(this, WifiRecieverManager.class);
         intent.putExtra("NAME", playername.getText().toString());
         startActivity(intent);
     }

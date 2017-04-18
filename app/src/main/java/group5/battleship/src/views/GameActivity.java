@@ -50,6 +50,8 @@ public class GameActivity extends AppCompatActivity {
         initDummyOpp();
         displayMyShips();
         displayBattleField();
+
+
     }
 
     public void cellClick(View view) {
