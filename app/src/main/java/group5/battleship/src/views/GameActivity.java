@@ -310,4 +310,10 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
+    private void radar(Cordinate c){
+
+    }
+
+
+
 }
