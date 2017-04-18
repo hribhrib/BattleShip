@@ -12,7 +12,7 @@ import java.net.SocketException;
  * Created by Bernhard on 18.04.17.
  */
 
-class ClientThread implements Runnable{
+public class ClientThread implements Runnable{
 
     private InetAddress myHostAddress;
     private int myPort = 0;

@@ -37,16 +37,12 @@
             android:theme="@style/FullscreenTheme" />
         <activity android:name=".src.views.SetShipsActivity" />
         <activity
-            android:name=".src.wifi.Main2Activity"
-            android:label="@string/title_activity_main2"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".src.views.WifiManagerActivity"
+            android:label="BattleShip"
+            android:theme="@style/FullscreenTheme" />
         <activity
-            android:name=".activity_wifi"
-            android:label="@string/title_activity_wifi"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".DataTransferDisplay"
-            android:label="@string/title_activity_data_transfer_display"
+            android:name=".src.views.DataTransferDisplay"
+            android:label="BattleShip"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
