@@ -1,10 +1,12 @@
 package group5.battleship.src.views;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,15 +41,15 @@ public class SetShipsActivity extends AppCompatActivity {
             } else {
                 boolean shipSet = false;
                 boolean dublicate = false;
-                for (int i = 0; i < ships.length()-1; i = i + 2) {
-                    String tmp = (ships.substring(i,i+2));
+                for (int i = 0; i < ships.length() - 1; i = i + 2) {
+                    String tmp = (ships.substring(i, i + 2));
                     if (!tmp.equals((String) view.getTag())) {
                         shipSet = true;
-                    }else{
+                    } else {
                         dublicate = true;
                     }
                 }
-                if(shipSet==true && dublicate ==false){
+                if (shipSet == true && dublicate == false) {
                     ships = (ships + (String) view.getTag());
                     currentShips++;
                     tv.setText("SHIP");
@@ -56,6 +58,7 @@ public class SetShipsActivity extends AppCompatActivity {
 
         } else if (currentShips == MAX_SHIPS) {
 
+
             Context context = getApplicationContext();
             CharSequence text = "All ships are set";
             int duration = Toast.LENGTH_SHORT;
@@ -63,12 +66,23 @@ public class SetShipsActivity extends AppCompatActivity {
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
 
-            Intent intent = new Intent(this, GameActivity.class);
-            intent.putExtra("SHIPS", ships);
-            intent.putExtra("NAME", getIntent().getStringExtra("NAME"));
-            startActivity(intent);
+            Button b15 = (Button) findViewById(R.id.startButton);
+            b15.setVisibility(View.VISIBLE);
+
+
 
 
         }
     }
+
+    public void settingFinished(View view) {
+
+        Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra("SHIPS", ships);
+        intent.putExtra("NAME", getIntent().getStringExtra("NAME"));
+        startActivity(intent);
+
+    }
+
+
 }
