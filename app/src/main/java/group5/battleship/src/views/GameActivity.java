@@ -25,13 +25,14 @@ public class GameActivity extends AppCompatActivity {
     private Player opponent;
     int[][] routingMyField;
     int[][] routingOpponentField;
+    TabHost host;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TabHost host = (TabHost) findViewById(R.id.tabHost);
+        host = (TabHost) findViewById(R.id.tabHost);
         host.setup();
 
         //Tab 1
@@ -49,8 +50,9 @@ public class GameActivity extends AppCompatActivity {
 
         initGame();
         initDummyOpp();
-        displayMyShips();
-        displayBattleField();
+        //displayMyShips();
+        displayOpponentsBattleField();
+        displayMyBattleField();
     }
 
     public void cellClick(View view) {
@@ -65,6 +67,7 @@ public class GameActivity extends AppCompatActivity {
             if (tmpOpponentShips[c.x][c.y] == -1) {
                 myPlayer.updateBattleField(c.x, c.y, -1);
             } else if (tmpOpponentShips[c.x][c.y] == 1) {
+                playSoundHitShip();
                 myPlayer.updateBattleField(c.x, c.y, 1);
                 if(opponent.incShipDestroyed()==opponent.getMaxShips()){
                     endGame(myPlayer);
@@ -72,7 +75,7 @@ public class GameActivity extends AppCompatActivity {
             }
 
             game.newMove(new Move(myPlayer,opponent,c));
-            displayBattleField();
+            displayMyBattleField();
             opponentsMove();
         }
 
@@ -87,8 +90,9 @@ public class GameActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         initGame();
                         initDummyOpp();
-                        displayMyShips();
-                        displayBattleField();
+                        //displayMyShips();
+                        displayOpponentsBattleField();
+                        displayMyBattleField();
                     }
                 })
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -122,17 +126,19 @@ public class GameActivity extends AppCompatActivity {
 
         do {
             ship2 = new Cordinate(r.nextInt(5),r.nextInt(5));
-        } while(ship1.compareTo(ship2)==true);
+        } while(ship1.equals(ship2)==true);
 
         do {
             ship3 = new Cordinate(r.nextInt(5),r.nextInt(5));
-        } while(ship1.compareTo(ship3)==true && ship2.compareTo(ship3) == true);
+        } while(ship1.equals(ship3)==true && ship2.equals(ship3) == true);
 
 
         opponent.setShips(ship1,ship2,ship3);
     }
 
     private void opponentsMove(){
+        host.setCurrentTab(0);
+
         Random r = new Random();
         Cordinate c;
 
@@ -145,11 +151,15 @@ public class GameActivity extends AppCompatActivity {
         if (tmpMyShips[c.x][c.y] == -1) {
             opponent.updateBattleField(c.x, c.y, -1);
         } else if (tmpMyShips[c.x][c.y] == 1) {
+            playSoundHitShip();
+            phoneVibrate();
             opponent.updateBattleField(c.x, c.y, 1);
             if(myPlayer.incShipDestroyed()==myPlayer.getMaxShips()){
                 endGame(opponent);
             }
         }
+
+        displayOpponentsBattleField();
 
         //display Opponents shot
         Context context = getApplicationContext();
@@ -178,7 +188,26 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    private void displayBattleField() {
+    private void displayOpponentsBattleField() {
+        int[][] opBattleField = opponent.getBattleField();
+
+        TextView tv;
+        for (int i = 0; i < game.getSize(); i++) {
+            for (int j = 0; j < game.getSize(); j++) {
+                tv = (TextView) findViewById(getRoutingByCordinateMyField(i, j));
+                if (opBattleField[i][j] == 1) {
+                    tv.setText("o");
+                } else if (opBattleField[i][j] == -1) {
+                    tv.setText("~");
+                } else {
+
+
+                }
+            }
+        }
+    }
+
+    private void displayMyBattleField() {
         int[][] battleField = myPlayer.getBattleField();
 
         TextView tv;
@@ -273,5 +302,12 @@ public class GameActivity extends AppCompatActivity {
         return new Cordinate(-1, -1);
     }
 
+    private void playSoundHitShip(){
+
+    }
+
+    private void phoneVibrate(){
+
+    }
 
 }
