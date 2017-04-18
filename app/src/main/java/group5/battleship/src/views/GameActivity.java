@@ -1,5 +1,6 @@
 package group5.battleship.src.views;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,8 @@ import group5.battleship.R;
 import group5.battleship.src.logic.Cordinate;
 import group5.battleship.src.logic.Game;
 import group5.battleship.src.logic.Player;
+
+import android.os.Vibrator;
 
 public class GameActivity extends AppCompatActivity {
     public Game game;
@@ -185,6 +188,26 @@ public class GameActivity extends AppCompatActivity {
         }
         return new Cordinate(-1, -1);
     }
+
+    private void playSoundHitShip(){
+
+
+    }
+
+    private void phoneVibrate(){
+
+        // Get instance of Vibrator from current Context
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+        // Vibrate for 400 milliseconds
+        v.vibrate(400);
+
+    }
+
+    private void a(){
+
+    }
+
 
 
 }
