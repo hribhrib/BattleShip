@@ -189,10 +189,6 @@ public class GameActivity extends AppCompatActivity {
         return new Cordinate(-1, -1);
     }
 
-    private void playSoundHitShip(){
-
-
-    }
 
     private void phoneVibrate(){
 
@@ -204,9 +200,6 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
-    private void a(){
-
-    }
 
 
 
