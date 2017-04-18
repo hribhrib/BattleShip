@@ -55,10 +55,20 @@ public class SetShipsActivity extends AppCompatActivity {
             }
 
         } else if (currentShips == MAX_SHIPS) {
+
+            Context context = getApplicationContext();
+            CharSequence text = "All ships are set";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+
             Intent intent = new Intent(this, GameActivity.class);
             intent.putExtra("SHIPS", ships);
             intent.putExtra("NAME", getIntent().getStringExtra("NAME"));
             startActivity(intent);
+
+
         }
     }
 }
