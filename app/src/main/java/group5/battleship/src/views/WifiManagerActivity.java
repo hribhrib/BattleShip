@@ -132,6 +132,7 @@ public class WifiManagerActivity extends AppCompatActivity {
 
         startActivity(dataDisplay);
 
+
     }
 
     public void displayPeers(WifiP2pDeviceList peerList) {
