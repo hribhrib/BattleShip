@@ -99,6 +99,6 @@ public class ClientThread implements Runnable{
     }
 
     public String getPlayer2String() {
-        return player2String;
+        return (player2String + receiveCount);
     }
 }

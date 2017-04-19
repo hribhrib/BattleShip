@@ -59,13 +59,10 @@ public class WifiManagerActivity extends AppCompatActivity {
 
         //  Indicates a change in the Wi-Fi P2P status.
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
-
         // Indicates a change in the list of available peers.
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
-
         // Indicates the state of Wi-Fi P2P connectivity has changed.
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
-
         // Indicates this device's details have changed.
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
 
@@ -73,8 +70,7 @@ public class WifiManagerActivity extends AppCompatActivity {
         myTextView = (TextView) findViewById(R.id.textView2);
         myListView = (ListView) findViewById(R.id.listView);
 
-        wifiP2PAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
-        myListView.setAdapter(wifiP2PAdapter);
+
 
         searchButton = (Button) findViewById(R.id.button2);
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -83,10 +79,13 @@ public class WifiManagerActivity extends AppCompatActivity {
                 search(v);
             }
         });
+
         playButton = (Button) findViewById(R.id.button3);
         playButton.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
 
 
                 Toast.makeText(context, "Click", Toast.LENGTH_LONG).show();///////////////////////Debugging
@@ -94,10 +93,8 @@ public class WifiManagerActivity extends AppCompatActivity {
             }
         }));
 
-        myManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
-        myChannel = myManager.initialize(this, getMainLooper(), null);
-        myReceiver = new WifiBroadcastReciever(myManager, myChannel, this);
-
+        wifiP2PAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+        myListView.setAdapter(wifiP2PAdapter);
         myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -108,6 +105,13 @@ public class WifiManagerActivity extends AppCompatActivity {
                 myReceiver.connect(position);
             }
         });
+
+
+        myManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
+        myChannel = myManager.initialize(this, getMainLooper(), null);
+        myReceiver = new WifiBroadcastReciever(myManager, myChannel, this);
+
+        dataDisplay = new Intent(WifiManagerActivity.this, DataTransferDisplay.class);
 
     }
 
