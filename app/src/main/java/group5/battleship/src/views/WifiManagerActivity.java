@@ -164,6 +164,7 @@ public class WifiManagerActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         unregisterReceiver(myReceiver);
+
     }
 
 
