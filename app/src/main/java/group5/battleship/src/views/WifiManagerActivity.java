@@ -1,6 +1,6 @@
 package group5.battleship.src.views;
 
-import android.content.BroadcastReceiver;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -8,11 +8,9 @@ import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,9 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.net.InetAddress;
-
 import group5.battleship.R;
-import group5.battleship.src.views.SetShipsActivity;
 import group5.battleship.src.wifi.WifiBroadcastReciever;
 
 
@@ -47,9 +43,13 @@ public class WifiManagerActivity extends AppCompatActivity {
     Intent dataDisplay;
     // final Intent playIntent = new Intent(this, SetShipsActivity.class);
 
+    Context context;///////////////////////////////////////////////////////////////////////Debugging
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        context = getApplicationContext();/////////////////////////////////////////////////Debugging
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wifi);
@@ -87,7 +87,9 @@ public class WifiManagerActivity extends AppCompatActivity {
         playButton.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("Click");
+
+
+                Toast.makeText(context, "Click", Toast.LENGTH_LONG).show();///////////////////////Debugging
 
             }
         }));
@@ -95,10 +97,14 @@ public class WifiManagerActivity extends AppCompatActivity {
         myManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         myChannel = myManager.initialize(this, getMainLooper(), null);
         myReceiver = new WifiBroadcastReciever(myManager, myChannel, this);
+
         myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                position = myListView.getSelectedItemPosition();
+                //position = myListView.getSelectedItemPosition();
+
+                //Toast.makeText(context, "Position"+(position), Toast.LENGTH_LONG).show();///////////////////////Debugging
+
                 myReceiver.connect(position);
             }
         });
@@ -141,8 +147,10 @@ public class WifiManagerActivity extends AppCompatActivity {
 
         for (WifiP2pDevice peer : peerList.getDeviceList()) {
             wifiP2PAdapter.add(peer.deviceName + "\n" + peer.deviceAddress);
+            //Toast.makeText(context, "Peer", Toast.LENGTH_SHORT).show();///////////////////////Debugging
         }
     }
+
 
     //register the brodcast receiver with the intent values to be matched
     @Override

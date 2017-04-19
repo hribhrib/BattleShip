@@ -1,16 +1,18 @@
 package group5.battleship.src.views;
 
+import android.app.ListActivity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import group5.battleship.R;
 import group5.battleship.src.views.WifiManagerActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
     EditText playername;
     TextView myTextView;
 
@@ -19,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
         playername = (EditText) (findViewById(R.id.editText));
+
 
 
     }
