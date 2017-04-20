@@ -3,6 +3,7 @@ package group5.battleship.src.views;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -38,6 +39,7 @@ public class SetShipsActivity extends AppCompatActivity {
                 ships = (ships + (String) view.getTag());
                 currentShips++;
                 tv.setText("SHIP");
+                tv.setTextColor(Color.RED);
             } else {
                 boolean shipSet = false;
                 boolean dublicate = false;

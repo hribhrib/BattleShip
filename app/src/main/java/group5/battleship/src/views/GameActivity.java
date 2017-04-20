@@ -3,6 +3,7 @@ package group5.battleship.src.views;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -171,6 +172,8 @@ public class GameActivity extends AppCompatActivity {
                 tv = (TextView) findViewById(getRoutingByCordinateMyField(i, j));
                 if (ships[i][j] == 1) {
                     tv.setText("o");
+                    tv.setTextSize(20);
+                    tv.setTextColor(Color.RED);
                 } else {
                     tv.setText("~");
                 }
