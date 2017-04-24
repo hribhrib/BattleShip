@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.os.Vibrator;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -338,7 +339,8 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void phoneVibrate(){
-
+        Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        vib.vibrate(300); //Vibration 300 milisekunden
     }
 
     private void radar(Cordinate c){
