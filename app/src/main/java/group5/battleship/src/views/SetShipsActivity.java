@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +40,7 @@ public class SetShipsActivity extends AppCompatActivity {
                 ships = (ships + (String) view.getTag());
                 currentShips++;
                 tv.setText("SHIP");
-                tv.setTextColor(Color.RED);
+                tv.setTextColor(Color.WHITE);
             } else {
                 boolean shipSet = false;
                 boolean dublicate = false;
@@ -55,6 +56,7 @@ public class SetShipsActivity extends AppCompatActivity {
                     ships = (ships + (String) view.getTag());
                     currentShips++;
                     tv.setText("SHIP");
+                    tv.setTextColor(Color.WHITE);
                 }
             }
 
@@ -71,6 +73,9 @@ public class SetShipsActivity extends AppCompatActivity {
             Button b15 = (Button) findViewById(R.id.startButton);
             b15.setVisibility(View.VISIBLE);
 
+            View table = findViewById(R.id.table);
+
+            table.setVisibility(View.INVISIBLE);
 
 
 
