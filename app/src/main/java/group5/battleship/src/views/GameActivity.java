@@ -3,6 +3,7 @@ package group5.battleship.src.views;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Vibrator;
@@ -13,9 +14,7 @@ import android.view.View;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.Random;
-
 import group5.battleship.R;
 import group5.battleship.src.logic.Cordinate;
 import group5.battleship.src.logic.Game;
@@ -211,6 +210,8 @@ public class GameActivity extends AppCompatActivity {
         for (int i = 0; i < game.getSize(); i++) {
             for (int j = 0; j < game.getSize(); j++) {
                 tv = (TextView) findViewById(getRoutingByCordinateMyField(i, j));
+                tv.setTextSize(20);
+                tv.setTextColor(Color.WHITE);
                 if (ships[i][j] == 1) {
                     tv.setText("o");
                 } else {
@@ -246,6 +247,8 @@ public class GameActivity extends AppCompatActivity {
         for (int i = 0; i < game.getSize(); i++) {
             for (int j = 0; j < game.getSize(); j++) {
                 tv = (TextView) findViewById(getRoutingByCordinateOpponentField(i, j));
+                tv.setTextSize(20);
+                tv.setTextColor(Color.WHITE);
                 if (battleField[i][j] == 1) {
                     tv.setText("o");
                 } else if (battleField[i][j] == -1) {

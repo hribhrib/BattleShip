@@ -1,10 +1,14 @@
 package group5.battleship.src.views;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,30 +39,61 @@ public class SetShipsActivity extends AppCompatActivity {
             if (ships.length() < 2) {
                 ships = (ships + (String) view.getTag());
                 currentShips++;
+
+                tv.setTextColor(Color.WHITE);
                 tv.setText("o");
+
             } else {
                 boolean shipSet = false;
                 boolean dublicate = false;
-                for (int i = 0; i < ships.length()-1; i = i + 2) {
-                    String tmp = (ships.substring(i,i+2));
+                for (int i = 0; i < ships.length() - 1; i = i + 2) {
+                    String tmp = (ships.substring(i, i + 2));
                     if (!tmp.equals((String) view.getTag())) {
                         shipSet = true;
-                    }else{
+                    } else {
                         dublicate = true;
                     }
                 }
-                if(shipSet==true && dublicate ==false){
+                if (shipSet == true && dublicate == false) {
                     ships = (ships + (String) view.getTag());
                     currentShips++;
+                  
+                    tv.setTextColor(Color.WHITE);
+
                     tv.setText("o");
                 }
             }
 
         } else if (currentShips == MAX_SHIPS) {
-            Intent intent = new Intent(this, GameActivity.class);
-            intent.putExtra("SHIPS", ships);
-            intent.putExtra("NAME", getIntent().getStringExtra("NAME"));
-            startActivity(intent);
+
+
+            Context context = getApplicationContext();
+            CharSequence text = "All ships are set";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+
+            Button b15 = (Button) findViewById(R.id.startButton);
+            b15.setVisibility(View.VISIBLE);
+
+            View table = findViewById(R.id.table);
+
+            table.setVisibility(View.INVISIBLE);
+
+
+
         }
     }
+
+    public void settingFinished(View view) {
+
+        Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra("SHIPS", ships);
+        intent.putExtra("NAME", getIntent().getStringExtra("NAME"));
+        startActivity(intent);
+
+    }
+
+
 }
