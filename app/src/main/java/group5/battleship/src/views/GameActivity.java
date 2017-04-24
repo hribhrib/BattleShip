@@ -172,8 +172,8 @@ public class GameActivity extends AppCompatActivity {
                 tv = (TextView) findViewById(getRoutingByCordinateMyField(i, j));
                 if (ships[i][j] == 1) {
                     tv.setText("o");
-                    //tv.setTextSize(20);
-                    //tv.setTextColor(Color.WHITE);
+                    tv.setTextSize(20);
+                    tv.setTextColor(Color.WHITE);
                 } else {
                     tv.setText("~");
                 }
