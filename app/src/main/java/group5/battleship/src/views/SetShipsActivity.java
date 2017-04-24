@@ -39,8 +39,10 @@ public class SetShipsActivity extends AppCompatActivity {
             if (ships.length() < 2) {
                 ships = (ships + (String) view.getTag());
                 currentShips++;
-                tv.setText("SHIP");
+
                 tv.setTextColor(Color.WHITE);
+                tv.setText("o");
+
             } else {
                 boolean shipSet = false;
                 boolean dublicate = false;
@@ -55,8 +57,10 @@ public class SetShipsActivity extends AppCompatActivity {
                 if (shipSet == true && dublicate == false) {
                     ships = (ships + (String) view.getTag());
                     currentShips++;
-                    tv.setText("SHIP");
+                  
                     tv.setTextColor(Color.WHITE);
+
+                    tv.setText("o");
                 }
             }
 
