@@ -3,6 +3,8 @@ package group5.battleship.src.views;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Vibrator;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +21,7 @@ import group5.battleship.src.logic.Cordinate;
 import group5.battleship.src.logic.Game;
 import group5.battleship.src.logic.Move;
 import group5.battleship.src.logic.Player;
+import group5.battleship.src.logic.ShakeDetector;
 
 public class GameActivity extends AppCompatActivity {
     public Game game;
@@ -27,6 +30,10 @@ public class GameActivity extends AppCompatActivity {
     int[][] routingMyField;
     int[][] routingOpponentField;
     TabHost host;
+    // for shakeDetection
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private ShakeDetector mShakeDetector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +61,30 @@ public class GameActivity extends AppCompatActivity {
         //displayMyShips();
         displayOpponentsBattleField();
         displayMyBattleField();
+
+        // ShakeDetector initialization
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager
+                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mShakeDetector = new ShakeDetector();
+        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
+
+            @Override
+            public void onShake(int count) {
+                randomAttack(count);
+            }
+        });
+    }
+
+    public void onResume() {
+        super.onResume();
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
+    }
+
+
+    public void onPause() {
+        mSensorManager.unregisterListener(mShakeDetector);
+        super.onPause();
     }
 
     public void cellClick(View view) {
@@ -314,6 +345,31 @@ public class GameActivity extends AppCompatActivity {
 
     private void radar(Cordinate c){
 
+    }
+    public void randomAttack (int count) {
+
+        Random r = new Random();
+        Cordinate c = new Cordinate(r.nextInt(5), r.nextInt(5));
+
+        if (myPlayer.getBattleFieldByCordinate(c) == 0) {
+
+            int[][] tmpOpponentShips = opponent.getShips();
+
+            if (tmpOpponentShips[c.x][c.y] == -1) {
+                myPlayer.updateBattleField(c.x, c.y, -1);
+            } else if (tmpOpponentShips[c.x][c.y] == 1) {
+                playSoundHitShip();
+                myPlayer.updateBattleField(c.x, c.y, 1);
+                if (opponent.incShipDestroyed() == opponent.getMaxShips()) {
+                    endGame(myPlayer);
+                }
+            }
+
+            game.newMove(new Move(myPlayer, opponent, c));
+            displayMyBattleField();
+            opponentsMove();
+
+        }
     }
 
 
