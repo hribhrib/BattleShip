@@ -170,10 +170,10 @@ public class GameActivity extends AppCompatActivity {
         for (int i = 0; i < game.getSize(); i++) {
             for (int j = 0; j < game.getSize(); j++) {
                 tv = (TextView) findViewById(getRoutingByCordinateMyField(i, j));
+                tv.setTextSize(20);
+                tv.setTextColor(Color.WHITE);
                 if (ships[i][j] == 1) {
                     tv.setText("o");
-                    tv.setTextSize(20);
-                    tv.setTextColor(Color.WHITE);
                 } else {
                     tv.setText("~");
                 }
@@ -188,6 +188,8 @@ public class GameActivity extends AppCompatActivity {
         for (int i = 0; i < game.getSize(); i++) {
             for (int j = 0; j < game.getSize(); j++) {
                 tv = (TextView) findViewById(getRoutingByCordinateOpponentField(i, j));
+                tv.setTextSize(20);
+                tv.setTextColor(Color.WHITE);
                 if (battleField[i][j] == 1) {
                     tv.setText("o");
                 } else if (battleField[i][j] == -1) {
