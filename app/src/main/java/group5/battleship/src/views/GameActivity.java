@@ -68,6 +68,7 @@ public class GameActivity extends AppCompatActivity {
         }
 
         game.newMove(new Move(myPlayer,opponent,c));
+
         displayBattleField();
         opponentsMove();
 
