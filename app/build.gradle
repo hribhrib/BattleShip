@@ -72,3 +72,4 @@ task jacocoTestReport(type: JacocoReport, dependsOn: "test") {
         html.enabled = true
     }
 }
+
