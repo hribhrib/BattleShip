@@ -37,11 +37,10 @@ public class WifiManagerActivity extends AppCompatActivity {
     ListView myListView;
     ArrayAdapter<String> wifiP2PAdapter;
     Button searchButton;
-    Button playButton;
     WifiBroadcastReciever myReceiver;
     IntentFilter intentFilter;
     Intent dataDisplay;
-    // final Intent playIntent = new Intent(this, SetShipsActivity.class);
+    Intent setShipIntent;
 
     Context context;///////////////////////////////////////////////////////////////////////Debugging
 
@@ -80,18 +79,6 @@ public class WifiManagerActivity extends AppCompatActivity {
             }
         });
 
-        playButton = (Button) findViewById(R.id.button3);
-        playButton.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-
-
-                Toast.makeText(context, "Click", Toast.LENGTH_LONG).show();///////////////////////Debugging
-
-            }
-        }));
 
         wifiP2PAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         myListView.setAdapter(wifiP2PAdapter);
@@ -112,6 +99,9 @@ public class WifiManagerActivity extends AppCompatActivity {
         myReceiver = new WifiBroadcastReciever(myManager, myChannel, this);
 
         dataDisplay = new Intent(WifiManagerActivity.this, DataTransferDisplay.class);
+
+        //setShipIntent = new Intent(WifiManagerActivity.this, SetShipsActivity.class);
+
 
     }
 
@@ -141,6 +131,7 @@ public class WifiManagerActivity extends AppCompatActivity {
         dataDisplay.putExtra("Connected", true); //Was connection succesul
 
         startActivity(dataDisplay);
+        //startActivity(setShipIntent);
 
 
     }

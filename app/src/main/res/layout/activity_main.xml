@@ -22,7 +22,8 @@
             <TabWidget
                 android:id="@android:id/tabs"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:background="@android:color/background_light" />
 
             <FrameLayout
                 android:id="@android:id/tabcontent"
@@ -33,12 +34,14 @@
                     android:id="@+id/MyField"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@android:color/background_light"
                     android:orientation="vertical">
 
                     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
                         android:id="@+id/table"
                         android:layout_width="match_parent"
                         android:layout_height="362dp"
+                        android:layout_margin="0dp"
                         android:clickable="true"
                         android:gravity="center"
                         android:stretchColumns="0,1,2,3,4"
@@ -62,9 +65,9 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="0"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
-                                android:onClick="cellClick"
+
                                 android:tag="00"
                                 android:text="" />
 
@@ -74,9 +77,9 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="1"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
-                                android:onClick="cellClick"
+
                                 android:tag="01"
                                 android:text="" />
 
@@ -86,9 +89,9 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="2"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
-                                android:onClick="cellClick"
+
                                 android:tag="02"
                                 android:text="" />
 
@@ -98,9 +101,9 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="3"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
-                                android:onClick="cellClick"
+
                                 android:tag="03"
                                 android:text="" />
 
@@ -110,9 +113,9 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="4"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
-                                android:onClick="cellClick"
+
                                 android:tag="04"
                                 android:text="" />
                         </TableRow>
@@ -132,9 +135,9 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="0"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
-                                android:onClick="cellClick"
+
                                 android:tag="10"
                                 android:text="" />
 
@@ -144,9 +147,9 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="1"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
-                                android:onClick="cellClick"
+
                                 android:tag="11"
                                 android:text="" />
 
@@ -156,9 +159,9 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="2"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
-                                android:onClick="cellClick"
+
                                 android:tag="12"
                                 android:text="" />
 
@@ -168,9 +171,9 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="3"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
-                                android:onClick="cellClick"
+
                                 android:tag="13"
                                 android:text="" />
 
@@ -180,9 +183,9 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="4"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
-                                android:onClick="cellClick"
+
                                 android:tag="14"
                                 android:text="" />
                         </TableRow>
@@ -202,9 +205,9 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="0"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
-                                android:onClick="cellClick"
+
                                 android:tag="20"
                                 android:text="" />
 
@@ -214,9 +217,9 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="1"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
-                                android:onClick="cellClick"
+
                                 android:tag="21"
                                 android:text="" />
 
@@ -226,9 +229,9 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="2"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
-                                android:onClick="cellClick"
+
                                 android:tag="22"
                                 android:text="" />
 
@@ -238,9 +241,9 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="3"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
-                                android:onClick="cellClick"
+
                                 android:tag="23"
                                 android:text="" />
 
@@ -250,9 +253,9 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="4"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
-                                android:onClick="cellClick"
+
                                 android:tag="24"
                                 android:text="" />
                         </TableRow>
@@ -271,9 +274,9 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="0"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
-                                android:onClick="cellClick"
+
                                 android:tag="30"
                                 android:text="" />
 
@@ -283,9 +286,9 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="1"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
-                                android:onClick="cellClick"
+
                                 android:tag="31"
                                 android:text="" />
 
@@ -295,9 +298,9 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="2"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
-                                android:onClick="cellClick"
+
                                 android:tag="32"
                                 android:text="" />
 
@@ -307,9 +310,9 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="3"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
-                                android:onClick="cellClick"
+
                                 android:tag="33"
                                 android:text="" />
 
@@ -319,9 +322,9 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="4"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
-                                android:onClick="cellClick"
+
                                 android:tag="34"
                                 android:text="" />
                         </TableRow>
@@ -340,9 +343,9 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="0"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
-                                android:onClick="cellClick"
+
                                 android:tag="40"
                                 android:text="" />
 
@@ -352,9 +355,9 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="1"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
-                                android:onClick="cellClick"
+
                                 android:tag="41"
                                 android:text="" />
 
@@ -364,9 +367,9 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="2"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
-                                android:onClick="cellClick"
+
                                 android:tag="42"
                                 android:text="" />
 
@@ -376,9 +379,9 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="3"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
-                                android:onClick="cellClick"
+
                                 android:tag="43"
                                 android:text="" />
 
@@ -388,9 +391,9 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="4"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
-                                android:onClick="cellClick"
+
                                 android:tag="44"
                                 android:text="" />
                         </TableRow>
@@ -398,17 +401,42 @@
                     </TableLayout>
 
                     <GridLayout
+                        android:id="@+id/ButtonBarMyField"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:background="@android:color/background_light">
 
+                        <Button
+                            android:id="@+id/button3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="Ships" />
+
+                        <Button
+                            android:id="@+id/button5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="6"
+                            android:layout_row="0"
+                            android:text="Button" />
+
+                        <Button
+                            android:id="@+id/button2"
+                            android:layout_width="190dp"
+                            android:layout_height="match_parent"
+                            android:layout_column="2"
+                            android:layout_row="0"
+                            android:text="Button" />
                     </GridLayout>
 
                 </LinearLayout>
+
 
                 <LinearLayout
                     android:id="@+id/OpponentField"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@android:color/background_light"
                     android:orientation="vertical">
 
                     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -438,7 +466,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="0"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
                                 android:onClick="cellClick"
                                 android:tag="00"
@@ -450,7 +478,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="1"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
                                 android:onClick="cellClick"
                                 android:tag="01"
@@ -462,7 +490,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="2"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
                                 android:onClick="cellClick"
                                 android:tag="02"
@@ -474,7 +502,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="3"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
                                 android:onClick="cellClick"
                                 android:tag="03"
@@ -486,7 +514,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="4"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
                                 android:onClick="cellClick"
                                 android:tag="04"
@@ -508,7 +536,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="0"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
                                 android:onClick="cellClick"
                                 android:tag="10"
@@ -520,7 +548,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="1"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
                                 android:onClick="cellClick"
                                 android:tag="11"
@@ -532,7 +560,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="2"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
                                 android:onClick="cellClick"
                                 android:tag="12"
@@ -544,7 +572,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="3"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
                                 android:onClick="cellClick"
                                 android:tag="13"
@@ -556,7 +584,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="4"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
                                 android:onClick="cellClick"
                                 android:tag="14"
@@ -578,7 +606,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="0"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
                                 android:onClick="cellClick"
                                 android:tag="20"
@@ -590,7 +618,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="1"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
                                 android:onClick="cellClick"
                                 android:tag="21"
@@ -602,7 +630,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="2"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
                                 android:onClick="cellClick"
                                 android:tag="22"
@@ -614,7 +642,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="3"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
                                 android:onClick="cellClick"
                                 android:tag="23"
@@ -626,7 +654,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="4"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
                                 android:onClick="cellClick"
                                 android:tag="24"
@@ -647,7 +675,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="0"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
                                 android:onClick="cellClick"
                                 android:tag="30"
@@ -659,7 +687,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="1"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
                                 android:onClick="cellClick"
                                 android:tag="31"
@@ -671,7 +699,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="2"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
                                 android:onClick="cellClick"
                                 android:tag="32"
@@ -683,7 +711,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="3"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
                                 android:onClick="cellClick"
                                 android:tag="33"
@@ -695,7 +723,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="4"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
                                 android:onClick="cellClick"
                                 android:tag="34"
@@ -716,7 +744,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="0"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
                                 android:onClick="cellClick"
                                 android:tag="40"
@@ -728,7 +756,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="1"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
                                 android:onClick="cellClick"
                                 android:tag="41"
@@ -740,7 +768,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="2"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
                                 android:onClick="cellClick"
                                 android:tag="42"
@@ -752,7 +780,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="3"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
                                 android:onClick="cellClick"
                                 android:tag="43"
@@ -764,15 +792,45 @@
                                 android:layout_height="match_parent"
                                 android:layout_column="4"
                                 android:layout_margin="1dp"
-                                android:background="#FFFFFF"
+                                android:background="@mipmap/meer_neu"
                                 android:gravity="center"
                                 android:onClick="cellClick"
                                 android:tag="44"
                                 android:text="" />
                         </TableRow>
                     </TableLayout>
+
+                    <GridLayout
+                        android:id="@+id/ButtonBarOpponentField"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/background_light">
+
+                        <Button
+                            android:id="@+id/button23"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="Button" />
+
+                        <Button
+                            android:id="@+id/button25"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="6"
+                            android:layout_row="0"
+                            android:text="Radar" />
+
+                        <Button
+                            android:id="@+id/button22"
+                            android:layout_width="190dp"
+                            android:layout_height="match_parent"
+                            android:layout_column="2"
+                            android:layout_row="0"
+                            android:text="Button" />
+                    </GridLayout>
                 </LinearLayout>
             </FrameLayout>
         </LinearLayout>
     </TabHost>
+
 </android.support.constraint.ConstraintLayout>

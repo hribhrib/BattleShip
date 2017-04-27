@@ -1,20 +1,26 @@
 package group5.battleship.src.views;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
+import android.os.Vibrator;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.Random;
-
 import group5.battleship.R;
 import group5.battleship.src.logic.Cordinate;
 import group5.battleship.src.logic.Game;
 import group5.battleship.src.logic.Move;
 import group5.battleship.src.logic.Player;
+import group5.battleship.src.logic.ShakeDetector;
 
 public class GameActivity extends AppCompatActivity {
     public Game game;
@@ -22,15 +28,18 @@ public class GameActivity extends AppCompatActivity {
     private Player opponent;
     int[][] routingMyField;
     int[][] routingOpponentField;
-
-
+    TabHost host;
+    // for shakeDetection
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private ShakeDetector mShakeDetector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TabHost host = (TabHost) findViewById(R.id.tabHost);
+        host = (TabHost) findViewById(R.id.tabHost);
         host.setup();
 
         //Tab 1
@@ -48,10 +57,33 @@ public class GameActivity extends AppCompatActivity {
 
         initGame();
         initDummyOpp();
-        displayMyShips();
-        displayBattleField();
+        //displayMyShips();
+        displayOpponentsBattleField();
+        displayMyBattleField();
+
+        // ShakeDetector initialization
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager
+                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mShakeDetector = new ShakeDetector();
+        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
+
+            @Override
+            public void onShake(int count) {
+                randomAttack(count);
+            }
+        });
+    }
+
+    public void onResume() {
+        super.onResume();
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
+    }
 
 
+    public void onPause() {
+        mSensorManager.unregisterListener(mShakeDetector);
+        super.onPause();
     }
 
     public void cellClick(View view) {
@@ -59,21 +91,54 @@ public class GameActivity extends AppCompatActivity {
 
         Cordinate c = getRoutingByIDOpponentField(tv.getId());
 
-        int[][] tmpOpponentShips = opponent.getShips();
+        if(myPlayer.getBattleFieldByCordinate(c) == 0){
 
-        if (tmpOpponentShips[c.x][c.y] == -1) {
-            myPlayer.updateBattleField(c.x, c.y, -1);
-        } else if (tmpOpponentShips[c.x][c.y] == 1) {
-            myPlayer.updateBattleField(c.x, c.y, 1);
+            int[][] tmpOpponentShips = opponent.getShips();
+
+            if (tmpOpponentShips[c.x][c.y] == -1) {
+                myPlayer.updateBattleField(c.x, c.y, -1);
+            } else if (tmpOpponentShips[c.x][c.y] == 1) {
+                playSoundHitShip();
+                myPlayer.updateBattleField(c.x, c.y, 1);
+                if(opponent.incShipDestroyed()==opponent.getMaxShips()){
+                    endGame(myPlayer);
+                }
+            }
+
+            game.newMove(new Move(myPlayer,opponent,c));
+            displayMyBattleField();
+            opponentsMove();
         }
 
-        game.newMove(new Move(myPlayer,opponent,c));
-
-        displayBattleField();
-        opponentsMove();
 
     }
 
+    private void endGame(Player winner){
+        new AlertDialog.Builder(this)
+                .setTitle("GAME END!")
+                .setMessage("Player: "+winner.getName()+" won!\nWant to play a new one?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        initGame();
+                        initDummyOpp();
+                        //displayMyShips();
+                        displayOpponentsBattleField();
+                        displayMyBattleField();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        toStartScreen();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
+    private void toStartScreen(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
     private void initGame() {
         myPlayer = new Player(getIntent().getStringExtra("NAME").toString());
         opponent = new Player("Opponent");
@@ -85,20 +150,47 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void initDummyOpp() {
-        opponent.setShips("132400");
+        Random r = new Random();
+        Cordinate ship1,ship2,ship3;
+
+        ship1 = new Cordinate(r.nextInt(5),r.nextInt(5));
+
+        do {
+            ship2 = new Cordinate(r.nextInt(5),r.nextInt(5));
+        } while(ship1.equals(ship2)==true);
+
+        do {
+            ship3 = new Cordinate(r.nextInt(5),r.nextInt(5));
+        } while(ship1.equals(ship3)==true && ship2.equals(ship3) == true);
+
+
+        opponent.setShips(ship1,ship2,ship3);
     }
 
     private void opponentsMove(){
+        host.setCurrentTab(0);
+
         Random r = new Random();
-        Cordinate c = new Cordinate(r.nextInt(5),r.nextInt(5));
+        Cordinate c;
+
+        do{
+            c = new Cordinate(r.nextInt(5),r.nextInt(5));
+        }while(opponent.getBattleFieldByCordinate(c) != 0);
 
         int[][] tmpMyShips = myPlayer.getShips();
 
         if (tmpMyShips[c.x][c.y] == -1) {
             opponent.updateBattleField(c.x, c.y, -1);
         } else if (tmpMyShips[c.x][c.y] == 1) {
+            playSoundHitShip();
+            phoneVibrate();
             opponent.updateBattleField(c.x, c.y, 1);
+            if(myPlayer.incShipDestroyed()==myPlayer.getMaxShips()){
+                endGame(opponent);
+            }
         }
+
+        displayOpponentsBattleField();
 
         //display Opponents shot
         Context context = getApplicationContext();
@@ -118,6 +210,8 @@ public class GameActivity extends AppCompatActivity {
         for (int i = 0; i < game.getSize(); i++) {
             for (int j = 0; j < game.getSize(); j++) {
                 tv = (TextView) findViewById(getRoutingByCordinateMyField(i, j));
+                tv.setTextSize(20);
+                tv.setTextColor(Color.WHITE);
                 if (ships[i][j] == 1) {
                     tv.setText("o");
                 } else {
@@ -127,13 +221,34 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    private void displayBattleField() {
+    private void displayOpponentsBattleField() {
+        int[][] opBattleField = opponent.getBattleField();
+
+        TextView tv;
+        for (int i = 0; i < game.getSize(); i++) {
+            for (int j = 0; j < game.getSize(); j++) {
+                tv = (TextView) findViewById(getRoutingByCordinateMyField(i, j));
+                if (opBattleField[i][j] == 1) {
+                    tv.setText("o");
+                } else if (opBattleField[i][j] == -1) {
+                    tv.setText("~");
+                } else {
+
+
+                }
+            }
+        }
+    }
+
+    private void displayMyBattleField() {
         int[][] battleField = myPlayer.getBattleField();
 
         TextView tv;
         for (int i = 0; i < game.getSize(); i++) {
             for (int j = 0; j < game.getSize(); j++) {
                 tv = (TextView) findViewById(getRoutingByCordinateOpponentField(i, j));
+                tv.setTextSize(20);
+                tv.setTextColor(Color.WHITE);
                 if (battleField[i][j] == 1) {
                     tv.setText("o");
                 } else if (battleField[i][j] == -1) {
@@ -221,6 +336,45 @@ public class GameActivity extends AppCompatActivity {
         }
         return new Cordinate(-1, -1);
     }
+
+    private void playSoundHitShip(){
+
+    }
+
+    private void phoneVibrate(){
+        Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        vib.vibrate(300); //Vibration 300 milisekunden
+    }
+
+    private void radar(Cordinate c){
+
+    }
+    public void randomAttack (int count) {
+
+        Random r = new Random();
+        Cordinate c = new Cordinate(r.nextInt(5), r.nextInt(5));
+
+        if (myPlayer.getBattleFieldByCordinate(c) == 0) {
+
+            int[][] tmpOpponentShips = opponent.getShips();
+
+            if (tmpOpponentShips[c.x][c.y] == -1) {
+                myPlayer.updateBattleField(c.x, c.y, -1);
+            } else if (tmpOpponentShips[c.x][c.y] == 1) {
+                playSoundHitShip();
+                myPlayer.updateBattleField(c.x, c.y, 1);
+                if (opponent.incShipDestroyed() == opponent.getMaxShips()) {
+                    endGame(myPlayer);
+                }
+            }
+
+            game.newMove(new Move(myPlayer, opponent, c));
+            displayMyBattleField();
+            opponentsMove();
+
+        }
+    }
+
 
 
 }
