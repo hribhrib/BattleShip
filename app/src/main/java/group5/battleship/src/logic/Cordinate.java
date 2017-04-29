@@ -14,6 +14,7 @@ public class Cordinate {
         this.x = x;
         this.y = y;
     }
+    public Cordinate(){}
 
     public boolean equals(Cordinate c) {
         if(this.x == c.x && this.y ==c.y){
