@@ -406,7 +406,7 @@ public class GameActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
             myPlayer.setRandomAttackRdy(false);
             displayMyBattleField();
-            opponentsMove();
+            opponentsMove();                                    //zum commiten
         }
     }
 }
