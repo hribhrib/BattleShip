@@ -10,6 +10,7 @@ import android.os.Vibrator;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -22,41 +23,82 @@ import group5.battleship.src.logic.Move;
 import group5.battleship.src.logic.Player;
 import group5.battleship.src.logic.ShakeDetector;
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import group5.battleship.R;
+import group5.battleship.src.wifi.ClientThread;
+import group5.battleship.src.wifi.ServerThread;
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
 public class GameActivity extends AppCompatActivity {
     public Game game;
     private Player myPlayer;
     private Player opponent;
     int[][] routingMyField;
     int[][] routingOpponentField;
-    TabHost host;
+    TabHost tapHost;
     // for shakeDetection
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
+
+    /////////////////////////////////////////
+    TextView p1TextView;
+    TextView p2TextView;
+
+    ClientThread clientThread;
+    ServerThread serverThread;
+
+    InetAddress hostAddress;
+    String stringHostAddress;
+
+    Timer myTimer;
+    TimerTask myTask;
+
+    Intent intent;
+    Boolean host;
+    static String send = "";
+
+    int port = 8888;
+    //////////////////////////////////////////
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        host = (TabHost) findViewById(R.id.tabHost);
-        host.setup();
+        tapHost = (TabHost) findViewById(R.id.tabHost);
+        tapHost.setup();
 
         //Tab 1
-        TabHost.TabSpec spec = host.newTabSpec("MyField");
+        TabHost.TabSpec spec = tapHost.newTabSpec("MyField");
         spec.setContent(R.id.MyField);
         spec.setIndicator("MyField");
-        host.addTab(spec);
+        tapHost.addTab(spec);
 
         //Tab 2
-        spec = host.newTabSpec("OpponentField");
+        spec = tapHost.newTabSpec("OpponentField");
         spec.setContent(R.id.OpponentField);
         spec.setIndicator("OpponentField");
-        host.addTab(spec);
+        tapHost.addTab(spec);
 
 
         initGame();
-        initDummyOpp();
+
         //displayMyShips();
         displayOpponentsBattleField();
         displayMyBattleField();
@@ -73,11 +115,86 @@ public class GameActivity extends AppCompatActivity {
                 randomAttack(count);
             }
         });
+
+
+
+        intent = getIntent();
+        //if this is a wifi game, start Client/Server Thread
+        if (intent.getBooleanExtra("WIFI", true)) {
+            Log.d("My Log", "WIFI TRUE");
+            //Check for the connection
+            if (intent.getBooleanExtra("Connected", false)) {
+                //Get hostaddress as string
+                stringHostAddress = intent.getStringExtra("HostAddress");
+
+                //Convert that to Inet Address
+                try {
+                    hostAddress = InetAddress.getByName(stringHostAddress);
+
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            //Determine if this user is host or client
+            host = intent.getBooleanExtra("IsHost", false);
+
+            //the Host runs the Server-Thread, Client runs the Client-Thread
+            if (host) {
+                serverThread = new ServerThread(port);
+                new Thread(serverThread).start();
+            } else {
+                clientThread = new ClientThread(hostAddress, port);
+                new Thread(clientThread).start();
+            }
+            initRealOpp();
+        }
+        else {
+            initDummyOpp();
+        }
+
     }
+
 
     public void onResume() {
         super.onResume();
         mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
+
+
+        //The display runs on a timer and updates the UI as packets are received.
+        //The hostdevice will display host for player 1, and upon receiving the packets from client
+        //Client will display for player 2
+        //Receice automaticly
+
+        if (intent.getBooleanExtra("WIFI", true)) {
+            myTimer = new Timer();
+            myTask = new TimerTask() {
+                @Override
+                public void run() {
+                    if (host) {
+                        Runnable runnable = new Runnable() {
+                            @Override
+                            public void run() {
+                                //p1TextView.setText("Player 1: " + serverThread.getPlayer1String());
+                               // p2TextView.setText("Player 2: " + serverThread.getPlayer2String());
+                            }
+                        };
+                        runOnUiThread(runnable);
+                    } else if (!host) {
+                        Runnable runnable = new Runnable() {
+                            @Override
+                            public void run() {
+                               // p1TextView.setText("Player 1: " + clientThread.getPlayer1String());
+                                //p2TextView.setText("Player 2: " + clientThread.getPlayer2String());
+
+                            }
+                        };
+                        runOnUiThread(runnable);
+                    }
+                }
+            };
+            myTimer.schedule(myTask, 1, 1);
+        }
     }
 
 
@@ -85,6 +202,14 @@ public class GameActivity extends AppCompatActivity {
         mSensorManager.unregisterListener(mShakeDetector);
         super.onPause();
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        android.os.Process.killProcess(android.os.Process.myPid());
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     public void cellClick(View view) {
         TextView tv = (TextView) findViewById(view.getId());
@@ -107,11 +232,28 @@ public class GameActivity extends AppCompatActivity {
 
             game.newMove(new Move(myPlayer,opponent,c));
             displayMyBattleField();
+
+
             opponentsMove();
         }
-
-
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    public void onTextClick(View view){
+        EditText editText = (EditText)findViewById(R.id.editText2);
+
+        send = editText.getText().toString();
+        if (host){
+            serverThread.dataReady(send);
+        }                                                   //Nach Bearbeitung komplett löschen!
+        else if (!host){
+            clientThread.dataReady(send);
+
+        }
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     private void endGame(Player winner){
         new AlertDialog.Builder(this)
@@ -146,6 +288,17 @@ public class GameActivity extends AppCompatActivity {
 
         myPlayer.setShips(getIntent().getStringExtra("SHIPS").toString());
 
+        if (getIntent().getBooleanExtra("WIFI", true)) {
+            send = getIntent().getStringExtra("SHIPS").toString();
+            if (host) {
+                serverThread.dataReady(send);
+            }
+            else if (!host) {
+                clientThread.dataReady(send);
+
+            }
+        }
+
         routingToTableLayout();
     }
 
@@ -167,8 +320,42 @@ public class GameActivity extends AppCompatActivity {
         opponent.setShips(ship1,ship2,ship3);
     }
 
+    private void initRealOpp() {
+        Cordinate ship1,ship2,ship3;
+        String oppShips = "";
+
+        if (host) {
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    serverThread.getPlayer2String();
+                }
+            };
+            runOnUiThread(runnable);
+        } else if (!host) {
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                   clientThread.getPlayer2String();
+                }
+            };
+            runOnUiThread(runnable);
+        }
+
+        ship1 = new Cordinate(Character.getNumericValue(oppShips.charAt(0)),
+                Character.getNumericValue(oppShips.charAt(1)));
+        ship2 = new Cordinate(Character.getNumericValue(oppShips.charAt(2)),
+                Character.getNumericValue(oppShips.charAt(3)));
+        ship3 = new Cordinate(Character.getNumericValue(oppShips.charAt(4)),
+                Character.getNumericValue(oppShips.charAt(5)));
+
+        opponent.setShips(ship1, ship2, ship3);
+
+        Log.d("My Log", oppShips);
+    }
+
     private void opponentsMove(){
-        host.setCurrentTab(0);
+        tapHost.setCurrentTab(0);
 
         Random r = new Random();
         Cordinate c;

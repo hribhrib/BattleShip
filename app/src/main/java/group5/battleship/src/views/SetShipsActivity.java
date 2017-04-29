@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TableLayout;
@@ -88,9 +89,18 @@ public class SetShipsActivity extends AppCompatActivity {
 
     public void settingFinished(View view) {
 
+        Log.d("My Log", String.valueOf(getIntent().getBooleanExtra("WIFI", true)));
+
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra("SHIPS", ships);
         intent.putExtra("NAME", getIntent().getStringExtra("NAME"));
+        intent.putExtra("HostAddress", getIntent().getStringExtra("HostAddress")); //Address of the host
+        intent.putExtra("IsHost", getIntent().getStringExtra("IsHost"));   //Is this device the host
+        intent.putExtra("Connected", true); //Was connection succesul
+        intent.putExtra("WIFI", getIntent().getBooleanExtra("WIFI", true));
+
+
+
         startActivity(intent);
 
     }

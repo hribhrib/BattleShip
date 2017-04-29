@@ -8,7 +8,9 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.ArrayList;
 
+import group5.battleship.src.logic.Cordinate;
 import group5.battleship.src.views.DataTransferDisplay;
 
 /**
@@ -69,6 +71,7 @@ public class ServerThread implements Runnable {
                 socket.receive(receivePacket);
                 receivePacket.getData();
 
+                //Get Shiplist on first cycle
                 player2String = new String(receivePacket.getData(), 0, receivePacket.getLength());
                 Log.e("MyTag", "Received Packet, contained: " + player2String);
                 receiveCount++;
@@ -121,6 +124,7 @@ public class ServerThread implements Runnable {
                     Log.e("Sender", e.getMessage());
                 }
             }
+            i++;
         }
     }
 

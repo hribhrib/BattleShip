@@ -27,12 +27,23 @@ public class MainActivity extends AppCompatActivity{
     }
 
 
-    public void startGame(View view) {
-
+    public void startWifiGame(View view) {
         Intent intent = new Intent(this, WifiManagerActivity.class);
         intent.putExtra("NAME", playername.getText().toString());
+        intent.putExtra("WIFI", true);
         startActivity(intent);
     }
+
+    public void startLocalGame(View view) {
+        Intent intent = new Intent(this, SetShipsActivity.class);
+        intent.putExtra("NAME", playername.getText().toString());
+        intent.putExtra("WIFI", false);
+        startActivity(intent);
+    }
+
+
+
+
 
 
 

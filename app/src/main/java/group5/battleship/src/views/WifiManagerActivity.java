@@ -85,11 +85,7 @@ public class WifiManagerActivity extends AppCompatActivity {
         myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //position = myListView.getSelectedItemPosition();
-
-                //Toast.makeText(context, "Position"+(position), Toast.LENGTH_LONG).show();///////////////////////Debugging
-
-                myReceiver.connect(position);
+                 myReceiver.connect(position);
             }
         });
 
@@ -98,9 +94,9 @@ public class WifiManagerActivity extends AppCompatActivity {
         myChannel = myManager.initialize(this, getMainLooper(), null);
         myReceiver = new WifiBroadcastReciever(myManager, myChannel, this);
 
-        dataDisplay = new Intent(WifiManagerActivity.this, DataTransferDisplay.class);
+        //dataDisplay = new Intent(WifiManagerActivity.this, DataTransferDisplay.class);
 
-        //setShipIntent = new Intent(WifiManagerActivity.this, SetShipsActivity.class);
+        setShipIntent = new Intent(WifiManagerActivity.this, SetShipsActivity.class);
 
 
     }
@@ -125,13 +121,20 @@ public class WifiManagerActivity extends AppCompatActivity {
     //is called from BroadcastReceiver, once a connection has been made
     // and status as host or client has determined
     public void play(InetAddress hostAddress, Boolean host) {
-
+        /*
         dataDisplay.putExtra("HostAddress", hostAddress.getHostAddress()); //Address of the host
         dataDisplay.putExtra("IsHost", host);   //Is this device the host
         dataDisplay.putExtra("Connected", true); //Was connection succesul
+        */
+        setShipIntent.putExtra("HostAddress", hostAddress.getHostAddress()); //Address of the host
+        setShipIntent.putExtra("IsHost", host);   //Is this device the host
+        setShipIntent.putExtra("Connected", true); //Was connection succesul
+        setShipIntent.putExtra("NAME", getIntent().getStringExtra("NAME"));
+        setShipIntent.putExtra("WIFI", true);
 
-        startActivity(dataDisplay);
-        //startActivity(setShipIntent);
+
+        //startActivity(dataDisplay);
+        startActivity(setShipIntent);
 
 
     }

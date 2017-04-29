@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -42,9 +40,6 @@ public class DataTransferDisplay extends Activity {
 
     int port = 8888;
 
-    Button button;                                                                          /////////////
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +47,6 @@ public class DataTransferDisplay extends Activity {
 
         p1TextView = (TextView) findViewById(R.id.player1TextView);
         p2TextView = (TextView) findViewById(R.id.player2TextView);
-        button = (Button) findViewById(R.id.button4);                                       //////////////
 
         intent = getIntent();
 
@@ -82,8 +76,6 @@ public class DataTransferDisplay extends Activity {
             clientThread = new ClientThread(hostAddress, port);
             new Thread(clientThread).start();
         }
-
-
     }
 
     //The display runs on a timer and updates the UI as packets are received.
@@ -92,7 +84,6 @@ public class DataTransferDisplay extends Activity {
     @Override
     public void onResume(){
         //Receice automaticly
-
         myTimer = new Timer();
         myTask = new TimerTask() {
             @Override
@@ -101,8 +92,8 @@ public class DataTransferDisplay extends Activity {
                     Runnable runnable = new Runnable() {
                         @Override
                         public void run() {
-                            p1TextView.setText("Player 1: " + serverThread.getPlayer1String());
-                            p2TextView.setText("Player 2: " + serverThread.getPlayer2String());
+                            //p1TextView.setText("Player 1: " + serverThread.getPlayer1String());
+                          //  p2TextView.setText("Player 2: " + serverThread.getPlayer2String());
                         }
                     };
                     runOnUiThread(runnable);
@@ -111,8 +102,8 @@ public class DataTransferDisplay extends Activity {
                     Runnable runnable = new Runnable() {
                         @Override
                         public void run() {
-                            p1TextView.setText("Player 1: " + clientThread.getPlayer1String());
-                            p2TextView.setText("Player 2: " + clientThread.getPlayer2String());
+                           // p1TextView.setText("Player 1: " + clientThread.getPlayer1String());
+                            //p2TextView.setText("Player 2: " + clientThread.getPlayer2String());
 
                         }
                     };
@@ -183,7 +174,6 @@ public class DataTransferDisplay extends Activity {
     public void onDestroy(){
         super.onDestroy();
         android.os.Process.killProcess(android.os.Process.myPid());
-
     }
 
 

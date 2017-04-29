@@ -8,7 +8,9 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.util.ArrayList;
 
+import group5.battleship.src.logic.Cordinate;
 import group5.battleship.src.views.DataTransferDisplay;
 
 /**
@@ -31,6 +33,9 @@ public class ClientThread implements Runnable {
 
     private boolean dataReady = false;
     private String dataToSend;
+
+
+
 
     //the datatransfer activity passes the adress of the group host and the port
     //for use in the thread
@@ -183,7 +188,7 @@ public class ClientThread implements Runnable {
     }
 
     public String getPlayer2String() {
-        return (player2String + receiveCount);
+        return (player2String);
     }
 
     public synchronized void dataReady(String dataToSend) {
