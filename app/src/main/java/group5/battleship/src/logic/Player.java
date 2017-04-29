@@ -13,6 +13,8 @@ public class Player {
     int MAX_SHIPS = 3;
     int shipsDestroyed = 0;
 
+    private boolean randomAttackRdy = true;
+
     public Player(String name) {
         this.name = name;
     }
@@ -23,7 +25,7 @@ public class Player {
         }
     }
 
-    public void setShips(Cordinate ship1, Cordinate ship2, Cordinate ship3){
+    public void setShips(Cordinate ship1, Cordinate ship2, Cordinate ship3) {
         ships[ship1.x][ship1.y] = 1;
         ships[ship2.x][ship2.y] = 1;
         ships[ship3.x][ship3.y] = 1;
@@ -33,7 +35,7 @@ public class Player {
         return this.ships;
     }
 
-    public int getShipByCordinate(Cordinate c){
+    public int getShipByCordinate(Cordinate c) {
         return ships[c.x][c.y];
     }
 
@@ -47,7 +49,7 @@ public class Player {
         return battleField;
     }
 
-    public int getBattleFieldByCordinate(Cordinate c){
+    public int getBattleFieldByCordinate(Cordinate c) {
         return battleField[c.x][c.y];
     }
 
@@ -55,12 +57,20 @@ public class Player {
         return MAX_SHIPS;
     }
 
-    public int incShipDestroyed(){
+    public int incShipDestroyed() {
         shipsDestroyed++;
         return shipsDestroyed;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
+    }
+
+    public boolean isRandomAttackRdy() {
+        return randomAttackRdy;
+    }
+
+    public void setRandomAttackRdy(boolean randomAttackRdy) {
+        this.randomAttackRdy = randomAttackRdy;
     }
 }
