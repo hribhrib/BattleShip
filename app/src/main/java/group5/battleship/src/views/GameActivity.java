@@ -220,7 +220,6 @@ public class GameActivity extends AppCompatActivity {
 
             int[][] tmpOpponentShips = opponent.getShips();
 
-
             if (tmpOpponentShips[c.x][c.y] == -1) {
                 myPlayer.updateBattleField(c.x, c.y, -1);
             } else if (tmpOpponentShips[c.x][c.y] == 1) {
