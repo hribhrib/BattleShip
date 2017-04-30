@@ -21,6 +21,8 @@ import group5.battleship.src.logic.Game;
 import group5.battleship.src.logic.Move;
 import group5.battleship.src.logic.Player;
 import group5.battleship.src.logic.ShakeDetector;
+import group5.battleship.src.logic.randomShipCordinate;
+import group5.battleship.src.logic.randomWaterCordinate;
 
 public class GameActivity extends AppCompatActivity {
     public Game game;
@@ -353,60 +355,41 @@ public class GameActivity extends AppCompatActivity {
     }
     public void randomAttack(int count) {
 
-        if (myPlayer.isRandomAttackRdy() == true) {
-            Cordinate hit = new Cordinate();
-            Cordinate miss = new Cordinate();
+        if (myPlayer.getRandomAttacks() > 0) {
+            Cordinate randomShipCordinate = new randomShipCordinate(opponent,game);
+            Cordinate randomWaterCordinate = new randomWaterCordinate(opponent);
             Random r = new Random();
-            int[][] tmpOpponentShips = opponent.getShips();
-            int[][] tmpMyShips = myPlayer.getShips();
-
-            for (int i = 0; i < game.getSize(); i++) {          //gets the cordinates of the first ship it finds
-                for (int j = 0; j < game.getSize(); j++) {      // keine ahnung wie ich überprüfe ob das Feld schon beschossen
-                    if (tmpOpponentShips[i][j] == 1) {          // wurde, gleiches gilt fürs random waterfield
-                        hit.x = j;
-                        hit.y = i;
-                        break;
-                    }
-                }
-            }
-            boolean help = true;
-
-            while (help == true) {                              //gets random waterfield
-                miss = new Cordinate(r.nextInt(5), r.nextInt(5));
-                if (tmpOpponentShips[miss.x][miss.y] == -1) {
-                    break;
-                }
-            }
 
             if (r.nextInt(10) >= 4) {                               // increased chance to hit a ship
-                myPlayer.updateBattleField(hit.x, hit.y, 1);
+                myPlayer.updateBattleField(randomShipCordinate,1);
                 playSoundHitShip();
                 if (opponent.incShipDestroyed() == opponent.getMaxShips()) {
                     endGame(myPlayer);
                 }
-                myPlayer.setRandomAttackRdy(false);
-                game.newMove(new Move(myPlayer, opponent, hit));
+                myPlayer.setRandomAttacks();
+                game.newMove(new Move(myPlayer, opponent, randomShipCordinate));
                 displayMyBattleField();
+                Toast.makeText(getBaseContext(), "Verbleibende Zufallsangriffe: "+ myPlayer.getRandomAttacks(),
+                        Toast.LENGTH_LONG).show();
                 opponentsMove();
 
             } else {
-                myPlayer.updateBattleField(miss.x, miss.y, -1);
+                myPlayer.updateBattleField(randomWaterCordinate, -1);
                 if (opponent.incShipDestroyed() == opponent.getMaxShips()) {
                     endGame(myPlayer);
                 }
-                myPlayer.setRandomAttackRdy(false);
-                game.newMove(new Move(myPlayer, opponent, miss));
+                myPlayer.setRandomAttacks();
+                game.newMove(new Move(myPlayer, opponent, randomWaterCordinate));
                 displayMyBattleField();
                 opponentsMove();
             }
 
         }
         else {
-            Toast.makeText(getBaseContext(), "Bleib doch fair...",   // implements that random attack only works once a game
+            Toast.makeText(getBaseContext(), "Bleib doch fair...",
                     Toast.LENGTH_LONG).show();
-            myPlayer.setRandomAttackRdy(false);
             displayMyBattleField();
-            opponentsMove();                                    //zum commiten
+            opponentsMove();
         }
     }
 }

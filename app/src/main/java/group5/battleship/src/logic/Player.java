@@ -12,8 +12,7 @@ public class Player {
     int[][] ships;
     int MAX_SHIPS = 3;
     int shipsDestroyed = 0;
-
-    private boolean randomAttackRdy = true;
+    private int randomAttacks = 1;                  // so that random attack only works once a game, for now
 
     public Player(String name) {
         this.name = name;
@@ -44,6 +43,11 @@ public class Player {
         //+1 = ship
         battleField[x][y] = state;
     }
+    public void updateBattleField(Cordinate c, int state) {
+        int x = c.x;
+        int y = c.y;
+        battleField[x][y]= state;
+    }
 
     public int[][] getBattleField() {
         return battleField;
@@ -66,11 +70,10 @@ public class Player {
         return name;
     }
 
-    public boolean isRandomAttackRdy() {
-        return randomAttackRdy;
+    public void setRandomAttacks() {
+        this.randomAttacks = randomAttacks -1 ;
     }
-
-    public void setRandomAttackRdy(boolean randomAttackRdy) {
-        this.randomAttackRdy = randomAttackRdy;
+    public int getRandomAttacks() {
+        return randomAttacks;
     }
 }

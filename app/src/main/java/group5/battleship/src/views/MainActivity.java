@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity{
 
     public void startGame(View view) {
 
-        Intent intent = new Intent(this, WifiManagerActivity.class);
+        Intent intent = new Intent(this, SetShipsActivity.class);           //startig with wifi activity doesnt work for now
         intent.putExtra("NAME", playername.getText().toString());
         startActivity(intent);
     }
