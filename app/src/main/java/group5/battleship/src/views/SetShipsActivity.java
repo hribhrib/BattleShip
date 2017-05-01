@@ -1,6 +1,6 @@
 package group5.battleship.src.views;
 
-import android.app.Dialog;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,18 +8,20 @@ import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import group5.battleship.R;
 
+
 public class SetShipsActivity extends AppCompatActivity {
     String ships = ""; //XYXYXY
     int MAX_SHIPS = 3;
     int currentShips = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,8 @@ public class SetShipsActivity extends AppCompatActivity {
         int duration = Toast.LENGTH_SHORT;
 
         Toast.makeText(context, text, duration).show();
+
+
     }
 
     public void cellClick(View view) {
@@ -59,10 +63,11 @@ public class SetShipsActivity extends AppCompatActivity {
                 if (shipSet == true && dublicate == false) {
                     ships = (ships + (String) view.getTag());
                     currentShips++;
-                  
+
                     tv.setTextColor(Color.WHITE);
 
                     tv.setText("o");
+
 
                     if (currentShips == MAX_SHIPS) {
 
@@ -85,6 +90,7 @@ public class SetShipsActivity extends AppCompatActivity {
                                 .show();
 
                     }
+
                 }
             }
 
@@ -113,9 +119,18 @@ public class SetShipsActivity extends AppCompatActivity {
 
     public void settingFinished(View view) {
 
+        Log.d("My Log", String.valueOf(getIntent().getBooleanExtra("WIFI", true)));
+
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra("SHIPS", ships);
         intent.putExtra("NAME", getIntent().getStringExtra("NAME"));
+        intent.putExtra("HostAddress", getIntent().getStringExtra("HostAddress")); //Address of the host
+        intent.putExtra("IsHost", getIntent().getBooleanExtra("IsHost", true));   //Is this device the host
+        intent.putExtra("Connected", true); //Was connection succesul
+        intent.putExtra("WIFI", getIntent().getBooleanExtra("WIFI", true));
+
+
+
         startActivity(intent);
 
     }

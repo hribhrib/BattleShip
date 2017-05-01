@@ -2,6 +2,8 @@ package group5.battleship.src.logic;
 
 import android.support.annotation.NonNull;
 
+import java.util.Random;
+
 /**
  * Created by hribhrib on 04.04.2017.
  */
@@ -9,6 +11,8 @@ import android.support.annotation.NonNull;
 public class Cordinate {
     public int x;
     public int y;
+
+    public Cordinate(){};
 
     public Cordinate(int x, int y){
         this.x = x;

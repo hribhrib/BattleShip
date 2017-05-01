@@ -1,0 +1,5 @@
+<root>
+    <item name='android.net.wifi.p2p.WifiP2pManager'>
+        <annotation name='java.lang.Deprecated' />
+    </item>
+</root>
