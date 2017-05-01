@@ -21,6 +21,8 @@ import group5.battleship.src.logic.Game;
 import group5.battleship.src.logic.Move;
 import group5.battleship.src.logic.Player;
 import group5.battleship.src.logic.ShakeDetector;
+import group5.battleship.src.logic.randomShipCordinate;
+import group5.battleship.src.logic.randomWaterCordinate;
 
 public class GameActivity extends AppCompatActivity {
     public Game game;
@@ -33,6 +35,8 @@ public class GameActivity extends AppCompatActivity {
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -349,32 +353,47 @@ public class GameActivity extends AppCompatActivity {
     private void radar(Cordinate c){
 
     }
-    public void randomAttack (int count) {
+    public void randomAttack(int count) {
 
-        Random r = new Random();
-        Cordinate c = new Cordinate(r.nextInt(5), r.nextInt(5));
+        if (myPlayer.getRandomAttacks() > 0) {
+            Cordinate randomShipCordinate = new randomShipCordinate(opponent,game);
+            Cordinate randomWaterCordinate = new randomWaterCordinate(opponent);
+            Random r = new Random();
 
-        if (myPlayer.getBattleFieldByCordinate(c) == 0) {
-
-            int[][] tmpOpponentShips = opponent.getShips();
-
-            if (tmpOpponentShips[c.x][c.y] == -1) {
-                myPlayer.updateBattleField(c.x, c.y, -1);
-            } else if (tmpOpponentShips[c.x][c.y] == 1) {
+            if (r.nextInt(10) >= 4) {                               // increased chance to hit a ship
+                myPlayer.updateBattleField(randomShipCordinate,1);
                 playSoundHitShip();
-                myPlayer.updateBattleField(c.x, c.y, 1);
                 if (opponent.incShipDestroyed() == opponent.getMaxShips()) {
                     endGame(myPlayer);
                 }
+                myPlayer.setRandomAttacks();
+                game.newMove(new Move(myPlayer, opponent, randomShipCordinate));
+                displayMyBattleField();
+                Toast.makeText(getBaseContext(), "Verbleibende Zufallsangriffe: "+ myPlayer.getRandomAttacks(),
+                        Toast.LENGTH_LONG).show();
+                opponentsMove();
+
+            } else {
+                myPlayer.updateBattleField(randomWaterCordinate, -1);
+                if (opponent.incShipDestroyed() == opponent.getMaxShips()) {
+                    endGame(myPlayer);
+                }
+                myPlayer.setRandomAttacks();
+                game.newMove(new Move(myPlayer, opponent, randomWaterCordinate));
+                displayMyBattleField();
+                opponentsMove();
             }
 
-            game.newMove(new Move(myPlayer, opponent, c));
+        }
+        else {
+            Toast.makeText(getBaseContext(), "Bleib doch fair...",
+                    Toast.LENGTH_LONG).show();
             displayMyBattleField();
             opponentsMove();
-
         }
     }
-
-
-
 }
+
+
+
+
