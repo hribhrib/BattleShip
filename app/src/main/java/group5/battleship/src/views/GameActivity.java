@@ -154,7 +154,6 @@ public class GameActivity extends AppCompatActivity {
         mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
 
 
-        //The display runs on a timer and updates the UI as packets are received.
         //The hostdevice will display host for player 1, and upon receiving the packets from client
         //Client will display for player 2
         //Receice automaticly
@@ -168,7 +167,6 @@ public class GameActivity extends AppCompatActivity {
                         Runnable runnable = new Runnable() {
                             @Override
                             public void run() {
-
                                 //Got opp ships, only first time
                                 if (serverThread.getPlayer2String() != null && !oppReady) {
                                     oppReady = true;
@@ -177,7 +175,6 @@ public class GameActivity extends AppCompatActivity {
                                     initRealOpp();
                                     displayOpponentsBattleField();
                                     displayMyBattleField();
-
                                 }
                                 //All other cycles, find new move
                                 else if (serverThread.getPlayer2String() != null &&
@@ -374,6 +371,7 @@ public class GameActivity extends AppCompatActivity {
 
     private void aiOpponentsMove() {
         tapHost.setCurrentTab(0);
+        Log.d("My Log", String.valueOf(tapHost.getCurrentTab()));
 
         Random r = new Random();
         Cordinate c;
@@ -404,9 +402,11 @@ public class GameActivity extends AppCompatActivity {
         Toast.makeText(context, text, duration).show();
 
         game.newMove(new Move(opponent, myPlayer, c));
+
     }
 
     private void realOpponentsMove() {
+        tapHost.setCurrentTab(0);
 
         Cordinate c = new Cordinate((int) oppMove.charAt(0) -48, (int)oppMove.charAt(1) -48);
 
@@ -459,12 +459,13 @@ public class GameActivity extends AppCompatActivity {
         for (int i = 0; i < game.getSize(); i++) {
             for (int j = 0; j < game.getSize(); j++) {
                 tv = (TextView) findViewById(getRoutingByCordinateMyField(i, j));
+                tv.setTextSize(20);
+                tv.setTextColor(Color.WHITE);
                 if (opBattleField[i][j] == 1) {
                     tv.setText("o");
                 } else if (opBattleField[i][j] == -1) {
                     tv.setText("~");
                 } else {
-
 
                 }
             }
@@ -583,6 +584,7 @@ public class GameActivity extends AppCompatActivity {
 
     public void randomAttack(int count) {
 
+
         if (myPlayer.getRandomAttacks() > 0) {
             Cordinate randomShipCordinate = new randomShipCordinate(opponent,game);
             Cordinate randomWaterCordinate = new randomWaterCordinate(opponent);
@@ -599,7 +601,7 @@ public class GameActivity extends AppCompatActivity {
                 displayMyBattleField();
                 Toast.makeText(getBaseContext(), "Verbleibende Zufallsangriffe: "+ myPlayer.getRandomAttacks(),
                         Toast.LENGTH_LONG).show();
-                opponentsMove();
+                aiOpponentsMove();
 
             } else {
                 myPlayer.updateBattleField(randomWaterCordinate, -1);
@@ -609,7 +611,7 @@ public class GameActivity extends AppCompatActivity {
                 myPlayer.setRandomAttacks();
                 game.newMove(new Move(myPlayer, opponent, randomWaterCordinate));
                 displayMyBattleField();
-                opponentsMove();
+                aiOpponentsMove();
             }
 
         }
@@ -618,7 +620,7 @@ public class GameActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
             displayMyBattleField();
 
-            //opponentsMove();
+            aiOpponentsMove();
 
         }
     }
