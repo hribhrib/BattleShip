@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Vibrator;
+import android.support.annotation.IntegerRes;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,34 +16,24 @@ import android.view.View;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.util.Random;
+
 import group5.battleship.R;
 import group5.battleship.src.logic.Cordinate;
 import group5.battleship.src.logic.Game;
 import group5.battleship.src.logic.Move;
 import group5.battleship.src.logic.Player;
 import group5.battleship.src.logic.ShakeDetector;
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////
-
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import group5.battleship.R;
 import group5.battleship.src.wifi.ClientThread;
 import group5.battleship.src.wifi.ServerThread;
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 public class GameActivity extends AppCompatActivity {
     public Game game;
@@ -57,12 +48,9 @@ public class GameActivity extends AppCompatActivity {
     private ShakeDetector mShakeDetector;
 
     /////////////////////////////////////////
-    TextView p1TextView;
-    TextView p2TextView;
 
     ClientThread clientThread;
     ServerThread serverThread;
-
     InetAddress hostAddress;
     String stringHostAddress;
 
@@ -70,10 +58,17 @@ public class GameActivity extends AppCompatActivity {
     TimerTask myTask;
 
     Intent intent;
+
     Boolean host;
     static String send = "";
 
+
     int port = 8888;
+    boolean oppReady = false;
+    String oppShips = "";
+    String oppMove;
+
+
     //////////////////////////////////////////
 
     @Override
@@ -97,12 +92,6 @@ public class GameActivity extends AppCompatActivity {
         tapHost.addTab(spec);
 
 
-        initGame();
-
-        //displayMyShips();
-        displayOpponentsBattleField();
-        displayMyBattleField();
-
         // ShakeDetector initialization
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager
@@ -117,13 +106,13 @@ public class GameActivity extends AppCompatActivity {
         });
 
 
-
         intent = getIntent();
         //if this is a wifi game, start Client/Server Thread
         if (intent.getBooleanExtra("WIFI", true)) {
+
             Log.d("My Log", "WIFI TRUE");
             //Check for the connection
-            if (intent.getBooleanExtra("Connected", false)) {
+            if (intent.getBooleanExtra("Connected", true)) {
                 //Get hostaddress as string
                 stringHostAddress = intent.getStringExtra("HostAddress");
 
@@ -137,8 +126,8 @@ public class GameActivity extends AppCompatActivity {
             }
 
             //Determine if this user is host or client
-            host = intent.getBooleanExtra("IsHost", false);
-
+            host = intent.getBooleanExtra("IsHost", true);
+            Log.d("My Log", "Is HOST?!" + String.valueOf(host));
             //the Host runs the Server-Thread, Client runs the Client-Thread
             if (host) {
                 serverThread = new ServerThread(port);
@@ -147,27 +136,28 @@ public class GameActivity extends AppCompatActivity {
                 clientThread = new ClientThread(hostAddress, port);
                 new Thread(clientThread).start();
             }
-            initRealOpp();
-        }
-        else {
+
+            initGame();
+        } else {
+            initGame();
             initDummyOpp();
+            displayOpponentsBattleField();
+            displayMyBattleField();
         }
-
     }
-
 
     public void onResume() {
         super.onResume();
-        mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
 
 
         //The display runs on a timer and updates the UI as packets are received.
         //The hostdevice will display host for player 1, and upon receiving the packets from client
         //Client will display for player 2
         //Receice automaticly
-
         if (intent.getBooleanExtra("WIFI", true)) {
             myTimer = new Timer();
+            host = getIntent().getBooleanExtra("IsHost", true);
             myTask = new TimerTask() {
                 @Override
                 public void run() {
@@ -175,8 +165,23 @@ public class GameActivity extends AppCompatActivity {
                         Runnable runnable = new Runnable() {
                             @Override
                             public void run() {
-                                //p1TextView.setText("Player 1: " + serverThread.getPlayer1String());
-                               // p2TextView.setText("Player 2: " + serverThread.getPlayer2String());
+
+                                //Got opp ships, only first time
+                                if (serverThread.getPlayer2String() != null && !oppReady) {
+                                    oppReady = true;
+                                    oppMove = serverThread.getPlayer2String();
+                                    oppShips = serverThread.getPlayer2String();
+                                    initRealOpp();
+                                    displayOpponentsBattleField();
+                                    displayMyBattleField();
+
+                                }
+                                //All other cycles, find new move
+                                else if (serverThread.getPlayer2String() != null &&
+                                        !serverThread.getPlayer2String().equals(oppMove)) {
+                                    oppMove = serverThread.getPlayer2String();
+                                    realOpponentsMove();
+                                }
                             }
                         };
                         runOnUiThread(runnable);
@@ -184,16 +189,29 @@ public class GameActivity extends AppCompatActivity {
                         Runnable runnable = new Runnable() {
                             @Override
                             public void run() {
-                               // p1TextView.setText("Player 1: " + clientThread.getPlayer1String());
-                                //p2TextView.setText("Player 2: " + clientThread.getPlayer2String());
+                                //Got opp ships, only first time
+                                if (clientThread.getPlayer2String() != null && !oppReady) {
+                                    oppReady = true;
+                                    oppMove = clientThread.getPlayer2String();
+                                    oppShips = clientThread.getPlayer2String();
+                                    initRealOpp();
+                                    displayOpponentsBattleField();
+                                    displayMyBattleField();
 
+                                }
+                                //All other cycles, find new move
+                                else if (clientThread.getPlayer2String() != null &&
+                                        !clientThread.getPlayer2String().equals(oppMove)) {
+                                    oppMove = clientThread.getPlayer2String();
+                                    realOpponentsMove();
+                                }
                             }
                         };
                         runOnUiThread(runnable);
                     }
                 }
             };
-            myTimer.schedule(myTask, 1, 1);
+            myTimer.schedule(myTask, 10, 10);
         }
     }
 
@@ -203,20 +221,18 @@ public class GameActivity extends AppCompatActivity {
         super.onPause();
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
         android.os.Process.killProcess(android.os.Process.myPid());
     }
-    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     public void cellClick(View view) {
         TextView tv = (TextView) findViewById(view.getId());
 
         Cordinate c = getRoutingByIDOpponentField(tv.getId());
 
-        if(myPlayer.getBattleFieldByCordinate(c) == 0){
+        if (myPlayer.getBattleFieldByCordinate(c) == 0) {
 
             int[][] tmpOpponentShips = opponent.getShips();
 
@@ -226,40 +242,34 @@ public class GameActivity extends AppCompatActivity {
             } else if (tmpOpponentShips[c.x][c.y] == 1) {
                 playSoundHitShip();
                 myPlayer.updateBattleField(c.x, c.y, 1);
-                if(opponent.incShipDestroyed()==opponent.getMaxShips()){
+                if (opponent.incShipDestroyed() == opponent.getMaxShips()) {
                     endGame(myPlayer);
                 }
             }
 
-            game.newMove(new Move(myPlayer,opponent,c));
+            game.newMove(new Move(myPlayer, opponent, c));
             displayMyBattleField();
 
+            if (intent.getBooleanExtra("WIFI", true)) {
 
-            opponentsMove();
+                send = String.valueOf(c.x) + String.valueOf(c.y);
+                host = getIntent().getBooleanExtra("IsHost", true);
+                if (host) {
+                    serverThread.dataReady(send);
+                } else if (!host) {
+                    clientThread.dataReady(send);
+
+                }
+            } else {
+                aiOpponentsMove();
+            }
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public void onTextClick(View view){
-        EditText editText = (EditText)findViewById(R.id.editText2);
-
-        send = editText.getText().toString();
-        if (host){
-            serverThread.dataReady(send);
-        }                                                   //Nach Bearbeitung komplett löschen!
-        else if (!host){
-            clientThread.dataReady(send);
-
-        }
-    }
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-
-    private void endGame(Player winner){
+    private void endGame(Player winner) {
         new AlertDialog.Builder(this)
                 .setTitle("GAME END!")
-                .setMessage("Player: "+winner.getName()+" won!\nWant to play a new one?")
+                .setMessage("Player: " + winner.getName() + " won!\nWant to play a new one?")
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         initGame();
@@ -278,70 +288,73 @@ public class GameActivity extends AppCompatActivity {
                 .show();
     }
 
-    private void toStartScreen(){
+    private void toStartScreen() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
     private void initGame() {
-        myPlayer = new Player(getIntent().getStringExtra("NAME").toString());
+        myPlayer = new Player(getIntent().getStringExtra("NAME"));
         opponent = new Player("Opponent");
         game = new Game(myPlayer, opponent, 5); //5 = static size
 
-        myPlayer.setShips(getIntent().getStringExtra("SHIPS").toString());
+        myPlayer.setShips(getIntent().getStringExtra("SHIPS"));
 
-        if (getIntent().getBooleanExtra("WIFI", true)) {
-            send = getIntent().getStringExtra("SHIPS").toString();
-            if (host) {
-                serverThread.dataReady(send);
-            }
-            else if (!host) {
-                clientThread.dataReady(send);
 
-            }
-        }
+        //On button click the coordinates get send to opp
+        AlertDialog alertDialog = new AlertDialog.Builder(GameActivity.this).create();
+        alertDialog.setMessage("\t\t\t\tAre you ready?");
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes!",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (intent.getBooleanExtra("WIFI", true)) {
+                            host = getIntent().getBooleanExtra("IsHost", true);
+                            send = getIntent().getStringExtra("SHIPS");
+                            if (host) {
+                                Log.d("My Log", "send" + send);
+                                serverThread.dataReady(send);
+                            } else if (!host) {
+                                Log.d("My Log", "send" + send);
+                                clientThread.dataReady(send);
+
+                            }
+                        }
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
+
+        Log.d("My Log", "init Game nach Dialog");
 
         routingToTableLayout();
+
+
     }
 
     private void initDummyOpp() {
         Random r = new Random();
-        Cordinate ship1,ship2,ship3;
+        Cordinate ship1, ship2, ship3;
 
-        ship1 = new Cordinate(r.nextInt(5),r.nextInt(5));
-
-        do {
-            ship2 = new Cordinate(r.nextInt(5),r.nextInt(5));
-        } while(ship1.equals(ship2)==true);
+        ship1 = new Cordinate(r.nextInt(5), r.nextInt(5));
 
         do {
-            ship3 = new Cordinate(r.nextInt(5),r.nextInt(5));
-        } while(ship1.equals(ship3)==true && ship2.equals(ship3) == true);
+            ship2 = new Cordinate(r.nextInt(5), r.nextInt(5));
+        } while (ship1.equals(ship2) == true);
+
+        do {
+            ship3 = new Cordinate(r.nextInt(5), r.nextInt(5));
+        } while (ship1.equals(ship3) == true && ship2.equals(ship3) == true);
 
 
-        opponent.setShips(ship1,ship2,ship3);
+        opponent.setShips(ship1, ship2, ship3);
     }
 
-    private void initRealOpp() {
-        Cordinate ship1,ship2,ship3;
-        String oppShips = "";
 
-        if (host) {
-            Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    serverThread.getPlayer2String();
-                }
-            };
-            runOnUiThread(runnable);
-        } else if (!host) {
-            Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                   clientThread.getPlayer2String();
-                }
-            };
-            runOnUiThread(runnable);
-        }
+    private void initRealOpp() {
+        Cordinate ship1, ship2, ship3;
+        Log.d("My Log", "HOST DEB" + String.valueOf(host));
+        Log.d("My Log", "oppShips String" + oppShips);
+
 
         ship1 = new Cordinate(Character.getNumericValue(oppShips.charAt(0)),
                 Character.getNumericValue(oppShips.charAt(1)));
@@ -352,18 +365,19 @@ public class GameActivity extends AppCompatActivity {
 
         opponent.setShips(ship1, ship2, ship3);
 
-        Log.d("My Log", oppShips);
+        Log.d("My Log", "Opponents Ships: " + oppShips);
     }
 
-    private void opponentsMove(){
+
+    private void aiOpponentsMove() {
         tapHost.setCurrentTab(0);
 
         Random r = new Random();
         Cordinate c;
 
-        do{
-            c = new Cordinate(r.nextInt(5),r.nextInt(5));
-        }while(opponent.getBattleFieldByCordinate(c) != 0);
+        do {
+            c = new Cordinate(r.nextInt(5), r.nextInt(5));
+        } while (opponent.getBattleFieldByCordinate(c) != 0);
 
         int[][] tmpMyShips = myPlayer.getShips();
 
@@ -373,7 +387,7 @@ public class GameActivity extends AppCompatActivity {
             playSoundHitShip();
             phoneVibrate();
             opponent.updateBattleField(c.x, c.y, 1);
-            if(myPlayer.incShipDestroyed()==myPlayer.getMaxShips()){
+            if (myPlayer.incShipDestroyed() == myPlayer.getMaxShips()) {
                 endGame(opponent);
             }
         }
@@ -382,13 +396,39 @@ public class GameActivity extends AppCompatActivity {
 
         //display Opponents shot
         Context context = getApplicationContext();
-        CharSequence text = c.x+""+c.y;
+        CharSequence text = c.x + "" + c.y;
         int duration = Toast.LENGTH_SHORT;
-
         Toast.makeText(context, text, duration).show();
 
+        game.newMove(new Move(opponent, myPlayer, c));
+    }
 
-        game.newMove(new Move(opponent,myPlayer,c));
+    private void realOpponentsMove() {
+
+        Cordinate c = new Cordinate((int) oppMove.charAt(0) -48, (int)oppMove.charAt(1) -48);
+
+        int[][] tmpMyShips = myPlayer.getShips();
+
+        if (tmpMyShips[c.x][c.y] == -1) {
+            opponent.updateBattleField(c.x, c.y, -1);
+        } else if (tmpMyShips[c.x][c.y] == 1) {
+            playSoundHitShip();
+            phoneVibrate();
+            opponent.updateBattleField(c.x, c.y, 1);
+            if (myPlayer.incShipDestroyed() == myPlayer.getMaxShips()) {
+                endGame(opponent);
+            }
+        }
+
+        displayOpponentsBattleField();
+
+        //display Opponents shot
+        Context context = getApplicationContext();
+        CharSequence text = c.x + "" + c.y;
+        int duration = Toast.LENGTH_SHORT;
+        Toast.makeText(context, text, duration).show();
+
+        game.newMove(new Move(opponent, myPlayer, c));
     }
 
     private void displayMyShips() {
@@ -525,19 +565,20 @@ public class GameActivity extends AppCompatActivity {
         return new Cordinate(-1, -1);
     }
 
-    private void playSoundHitShip(){
+    private void playSoundHitShip() {
 
     }
 
-    private void phoneVibrate(){
+    private void phoneVibrate() {
         Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         vib.vibrate(300); //Vibration 300 milisekunden
     }
 
-    private void radar(Cordinate c){
+    private void radar(Cordinate c) {
 
     }
-    public void randomAttack (int count) {
+
+    public void randomAttack(int count) {
 
         Random r = new Random();
         Cordinate c = new Cordinate(r.nextInt(5), r.nextInt(5));
@@ -558,11 +599,12 @@ public class GameActivity extends AppCompatActivity {
 
             game.newMove(new Move(myPlayer, opponent, c));
             displayMyBattleField();
-            opponentsMove();
+            //opponentsMove();
 
         }
     }
-
-
-
 }
+
+
+
+

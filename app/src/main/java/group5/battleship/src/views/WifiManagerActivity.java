@@ -17,7 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import java.net.InetAddress;
 import group5.battleship.R;
@@ -39,20 +39,13 @@ public class WifiManagerActivity extends AppCompatActivity {
     Button searchButton;
     WifiBroadcastReciever myReceiver;
     IntentFilter intentFilter;
-    Intent dataDisplay;
     Intent setShipIntent;
-
-    Context context;///////////////////////////////////////////////////////////////////////Debugging
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        context = getApplicationContext();/////////////////////////////////////////////////Debugging
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wifi);
-
 
         intentFilter = new IntentFilter();
 
@@ -69,8 +62,6 @@ public class WifiManagerActivity extends AppCompatActivity {
         myTextView = (TextView) findViewById(R.id.textView2);
         myListView = (ListView) findViewById(R.id.listView);
 
-
-
         searchButton = (Button) findViewById(R.id.button2);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +69,6 @@ public class WifiManagerActivity extends AppCompatActivity {
                 search(v);
             }
         });
-
 
         wifiP2PAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         myListView.setAdapter(wifiP2PAdapter);
@@ -95,7 +85,6 @@ public class WifiManagerActivity extends AppCompatActivity {
         myReceiver = new WifiBroadcastReciever(myManager, myChannel, this);
 
         //dataDisplay = new Intent(WifiManagerActivity.this, DataTransferDisplay.class);
-
         setShipIntent = new Intent(WifiManagerActivity.this, SetShipsActivity.class);
 
 
@@ -121,22 +110,14 @@ public class WifiManagerActivity extends AppCompatActivity {
     //is called from BroadcastReceiver, once a connection has been made
     // and status as host or client has determined
     public void play(InetAddress hostAddress, Boolean host) {
-        /*
-        dataDisplay.putExtra("HostAddress", hostAddress.getHostAddress()); //Address of the host
-        dataDisplay.putExtra("IsHost", host);   //Is this device the host
-        dataDisplay.putExtra("Connected", true); //Was connection succesul
-        */
+
         setShipIntent.putExtra("HostAddress", hostAddress.getHostAddress()); //Address of the host
         setShipIntent.putExtra("IsHost", host);   //Is this device the host
         setShipIntent.putExtra("Connected", true); //Was connection succesul
         setShipIntent.putExtra("NAME", getIntent().getStringExtra("NAME"));
         setShipIntent.putExtra("WIFI", true);
 
-
-        //startActivity(dataDisplay);
         startActivity(setShipIntent);
-
-
     }
 
     public void displayPeers(WifiP2pDeviceList peerList) {
@@ -145,7 +126,6 @@ public class WifiManagerActivity extends AppCompatActivity {
 
         for (WifiP2pDevice peer : peerList.getDeviceList()) {
             wifiP2PAdapter.add(peer.deviceName + "\n" + peer.deviceAddress);
-            //Toast.makeText(context, "Peer", Toast.LENGTH_SHORT).show();///////////////////////Debugging
         }
     }
 

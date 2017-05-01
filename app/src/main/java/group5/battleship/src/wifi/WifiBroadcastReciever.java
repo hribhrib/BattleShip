@@ -156,7 +156,6 @@ public class WifiBroadcastReciever extends BroadcastReceiver {
                     Toast.makeText(myManagerActivity, "Host", Toast.LENGTH_LONG).show();////////////////////////Debugging
                     myManagerActivity.play(groupOwnerAddress, true);
 
-
                 } else {
                     Toast.makeText(myManagerActivity, "Client", Toast.LENGTH_LONG).show();////////////////////////Debugging
                     myManagerActivity.play(groupOwnerAddress, false);

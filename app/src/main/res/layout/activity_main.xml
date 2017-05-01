@@ -426,6 +426,7 @@
                             android:layout_height="match_parent"
                             android:layout_column="2"
                             android:layout_row="0"
+                            android:onClick="onButtonClick"
                             android:text="Button" />
                     </GridLayout>
 
