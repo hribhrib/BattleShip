@@ -1,34 +1,25 @@
 package group5.battleship.src.wifi;
 
-import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
-
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-import group5.battleship.src.views.DataTransferDisplay;
 
 /**
  * Created by Bernhard on 18.04.17.
  */
 
-public class ServerThread implements Runnable {
+public class ServerThread implements Runnable, Serializable {
 
     private int myPort;
     private DatagramSocket socket;
     private InetAddress myClientsAddress;
     private byte[] sendData = new byte[64];
     private byte[] receiveData = new byte[64];
-
-    private String player1String = "Host";
     private String player2String;
-    private int sendCount = 1;
-    private int receiveCount = 0;
-
-
     private String dataToSend;
     private boolean dataReady;
 
@@ -69,10 +60,9 @@ public class ServerThread implements Runnable {
                 socket.receive(receivePacket);
                 receivePacket.getData();
 
+                //Get Shiplist on first cycle
                 player2String = new String(receivePacket.getData(), 0, receivePacket.getLength());
                 Log.e("MyTag", "Received Packet, contained: " + player2String);
-                receiveCount++;
-
 
                 //get Clients address if its not known, only first time
                 if (myClientsAddress == null) {
@@ -102,8 +92,7 @@ public class ServerThread implements Runnable {
                         }
                     }
                     dataReady = false;
-                    sendData = (dataToSend + i).getBytes();
-                    sendCount++;
+                    sendData = (dataToSend).getBytes();
                 }
 
                 //UDP Packet is created using this data, its length and destination info
@@ -111,7 +100,7 @@ public class ServerThread implements Runnable {
                         myClientsAddress, myPort);
 
                 socket.send(packet);
-                Log.e("MyTag", "Server: Packet sent " + player1String);
+                Log.e("MyTag", "Server: Packet sent " + dataToSend);
 
             } catch (IOException e) {
                 if (e.getMessage() == null) {
@@ -121,13 +110,11 @@ public class ServerThread implements Runnable {
                     Log.e("Sender", e.getMessage());
                 }
             }
+            i++;
         }
     }
 
 
-    public String getPlayer1String() {
-        return (player1String);
-    }
 
     public String getPlayer2String() {
         return player2String;

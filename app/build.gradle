@@ -77,5 +77,6 @@ task jacocoTestReport(type: JacocoReport, dependsOn: "test") {
         xml.enabled = true
         html.enabled = true
     }
+
 }
 
