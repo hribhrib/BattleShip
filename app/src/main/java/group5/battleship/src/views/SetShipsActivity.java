@@ -2,8 +2,10 @@ package group5.battleship.src.views;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -61,13 +63,36 @@ public class SetShipsActivity extends AppCompatActivity {
                     tv.setTextColor(Color.WHITE);
 
                     tv.setText("o");
+
+                    if (currentShips == MAX_SHIPS) {
+
+                        // Dialog to confirm the arrangement of the ships
+                        new AlertDialog.Builder(SetShipsActivity.this)
+                                .setTitle("All ships are set")
+                                .setMessage("Are you sure you want to keep this arrangement?")
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // continue with showing the Startgame Button
+                                        showStartButton();
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // reset the ships
+                                    }
+                                })
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+
+                    }
                 }
             }
 
         } else if (currentShips == MAX_SHIPS) {
 
+            // this code is not needed at the moment
 
-            Context context = getApplicationContext();
+            /*Context context = getApplicationContext();
             CharSequence text = "All ships are set";
             int duration = Toast.LENGTH_SHORT;
 
@@ -81,7 +106,7 @@ public class SetShipsActivity extends AppCompatActivity {
 
             table.setVisibility(View.INVISIBLE);
 
-
+            */
 
         }
     }
@@ -93,6 +118,23 @@ public class SetShipsActivity extends AppCompatActivity {
         intent.putExtra("NAME", getIntent().getStringExtra("NAME"));
         startActivity(intent);
 
+    }
+
+    public void showStartButton () {
+
+        Context context = getApplicationContext();
+        CharSequence text = "All ships are set";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+
+        Button b15 = (Button) findViewById(R.id.startButton);
+        b15.setVisibility(View.VISIBLE);
+
+        View table = findViewById(R.id.table);
+
+        table.setVisibility(View.INVISIBLE);
     }
 
 
