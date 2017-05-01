@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity{
 
     public void startWifiGame(View view) {
         Intent intent = new Intent(this, WifiManagerActivity.class);
+
         intent.putExtra("NAME", playername.getText().toString());
         intent.putExtra("WIFI", true);
         startActivity(intent);
