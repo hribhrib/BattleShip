@@ -20,15 +20,20 @@
 
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/table"
-        android:layout_width="368dp"
+        android:layout_width="0dp"
         android:layout_height="362dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp"
         android:clickable="true"
         android:gravity="center"
         android:stretchColumns="0,1,2,3,4"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:clickable="true"
-        tools:layout_editor_absoluteX="8dp">
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp">
 
         <TableRow
             android:id="@+id/tableRow0"
@@ -381,77 +386,117 @@
 
     </TableLayout>
 
-    <GridLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_height="120dp"
+        android:layout_height="100dp"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/table"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintVertical_bias="0.529"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp">
 
-        <Button
-            android:id="@+id/button15"
+        <TextView
+            android:id="@+id/setShips"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button" />
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Set your Ships!"
+            android:textColor="@android:color/black"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp" />
+    </android.support.constraint.ConstraintLayout>
 
-        <Button
-            android:id="@+id/button14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Button" />
-
-        <Button
-            android:id="@+id/button13"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Button" />
-
-        <Button
-            android:id="@+id/button12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Button" />
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="368dp"
+        android:layout_height="120dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/table"
+        app:layout_constraintVertical_bias="0.0"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginStart="8dp"
+        android:id="@+id/constraintLayout">
 
         <Button
             android:id="@+id/button6"
+            android:layout_width="1dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:text="Button"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <Button
+            android:id="@+id/nobtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
             android:layout_row="2"
-            android:text="Button" />
+            android:onClick="resetShips"
+            android:text="No, Reset!"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/button6" />
 
         <Button
-            android:id="@+id/button7"
+            android:id="@+id/yesbtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="0"
             android:layout_row="2"
-            android:text="Button" />
+            android:onClick="settingFinished"
+            android:text="Yes"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintRight_toLeftOf="@+id/button6"
+            android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp" />
 
-        <Button
-            android:id="@+id/button8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="2"
-            android:layout_row="2"
-            android:text="Button" />
+        <TextView
+            android:id="@+id/acceptText"
+            android:layout_width="210dp"
+            android:layout_height="56dp"
+            android:layout_column="0"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_row="0"
+            android:text="Are you sure you want to keep this arrangement?"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:visibility="invisible"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
 
-        <Button
-            android:id="@+id/button9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_column="3"
-            android:layout_row="2"
-            android:text="Button" />
-
-    </GridLayout>
 </android.support.constraint.ConstraintLayout>
