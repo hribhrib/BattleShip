@@ -185,11 +185,23 @@ public class SetShipsActivity extends AppCompatActivity {
 
         }
 
-        // clear all variable
+        // clear all variables
         textViews.clear();
         ships = "";
         currentShips = 0;
 
+        //recreate the initial view
+        TextView setShipsText = (TextView) findViewById(R.id.setShips);
+        setShipsText.setVisibility(View.VISIBLE);
+
+        TextView acceptText = (TextView) findViewById(R.id.acceptText);
+        acceptText.setVisibility(View.INVISIBLE);
+
+        Button yesbtn = (Button) findViewById(R.id.yesbtn);
+        Button nobtn = (Button) findViewById(R.id.nobtn);
+
+        yesbtn.setVisibility(View.INVISIBLE);
+        nobtn.setVisibility(View.INVISIBLE);
 
     }
 
@@ -197,6 +209,7 @@ public class SetShipsActivity extends AppCompatActivity {
 
         // store the textview
         textViews.add(tv);
+
 
 
     }
