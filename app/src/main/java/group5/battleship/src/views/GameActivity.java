@@ -311,6 +311,7 @@ public class GameActivity extends AppCompatActivity {
         waitDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+
                         toStartScreen();
                     }
                 });
