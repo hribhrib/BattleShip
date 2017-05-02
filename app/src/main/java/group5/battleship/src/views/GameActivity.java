@@ -599,7 +599,7 @@ public class GameActivity extends AppCompatActivity {
                 displayMyBattleField();
                 Toast.makeText(getBaseContext(), "Verbleibende Zufallsangriffe: "+ myPlayer.getRandomAttacks(),
                         Toast.LENGTH_LONG).show();
-                opponentsMove();
+                aiOpponentsMove();
 
             } else {
                 myPlayer.updateBattleField(randomWaterCordinate, -1);
@@ -609,7 +609,7 @@ public class GameActivity extends AppCompatActivity {
                 myPlayer.setRandomAttacks();
                 game.newMove(new Move(myPlayer, opponent, randomWaterCordinate));
                 displayMyBattleField();
-                opponentsMove();
+                aiOpponentsMove();
             }
 
         }
