@@ -151,7 +151,6 @@ public class SetShipsActivity extends AppCompatActivity {
         intent.putExtra("Connected", true); //Was connection succesul
         intent.putExtra("WIFI", getIntent().getBooleanExtra("WIFI", true));
 
-
         startActivity(intent);
 
     }
