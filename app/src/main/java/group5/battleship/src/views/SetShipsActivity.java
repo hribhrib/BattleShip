@@ -11,8 +11,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import group5.battleship.R;
 
@@ -21,6 +25,7 @@ public class SetShipsActivity extends AppCompatActivity {
     String ships = ""; //XYXYXY
     int MAX_SHIPS = 3;
     int currentShips = 0;
+    ArrayList<TextView> textViews = new ArrayList<>();
 
 
     @Override
@@ -48,6 +53,7 @@ public class SetShipsActivity extends AppCompatActivity {
 
                 tv.setTextColor(Color.WHITE);
                 tv.setText("o");
+                storeTextview(tv);
 
             } else {
                 boolean shipSet = false;
@@ -65,12 +71,28 @@ public class SetShipsActivity extends AppCompatActivity {
                     currentShips++;
 
                     tv.setTextColor(Color.WHITE);
-
                     tv.setText("o");
-
+                    storeTextview(tv);
 
                     if (currentShips == MAX_SHIPS) {
 
+
+                        // set the text and the button visible to confirm the arrangement
+
+                        TextView setShipsText = (TextView) findViewById(R.id.setShips);
+                        setShipsText.setVisibility(View.INVISIBLE);
+
+                        TextView acceptText = (TextView) findViewById(R.id.acceptText);
+                        acceptText.setVisibility(View.VISIBLE);
+
+                        Button yesbtn = (Button) findViewById(R.id.yesbtn);
+                        Button nobtn = (Button) findViewById(R.id.nobtn);
+
+                        yesbtn.setVisibility(View.VISIBLE);
+                        nobtn.setVisibility(View.VISIBLE);
+
+
+                        /*
                         // Dialog to confirm the arrangement of the ships
                         new AlertDialog.Builder(SetShipsActivity.this)
                                 .setTitle("All ships are set")
@@ -88,9 +110,9 @@ public class SetShipsActivity extends AppCompatActivity {
                                 })
                                 .setIcon(android.R.drawable.ic_dialog_alert)
                                 .show();
+                                */
 
                     }
-
                 }
             }
 
@@ -130,12 +152,11 @@ public class SetShipsActivity extends AppCompatActivity {
         intent.putExtra("WIFI", getIntent().getBooleanExtra("WIFI", true));
 
 
-
         startActivity(intent);
 
     }
 
-    public void showStartButton () {
+    public void showStartButton() {
 
         Context context = getApplicationContext();
         CharSequence text = "All ships are set";
@@ -152,5 +173,32 @@ public class SetShipsActivity extends AppCompatActivity {
         table.setVisibility(View.INVISIBLE);
     }
 
+    public void resetShips(View view) {
+
+        TextView tmp;
+
+        for (int i = textViews.size() - 1; i >= 0; i--) {
+            Log.d("Size Array ", String.valueOf(i));
+            tmp = textViews.get(i);
+            tmp.setText("");
+            //textViews.remove(i);
+
+        }
+
+        // clear all variable
+        textViews.clear();
+        ships = "";
+        currentShips = 0;
+
+
+    }
+
+    public void storeTextview(TextView tv) {
+
+        // store the textview
+        textViews.add(tv);
+
+
+    }
 
 }
