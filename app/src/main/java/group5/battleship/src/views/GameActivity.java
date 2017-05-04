@@ -8,6 +8,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Vibrator;
 import android.support.annotation.IntegerRes;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -68,9 +69,10 @@ public class GameActivity extends AppCompatActivity {
     Intent intent;
 
     Boolean host;
+    Boolean gameEnd = false;
     static String send = "";
 
-
+    AlertDialog waitDialog;
     int port = 8888;
     boolean oppReady = false;
     String oppShips = "";
@@ -141,6 +143,11 @@ public class GameActivity extends AppCompatActivity {
             if (host) {
                 serverThread = new ServerThread(port);
                 new Thread(serverThread).start();
+                waitDialog = new AlertDialog.Builder(GameActivity.this).create();
+                waitDialog.setMessage("Wait for the attack...");
+                waitDialog.setCancelable(false);
+                waitDialog.setCanceledOnTouchOutside(false);
+                waitDialog.show();
             } else {
                 clientThread = new ClientThread(hostAddress, port);
                 new Thread(clientThread).start();
@@ -161,7 +168,6 @@ public class GameActivity extends AppCompatActivity {
         mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
 
 
-        //The display runs on a timer and updates the UI as packets are received.
         //The hostdevice will display host for player 1, and upon receiving the packets from client
         //Client will display for player 2
         //Receice automaticly
@@ -175,7 +181,6 @@ public class GameActivity extends AppCompatActivity {
                         Runnable runnable = new Runnable() {
                             @Override
                             public void run() {
-
                                 //Got opp ships, only first time
                                 if (serverThread.getPlayer2String() != null && !oppReady) {
                                     oppReady = true;
@@ -184,13 +189,16 @@ public class GameActivity extends AppCompatActivity {
                                     initRealOpp();
                                     displayOpponentsBattleField();
                                     displayMyBattleField();
-
                                 }
                                 //All other cycles, find new move
                                 else if (serverThread.getPlayer2String() != null &&
                                         !serverThread.getPlayer2String().equals(oppMove)) {
                                     oppMove = serverThread.getPlayer2String();
                                     realOpponentsMove();
+                                    if (waitDialog != null && !gameEnd) {
+                                        waitDialog.dismiss();
+                                    }
+
                                 }
                             }
                         };
@@ -214,6 +222,9 @@ public class GameActivity extends AppCompatActivity {
                                         !clientThread.getPlayer2String().equals(oppMove)) {
                                     oppMove = clientThread.getPlayer2String();
                                     realOpponentsMove();
+                                    if (waitDialog != null && !gameEnd) {
+                                        waitDialog.dismiss();
+                                    }
                                 }
                             }
                         };
@@ -293,6 +304,14 @@ public class GameActivity extends AppCompatActivity {
                     clientThread.dataReady(send);
 
                 }
+                if (!gameEnd) {
+                    waitDialog = new AlertDialog.Builder(GameActivity.this).create();
+                    waitDialog.setMessage("Wait for the counter attack...");
+                    waitDialog.setCancelable(false);
+                    waitDialog.setCanceledOnTouchOutside(false);
+                    waitDialog.show();
+                }
+
             } else {
                 aiOpponentsMove();
             }
@@ -306,10 +325,14 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void endGame(Player winner) {
-        new AlertDialog.Builder(this)
-                .setTitle("GAME END!")
-                .setMessage("Player: " + winner.getName() + " won!\nWant to play a new one?")
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+
+        waitDialog.dismiss();
+        waitDialog = new AlertDialog.Builder(GameActivity.this).create();
+        waitDialog.setTitle("GAME END!");
+        waitDialog.setMessage("Player: " + winner.getName() + " won!\nWant to play a new one?");
+        waitDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes!",
+                new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         initGame();
                         initDummyOpp();
@@ -317,14 +340,20 @@ public class GameActivity extends AppCompatActivity {
                         displayOpponentsBattleField();
                         displayMyBattleField();
                     }
-                })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                });
+        waitDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No",
+                new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         toStartScreen();
                     }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
+                });
+        waitDialog.setIcon(android.R.drawable.ic_dialog_alert);
+        waitDialog.setCancelable(false);
+        waitDialog.setCanceledOnTouchOutside(false);
+        waitDialog.show();
+
+        gameEnd = true;
+
     }
 
     private void toStartScreen() {
@@ -438,9 +467,11 @@ public class GameActivity extends AppCompatActivity {
         Toast.makeText(context, text, duration).show();
 
         game.newMove(new Move(opponent, myPlayer, c));
+
     }
 
     private void realOpponentsMove() {
+        tapHost.setCurrentTab(0);
 
         Cordinate c = new Cordinate((int) oppMove.charAt(0) - 48, (int) oppMove.charAt(1) - 48);
 
@@ -494,6 +525,8 @@ public class GameActivity extends AppCompatActivity {
         for (int i = 0; i < game.getSize(); i++) {
             for (int j = 0; j < game.getSize(); j++) {
                 tv = (TextView) findViewById(getRoutingByCordinateMyField(i, j));
+                tv.setTextSize(20);
+                tv.setTextColor(Color.WHITE);
                 if (opBattleField[i][j] == 1) {
                     tv.setBackgroundResource(R.mipmap.sea_ship_destroyed);
                 } else if (opBattleField[i][j] == -1) {
@@ -640,6 +673,7 @@ public class GameActivity extends AppCompatActivity {
 
     public void randomAttack(int count) {
 
+
         if (myPlayer.getRandomAttacks() > 0) {
             Cordinate randomShipCordinate = new randomShipCordinate(opponent, game);
             Cordinate randomWaterCordinate = new randomWaterCordinate(opponent);
@@ -674,7 +708,7 @@ public class GameActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
             displayMyBattleField();
 
-            //opponentsMove();
+            aiOpponentsMove();
 
         }
     }
