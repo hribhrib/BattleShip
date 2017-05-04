@@ -43,7 +43,10 @@ public class ClientThread implements Runnable, Serializable {
                 try {
                     //only on first cycle
                     if (socket == null) {
+                        Log.d("MY LOG", "New ClientSocket");
+                        Log.d("MY LOG", myHostAddress+" HostAdress");
                         socket = new DatagramSocket(myPort);
+                        //Time socket waits until connection get´ lost.
                         socket.setSoTimeout(1200000);
                     }
                 } catch (IOException e) {
@@ -83,7 +86,7 @@ public class ClientThread implements Runnable, Serializable {
                     }
                 }
 
-                //receive
+                //receive Data
                 DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
                 Log.e("MyTag", "CLIENT Waiting for Packet");
                 try {
@@ -93,8 +96,6 @@ public class ClientThread implements Runnable, Serializable {
 
                     player2String = new String(receivePacket.getData(), 0, receivePacket.getLength());
                     Log.e("MyTag", "Received Packet, contained: " + player2String);
-
-
 
                 } catch (IOException e) {
                     if (e.getMessage() == null) {
@@ -113,9 +114,14 @@ public class ClientThread implements Runnable, Serializable {
     }
 
     public synchronized void dataReady(String dataToSend) {
+        //Tells the client when data is ready, so he continue to work
         this.dataToSend = dataToSend;
         dataReady = true;
         notifyAll();
+    }
+
+    public void close() {
+        socket.close();
     }
 
 

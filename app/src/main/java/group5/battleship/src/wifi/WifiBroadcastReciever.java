@@ -113,10 +113,9 @@ public class WifiBroadcastReciever extends BroadcastReceiver {
             WifiP2pDevice device = (WifiP2pDevice) intent
                     .getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_DEVICE);
             Log.d("MyLog", "Device status -" + device.status);
-
-
         }
     }
+
 
     public void connect(int position) {
 

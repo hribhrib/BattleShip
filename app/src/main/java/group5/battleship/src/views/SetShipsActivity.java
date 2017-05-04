@@ -47,6 +47,7 @@ public class SetShipsActivity extends AppCompatActivity {
     protected void onResume(){
         super.onResume();
         Log.d("my tag", getIntent().getStringExtra("NAME")+ " debug");
+        Log.d("my tag", "Resume in set ship");
         ships="";
         currentShips=0;
 
@@ -134,7 +135,7 @@ public class SetShipsActivity extends AppCompatActivity {
 
             // this code is not needed at the moment
 
-            /*Context context = getApplicationContext();
+            Context context = getApplicationContext();
             CharSequence text = "All ships are set";
             int duration = Toast.LENGTH_SHORT;
 
@@ -149,7 +150,7 @@ public class SetShipsActivity extends AppCompatActivity {
             table.setVisibility(View.INVISIBLE);
 
 
-            */
+            
 
 
         }
@@ -157,7 +158,10 @@ public class SetShipsActivity extends AppCompatActivity {
 
     public void settingFinished(View view) {
 
-        Log.d("My Log", String.valueOf(getIntent().getBooleanExtra("WIFI", true)));
+        Log.d("My Log f", String.valueOf(getIntent().getBooleanExtra("WIFI", false)));
+        Log.d("My Log t", String.valueOf(getIntent().getBooleanExtra("WIFI", true)));
+        Log.d("My Log isHost f", String.valueOf(getIntent().getBooleanExtra("IsHost", false)));
+        Log.d("My Log isHost t", String.valueOf(getIntent().getBooleanExtra("IsHost", true)));
 
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra("SHIPS", ships);
@@ -172,7 +176,6 @@ public class SetShipsActivity extends AppCompatActivity {
     }
 
     public void showStartButton() {
-
         Context context = getApplicationContext();
         CharSequence text = "All ships are set";
         int duration = Toast.LENGTH_SHORT;
@@ -222,12 +225,11 @@ public class SetShipsActivity extends AppCompatActivity {
     }
 
     public void storeTextview(TextView tv) {
-
         // store the textview
         textViews.add(tv);
-
-
-
     }
+
+
+
 
 }
