@@ -17,6 +17,7 @@ public class Player {
 
     public Player(String name) {
         this.name = name;
+        initFieldArrays();
     }
 
     public void setShips(String s) {
@@ -43,14 +44,14 @@ public class Player {
         //-1 = water
         //+1 = ship
         battleField[c.x][c.y] = state;
-        
+
     }
 
     public int[][] getBattleField() {
         return battleField;
     }
 
-    public void setBattleField (int[][] battleField1) {
+    public void setBattleField(int[][] battleField1) {
         battleField = battleField1;
     }
 
@@ -72,9 +73,24 @@ public class Player {
     }
 
     public void setRandomAttacks() {
-        this.randomAttacks = randomAttacks -1 ;
+        this.randomAttacks = randomAttacks - 1;
     }
+
     public int getRandomAttacks() {
         return randomAttacks;
+    }
+
+    private void initFieldArrays() {
+        this.battleField = new int[5][5];
+        this.ships = new int[5][5];
+
+
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                this.battleField[i][j] = 0;
+                this.ships[i][j] = -1;
+            }
+        }
+
     }
 }

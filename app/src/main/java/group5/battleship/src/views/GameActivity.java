@@ -397,7 +397,7 @@ public class GameActivity extends AppCompatActivity {
     private void initGame() {
         myPlayer = new Player(getIntent().getStringExtra("NAME"));
         opponent = new Player("Opponent");
-        game = new Game(myPlayer, opponent, 5); //5 = static size
+        game = new Game(myPlayer, opponent);
 
         myPlayer.setShips(getIntent().getStringExtra("SHIPS"));
 
