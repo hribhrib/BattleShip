@@ -44,7 +44,7 @@ public class ClientThread implements Runnable, Serializable {
                     //only on first cycle
                     if (socket == null) {
                         socket = new DatagramSocket(myPort);
-                        socket.setSoTimeout(60000);
+                        socket.setSoTimeout(1200000);
                     }
                 } catch (IOException e) {
                     if (e.getMessage() == null) {
