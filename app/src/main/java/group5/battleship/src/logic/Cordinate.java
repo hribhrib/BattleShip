@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
  */
 
 public class Cordinate {
+
     public int x;
     public int y;
 
@@ -14,6 +15,8 @@ public class Cordinate {
         this.x = x;
         this.y = y;
     }
+
+
 
     public boolean equals(Cordinate c) {
         if(this.x == c.x && this.y ==c.y){

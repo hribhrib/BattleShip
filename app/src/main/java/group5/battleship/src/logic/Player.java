@@ -13,6 +13,7 @@ public class Player {
     int MAX_SHIPS = 3;
     int shipsDestroyed = 0;
 
+
     public Player(String name) {
         this.name = name;
     }
@@ -37,10 +38,11 @@ public class Player {
         return ships[c.x][c.y];
     }
 
-    public void updateBattleField(int x, int y, int state) {
+    public void updateBattleField(Cordinate c, int state) {
         //-1 = water
         //+1 = ship
-        battleField[x][y] = state;
+        battleField[c.x][c.y] = state;
+        
     }
 
     public int[][] getBattleField() {
