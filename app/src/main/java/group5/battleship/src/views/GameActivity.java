@@ -430,6 +430,7 @@ public class GameActivity extends AppCompatActivity {
         ship3 = new Cordinate(Character.getNumericValue(oppShips.charAt(4)),
                 Character.getNumericValue(oppShips.charAt(5)));
 
+
         opponent.setShips(ship1, ship2, ship3);
 
         Log.d("My Log", "Opponents Ships: " + oppShips);
