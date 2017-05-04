@@ -62,7 +62,7 @@ public class WifiManagerActivity extends AppCompatActivity {
         myTextView = (TextView) findViewById(R.id.textView2);
         myListView = (ListView) findViewById(R.id.listView);
 
-        searchButton = (Button) findViewById(R.id.button2);
+        searchButton = (Button) findViewById(R.id.firebtn);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
