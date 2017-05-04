@@ -513,11 +513,11 @@ public class GameActivity extends AppCompatActivity {
         int[][] tmpMyShips = myPlayer.getShips();
 
         if (tmpMyShips[c.x][c.y] == -1) {
-            opponent.updateBattleField(c.x, c.y, -1);
+            opponent.updateBattleField(c, -1);
         } else if (tmpMyShips[c.x][c.y] == 1) {
             playSoundHitShip();
             phoneVibrate();
-            opponent.updateBattleField(c.x, c.y, 1);
+            opponent.updateBattleField(c, 1);
             if (myPlayer.incShipDestroyed() == myPlayer.getMaxShips()) {
                 endGame(opponent);
             }
@@ -594,7 +594,7 @@ public class GameActivity extends AppCompatActivity {
         TextView tv;
         for (int i = 0; i < game.getSize(); i++) {
             for (int j = 0; j < game.getSize(); j++) {
-                tv = (TextView) findViewById(getRoutingByCordinateMyField(i, j));
+                tv = (TextView) findViewById(getRoutingByCordinateMyField(new Cordinate(i,j)));
                 if (opBattleField[i][j] == 1) {
                     tv.setBackgroundResource(R.mipmap.sea_ship);
                 } else if (opBattleField[i][j] == -1) {
