@@ -5,388 +5,498 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="group5.battleship.src.views.SetShipsActivity">
+
+    <Button
+        android:id="@+id/startButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="settingFinished"
+        android:text="Start Game"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/table"
+        app:layout_constraintRight_toRightOf="@+id/table"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/table"
-    android:layout_width="0dp"
-    android:layout_height="495dp"
-    android:clickable="true"
-    android:gravity="center"
-    android:stretchColumns="0,1,2,3,4"
-    tools:clickable="true"
-    tools:layout_editor_absoluteY="8dp"
-    tools:layout_editor_absoluteX="0dp">
+        android:id="@+id/table"
+        android:layout_width="0dp"
+        android:layout_height="362dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp"
+        android:clickable="true"
+        android:gravity="center"
+        android:stretchColumns="0,1,2,3,4"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:clickable="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp">
 
-    <TableRow
-        android:id="@+id/tableRow0"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_margin="0dp"
-        android:layout_weight="1"
-        android:background="#000000"
+        <TableRow
+            android:id="@+id/tableRow0"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_margin="0dp"
+            android:layout_weight="1"
+            android:background="#000000"
 
-        >
+            >
+
+            <TextView
+                android:id="@+id/textView00"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_column="0"
+                android:layout_margin="1dp"
+                android:background="@mipmap/meer_neu"
+                android:gravity="center"
+                android:onClick="cellClick"
+                android:tag="00"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/textView01"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_column="1"
+                android:layout_margin="1dp"
+                android:background="@mipmap/meer_neu"
+                android:gravity="center"
+                android:onClick="cellClick"
+                android:tag="01"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/textView02"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_column="2"
+                android:layout_margin="1dp"
+                android:background="@mipmap/meer_neu"
+                android:gravity="center"
+                android:onClick="cellClick"
+                android:tag="02"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/textView03"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_column="3"
+                android:layout_margin="1dp"
+                android:background="@mipmap/meer_neu"
+                android:gravity="center"
+                android:onClick="cellClick"
+                android:tag="03"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/textView04"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_column="4"
+                android:layout_margin="1dp"
+                android:background="@mipmap/meer_neu"
+                android:gravity="center"
+                android:onClick="cellClick"
+                android:tag="04"
+                android:text="" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_margin="0dp"
+            android:layout_weight="1"
+            android:background="#000000"
+            android:clickable="false">
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_column="0"
+                android:layout_margin="1dp"
+                android:background="@mipmap/meer_neu"
+                android:gravity="center"
+                android:onClick="cellClick"
+                android:tag="10"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_column="1"
+                android:layout_margin="1dp"
+                android:background="@mipmap/meer_neu"
+                android:gravity="center"
+                android:onClick="cellClick"
+                android:tag="11"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_column="2"
+                android:layout_margin="1dp"
+                android:background="@mipmap/meer_neu"
+                android:gravity="center"
+                android:onClick="cellClick"
+                android:tag="12"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_column="3"
+                android:layout_margin="1dp"
+                android:background="@mipmap/meer_neu"
+                android:gravity="center"
+                android:onClick="cellClick"
+                android:tag="13"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_column="4"
+                android:layout_margin="1dp"
+                android:background="@mipmap/meer_neu"
+                android:gravity="center"
+                android:onClick="cellClick"
+                android:tag="14"
+                android:text="" />
+        </TableRow>
+
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_margin="0dp"
+            android:layout_weight="1"
+            android:background="#000000">
+
+            <TextView
+                android:id="@+id/textView20"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_column="0"
+                android:layout_margin="1dp"
+                android:background="@mipmap/meer_neu"
+                android:gravity="center"
+                android:onClick="cellClick"
+                android:tag="20"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_column="1"
+                android:layout_margin="1dp"
+                android:background="@mipmap/meer_neu"
+                android:gravity="center"
+                android:onClick="cellClick"
+                android:tag="21"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/textView22"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_column="2"
+                android:layout_margin="1dp"
+                android:background="@mipmap/meer_neu"
+                android:gravity="center"
+                android:onClick="cellClick"
+                android:tag="22"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/textView23"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_column="3"
+                android:layout_margin="1dp"
+                android:background="@mipmap/meer_neu"
+                android:gravity="center"
+                android:onClick="cellClick"
+                android:tag="23"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/textView24"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_column="4"
+                android:layout_margin="1dp"
+                android:background="@mipmap/meer_neu"
+                android:gravity="center"
+                android:onClick="cellClick"
+                android:tag="24"
+                android:text="" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_margin="0dp"
+            android:layout_weight="1"
+            android:background="#000000">
+
+            <TextView
+                android:id="@+id/textView30"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_column="0"
+                android:layout_margin="1dp"
+                android:background="@mipmap/meer_neu"
+                android:gravity="center"
+                android:onClick="cellClick"
+                android:tag="30"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/textView31"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_column="1"
+                android:layout_margin="1dp"
+                android:background="@mipmap/meer_neu"
+                android:gravity="center"
+                android:onClick="cellClick"
+                android:tag="31"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/textView32"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_column="2"
+                android:layout_margin="1dp"
+                android:background="@mipmap/meer_neu"
+                android:gravity="center"
+                android:onClick="cellClick"
+                android:tag="32"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/textView33"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_column="3"
+                android:layout_margin="1dp"
+                android:background="@mipmap/meer_neu"
+                android:gravity="center"
+                android:onClick="cellClick"
+                android:tag="33"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/textView34"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_column="4"
+                android:layout_margin="1dp"
+                android:background="@mipmap/meer_neu"
+                android:gravity="center"
+                android:onClick="cellClick"
+                android:tag="34"
+                android:text="" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow4"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_margin="0dp"
+            android:layout_weight="1"
+            android:background="#000000">
+
+            <TextView
+                android:id="@+id/textView40"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_column="0"
+                android:layout_margin="1dp"
+                android:background="@mipmap/meer_neu"
+                android:gravity="center"
+                android:onClick="cellClick"
+                android:tag="40"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/textView41"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_column="1"
+                android:layout_margin="1dp"
+                android:background="@mipmap/meer_neu"
+                android:gravity="center"
+                android:onClick="cellClick"
+                android:tag="41"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/textView42"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_column="2"
+                android:layout_margin="1dp"
+                android:background="@mipmap/meer_neu"
+                android:gravity="center"
+                android:onClick="cellClick"
+                android:tag="42"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/textView43"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_column="3"
+                android:layout_margin="1dp"
+                android:background="@mipmap/meer_neu"
+                android:gravity="center"
+                android:onClick="cellClick"
+                android:tag="43"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/textView44"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_column="4"
+                android:layout_margin="1dp"
+                android:background="@mipmap/meer_neu"
+                android:gravity="center"
+                android:onClick="cellClick"
+                android:tag="44"
+                android:text="" />
+        </TableRow>
+
+    </TableLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/table"
+        app:layout_constraintVertical_bias="0.529"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp">
 
         <TextView
-            android:tag="00"
-            android:id="@+id/textView00"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_column="0"
-            android:layout_margin="1dp"
-            android:background="#FFFFFF"
-            android:gravity="center"
-            android:onClick="cellClick"
-            android:text="" />
-
-        <TextView
-            android:tag="01"
-            android:id="@+id/textView01"
+            android:id="@+id/setShips"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Set your Ships!"
+            android:textColor="@android:color/black"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="368dp"
+        android:layout_height="120dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/table"
+        app:layout_constraintVertical_bias="0.0"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginStart="8dp"
+        android:id="@+id/constraintLayout">
+
+        <Button
+            android:id="@+id/button6"
+            android:layout_width="1dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:text="Button"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <Button
+            android:id="@+id/nobtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_column="1"
-            android:layout_margin="1dp"
-            android:background="#FFFFFF"
-            android:gravity="center"
-            android:onClick="cellClick"
-            android:text=""
-            />
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_row="2"
+            android:onClick="resetShips"
+            android:text="No, Reset!"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/button6" />
 
-        <TextView
-            android:tag="02"
-            android:id="@+id/textView02"
+        <Button
+            android:id="@+id/yesbtn"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_column="2"
-            android:layout_margin="1dp"
-            android:background="#FFFFFF"
-            android:gravity="center"
-            android:onClick="cellClick"
-            android:text=""
-            />
-
-        <TextView
-            android:tag="03"
-            android:id="@+id/textView03"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_column="3"
-            android:layout_margin="1dp"
-            android:background="#FFFFFF"
-            android:gravity="center"
-            android:onClick="cellClick"
-            android:text=""
-            />
-
-        <TextView
-            android:tag="04"
-            android:id="@+id/textView04"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_column="4"
-            android:layout_margin="1dp"
-            android:background="#FFFFFF"
-            android:gravity="center"
-            android:onClick="cellClick"
-            android:text="" />
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/tableRow1"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_margin="0dp"
-        android:layout_weight="1"
-        android:background="#000000"
-        android:clickable="false">
-
-        <TextView
-            android:tag="10"
-            android:id="@+id/textView10"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_column="0"
-            android:layout_margin="1dp"
-            android:background="#FFFFFF"
-            android:gravity="center"
-            android:onClick="cellClick"
-            android:text=""
-            />
+            android:layout_row="2"
+            android:onClick="settingFinished"
+            android:text="Yes"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintRight_toLeftOf="@+id/button6"
+            android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp" />
 
         <TextView
-            android:tag="11"
-            android:id="@+id/textView11"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_column="1"
-            android:layout_margin="1dp"
-            android:background="#FFFFFF"
-            android:gravity="center"
-            android:onClick="cellClick"
-            android:text=""
-            />
-
-        <TextView
-            android:tag="12"
-            android:id="@+id/textView12"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_column="2"
-            android:layout_margin="1dp"
-            android:background="#FFFFFF"
-            android:gravity="center"
-            android:onClick="cellClick"
-            android:text=""
-            />
-
-        <TextView
-            android:tag="13"
-            android:id="@+id/textView13"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_column="3"
-            android:layout_margin="1dp"
-            android:background="#FFFFFF"
-            android:gravity="center"
-            android:onClick="cellClick"
-            android:text=""
-            />
-
-        <TextView
-            android:tag="14"
-            android:id="@+id/textView14"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_column="4"
-            android:layout_margin="1dp"
-            android:background="#FFFFFF"
-            android:gravity="center"
-            android:onClick="cellClick"
-            android:text=""
-            />
-    </TableRow>
-
-
-    <TableRow
-        android:id="@+id/tableRow2"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_margin="0dp"
-        android:layout_weight="1"
-        android:background="#000000">
-
-        <TextView
-            android:tag="20"
-            android:id="@+id/textView20"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:id="@+id/acceptText"
+            android:layout_width="210dp"
+            android:layout_height="56dp"
             android:layout_column="0"
-            android:layout_margin="1dp"
-            android:background="#FFFFFF"
-            android:gravity="center"
-            android:onClick="cellClick"
-            android:text=""
-            />
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_row="0"
+            android:text="Are you sure you want to keep this arrangement?"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:visibility="invisible"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
 
-        <TextView
-            android:tag="21"
-            android:id="@+id/textView21"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_column="1"
-            android:layout_margin="1dp"
-            android:background="#FFFFFF"
-            android:gravity="center"
-            android:onClick="cellClick"
-            android:text=""
-            />
-
-        <TextView
-            android:tag="22"
-            android:id="@+id/textView22"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_column="2"
-            android:layout_margin="1dp"
-            android:background="#FFFFFF"
-            android:gravity="center"
-            android:onClick="cellClick"
-            android:text=""
-            />
-
-        <TextView
-            android:tag="23"
-            android:id="@+id/textView23"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_column="3"
-            android:layout_margin="1dp"
-            android:background="#FFFFFF"
-            android:gravity="center"
-            android:onClick="cellClick"
-            android:text=""
-            />
-
-        <TextView
-            android:tag="24"
-            android:id="@+id/textView24"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_column="4"
-            android:layout_margin="1dp"
-            android:background="#FFFFFF"
-            android:gravity="center"
-            android:onClick="cellClick"
-            android:text=""
-            />
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/tableRow3"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_margin="0dp"
-        android:layout_weight="1"
-        android:background="#000000">
-
-        <TextView
-            android:tag="30"
-            android:id="@+id/textView30"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_column="0"
-            android:layout_margin="1dp"
-            android:background="#FFFFFF"
-            android:gravity="center"
-            android:onClick="cellClick"
-            android:text=""
-            />
-
-        <TextView
-            android:tag="31"
-            android:id="@+id/textView31"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_column="1"
-            android:layout_margin="1dp"
-            android:background="#FFFFFF"
-            android:gravity="center"
-            android:onClick="cellClick"
-            android:text=""
-            />
-
-        <TextView
-            android:tag="32"
-            android:id="@+id/textView32"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_column="2"
-            android:layout_margin="1dp"
-            android:background="#FFFFFF"
-            android:gravity="center"
-            android:onClick="cellClick"
-            android:text=""
-            />
-
-        <TextView
-            android:tag="33"
-            android:id="@+id/textView33"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_column="3"
-            android:layout_margin="1dp"
-            android:background="#FFFFFF"
-            android:gravity="center"
-            android:onClick="cellClick"
-            android:text=""
-            />
-
-        <TextView
-            android:tag="34"
-            android:id="@+id/textView34"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_column="4"
-            android:layout_margin="1dp"
-            android:background="#FFFFFF"
-            android:gravity="center"
-            android:onClick="cellClick"
-            android:text=""
-            />
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/tableRow4"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_margin="0dp"
-        android:layout_weight="1"
-        android:background="#000000">
-
-        <TextView
-            android:tag="40"
-            android:id="@+id/textView40"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_column="0"
-            android:layout_margin="1dp"
-            android:background="#FFFFFF"
-            android:gravity="center"
-            android:onClick="cellClick"
-            android:text=""
-            />
-
-        <TextView
-            android:tag="41"
-            android:id="@+id/textView41"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_column="1"
-            android:layout_margin="1dp"
-            android:background="#FFFFFF"
-            android:gravity="center"
-            android:onClick="cellClick"
-            android:text=""
-            />
-
-        <TextView
-            android:tag="42"
-            android:id="@+id/textView42"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_column="2"
-            android:layout_margin="1dp"
-            android:background="#FFFFFF"
-            android:gravity="center"
-            android:onClick="cellClick"
-            android:text=""
-            />
-
-        <TextView
-            android:tag="43"
-            android:id="@+id/textView43"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_column="3"
-            android:layout_margin="1dp"
-            android:background="#FFFFFF"
-            android:gravity="center"
-            android:onClick="cellClick"
-            android:text=""
-            />
-
-        <TextView
-            android:tag="44"
-            android:id="@+id/textView44"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_column="4"
-            android:layout_margin="1dp"
-            android:background="#FFFFFF"
-            android:gravity="center"
-            android:onClick="cellClick"
-            android:text=""
-            />
-    </TableRow>
-
-</TableLayout>
 </android.support.constraint.ConstraintLayout>

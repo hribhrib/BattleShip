@@ -5,11 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-
 import group5.battleship.R;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
     EditText playername;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,11 +17,27 @@ public class MainActivity extends AppCompatActivity {
         playername = (EditText) (findViewById(R.id.editText));
     }
 
+    public void startWifiGame(View view) {
+        Intent intent = new Intent(this, WifiManagerActivity.class);
 
-    public void startGame(View view) {
-        Intent intent = new Intent(this, SetShipsActivity.class);
         intent.putExtra("NAME", playername.getText().toString());
+        intent.putExtra("WIFI", true);
         startActivity(intent);
     }
+
+    public void startLocalGame(View view) {
+        Intent intent = new Intent(this, SetShipsActivity.class);
+        intent.putExtra("NAME", playername.getText().toString());
+        intent.putExtra("WIFI", false);
+        startActivity(intent);
+    }
+
+
+
+
+
+
+
+
 
 }

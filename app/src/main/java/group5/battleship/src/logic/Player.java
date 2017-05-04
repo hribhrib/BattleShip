@@ -12,6 +12,7 @@ public class Player {
     int[][] ships;
     int MAX_SHIPS = 3;
     int shipsDestroyed = 0;
+    private int randomAttacks = 1;                  // so that random attack only works once a game, for now
 
 
     public Player(String name) {
@@ -24,7 +25,7 @@ public class Player {
         }
     }
 
-    public void setShips(Cordinate ship1, Cordinate ship2, Cordinate ship3){
+    public void setShips(Cordinate ship1, Cordinate ship2, Cordinate ship3) {
         ships[ship1.x][ship1.y] = 1;
         ships[ship2.x][ship2.y] = 1;
         ships[ship3.x][ship3.y] = 1;
@@ -34,7 +35,7 @@ public class Player {
         return this.ships;
     }
 
-    public int getShipByCordinate(Cordinate c){
+    public int getShipByCordinate(Cordinate c) {
         return ships[c.x][c.y];
     }
 
@@ -44,12 +45,21 @@ public class Player {
         battleField[c.x][c.y] = state;
         
     }
+    public void updateBattleField(Cordinate c, int state) {
+        int x = c.x;
+        int y = c.y;
+        battleField[x][y]= state;
+    }
 
     public int[][] getBattleField() {
         return battleField;
     }
 
-    public int getBattleFieldByCordinate(Cordinate c){
+    public void setBattleField (int[][] battleField1) {
+        battleField = battleField1;
+    }
+
+    public int getBattleFieldByCordinate(Cordinate c) {
         return battleField[c.x][c.y];
     }
 
@@ -57,12 +67,19 @@ public class Player {
         return MAX_SHIPS;
     }
 
-    public int incShipDestroyed(){
+    public int incShipDestroyed() {
         shipsDestroyed++;
         return shipsDestroyed;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
+    }
+
+    public void setRandomAttacks() {
+        this.randomAttacks = randomAttacks -1 ;
+    }
+    public int getRandomAttacks() {
+        return randomAttacks;
     }
 }
