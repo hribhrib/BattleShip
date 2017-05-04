@@ -45,11 +45,6 @@ public class Player {
         battleField[c.x][c.y] = state;
         
     }
-    public void updateBattleField(Cordinate c, int state) {
-        int x = c.x;
-        int y = c.y;
-        battleField[x][y]= state;
-    }
 
     public int[][] getBattleField() {
         return battleField;
