@@ -34,7 +34,6 @@ public class WifiBroadcastReciever extends BroadcastReceiver {
     private WifiP2pDevice myDevice;
 
 
-
     public WifiBroadcastReciever(WifiP2pManager manager, WifiP2pManager.Channel channel,
                                  WifiManagerActivity activity) {
         super();

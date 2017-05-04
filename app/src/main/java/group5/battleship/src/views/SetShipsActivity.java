@@ -35,6 +35,18 @@ public class SetShipsActivity extends AppCompatActivity {
 
     }
 
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        Log.d("my tag", getIntent().getStringExtra("NAME")+ " debug");
+        ships="";
+        currentShips=0;
+
+    }
+
+
+
     public void cellClick(View view) {
         TextView tv = (TextView) findViewById(view.getId());
 
@@ -87,7 +99,6 @@ public class SetShipsActivity extends AppCompatActivity {
             table.setVisibility(View.INVISIBLE);
 
 
-
         }
     }
 
@@ -99,9 +110,9 @@ public class SetShipsActivity extends AppCompatActivity {
         intent.putExtra("SHIPS", ships);
         intent.putExtra("NAME", getIntent().getStringExtra("NAME"));
         intent.putExtra("HostAddress", getIntent().getStringExtra("HostAddress")); //Address of the host
-        intent.putExtra("IsHost", getIntent().getBooleanExtra("IsHost", true));   //Is this device the host
+        intent.putExtra("IsHost", getIntent().getBooleanExtra("IsHost", false));   //Is this device the host
         intent.putExtra("Connected", true); //Was connection succesul
-        intent.putExtra("WIFI", getIntent().getBooleanExtra("WIFI", true));
+        intent.putExtra("WIFI", getIntent().getBooleanExtra("WIFI", false));
 
         startActivity(intent);
 

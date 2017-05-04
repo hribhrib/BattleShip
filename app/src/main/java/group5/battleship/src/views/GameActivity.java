@@ -286,35 +286,59 @@ public class GameActivity extends AppCompatActivity {
                 }
 
             } else {
+                /*
+                waitDialog = new AlertDialog.Builder(GameActivity.this).create();
+                waitDialog.setMessage("Wait for the counter attack...");
+                waitDialog.setCancelable(false);
+                waitDialog.setCanceledOnTouchOutside(false);
+                waitDialog.show();*/
                 aiOpponentsMove();
             }
         }
     }
 
-    private void endGame(Player winner) {
+    private void endGame(final Player winner) {
 
+        Log.d("My LOG", winner.getName()+ " deb");
+        Log.d("My LOG", myPlayer.getName()+ " ich");
+        Log.d("My LOG", opponent.getName()+ " er");
+        if (waitDialog!=null) {
+            waitDialog.dismiss();
+        }
 
-        waitDialog.dismiss();
         waitDialog = new AlertDialog.Builder(GameActivity.this).create();
         waitDialog.setTitle("GAME END!");
-        waitDialog.setMessage("Player: " + winner.getName() + " won!\nWant to play a new one?");
-        waitDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes!",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        initGame();
-                        initDummyOpp();
-                        //displayMyShips();
-                        displayOpponentsBattleField();
-                        displayMyBattleField();
-                    }
-                });
-        waitDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
 
-                        toStartScreen();
-                    }
-                });
+        if (!intent.getBooleanExtra("WIFI", true)) {
+            waitDialog.setMessage("Player: " + winner.getName() + " won!\nWant to play a new one?");
+            waitDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes!",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            //Set your ships on an other position
+                            startAgain();
+
+                        }
+                    });
+            waitDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            //go to homescreen
+                            toStartScreen();
+                        }
+                    });
+        }
+        else {
+            waitDialog.setMessage("Player: " + winner.getName() + " won!");
+            waitDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Ok!",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            //go to homescreen
+                            toStartScreen();
+
+                        }
+                    });
+        }
+
         waitDialog.setIcon(android.R.drawable.ic_dialog_alert);
         waitDialog.setCancelable(false);
         waitDialog.setCanceledOnTouchOutside(false);
@@ -322,6 +346,13 @@ public class GameActivity extends AppCompatActivity {
 
         gameEnd = true;
 
+    }
+
+    private void startAgain() {
+        Intent restart = new Intent(this, SetShipsActivity.class);
+        Log.d("MY LOG", intent.getStringExtra("NAME"));
+        restart.putExtra("NAME", intent.getStringExtra("NAME"));
+        startActivity(restart);
     }
 
     private void toStartScreen() {
@@ -437,7 +468,7 @@ public class GameActivity extends AppCompatActivity {
         Toast.makeText(context, text, duration).show();
 
         game.newMove(new Move(opponent, myPlayer, c));
-
+        //waitDialog.dismiss();
     }
 
     private void realOpponentsMove() {
@@ -459,6 +490,7 @@ public class GameActivity extends AppCompatActivity {
         }
 
         displayOpponentsBattleField();
+
 
         //display Opponents shot
         Context context = getApplicationContext();
@@ -619,43 +651,46 @@ public class GameActivity extends AppCompatActivity {
 
     public void randomAttack(int count) {
 
+        if (intent.getBooleanExtra("WIFI", true)) {
 
-        if (myPlayer.getRandomAttacks() > 0) {
-            Cordinate randomShipCordinate = new randomShipCordinate(opponent, game);
-            Cordinate randomWaterCordinate = new randomWaterCordinate(opponent);
-            Random r = new Random();
 
-            if (r.nextInt(10) >= 4) {                               // increased chance to hit a ship
-                myPlayer.updateBattleField(randomShipCordinate, 1);
-                playSoundHitShip();
-                if (opponent.incShipDestroyed() == opponent.getMaxShips()) {
-                    endGame(myPlayer);
+            if (myPlayer.getRandomAttacks() > 0) {
+                Cordinate randomShipCordinate = new randomShipCordinate(opponent, game);
+                Cordinate randomWaterCordinate = new randomWaterCordinate(opponent);
+                Random r = new Random();
+
+                if (r.nextInt(10) >= 4) {                               // increased chance to hit a ship
+                    myPlayer.updateBattleField(randomShipCordinate, 1);
+                    playSoundHitShip();
+                    if (opponent.incShipDestroyed() == opponent.getMaxShips()) {
+                        endGame(myPlayer);
+                    }
+                    myPlayer.setRandomAttacks();
+                    game.newMove(new Move(myPlayer, opponent, randomShipCordinate));
+                    displayMyBattleField();
+                    Toast.makeText(getBaseContext(), "Verbleibende Zufallsangriffe: " + myPlayer.getRandomAttacks(),
+                            Toast.LENGTH_LONG).show();
+                    aiOpponentsMove();
+
+                } else {
+                    myPlayer.updateBattleField(randomWaterCordinate, -1);
+                    if (opponent.incShipDestroyed() == opponent.getMaxShips()) {
+                        endGame(myPlayer);
+                    }
+                    myPlayer.setRandomAttacks();
+                    game.newMove(new Move(myPlayer, opponent, randomWaterCordinate));
+                    displayMyBattleField();
+                    aiOpponentsMove();
                 }
-                myPlayer.setRandomAttacks();
-                game.newMove(new Move(myPlayer, opponent, randomShipCordinate));
-                displayMyBattleField();
-                Toast.makeText(getBaseContext(), "Verbleibende Zufallsangriffe: " + myPlayer.getRandomAttacks(),
-                        Toast.LENGTH_LONG).show();
-                aiOpponentsMove();
 
             } else {
-                myPlayer.updateBattleField(randomWaterCordinate, -1);
-                if (opponent.incShipDestroyed() == opponent.getMaxShips()) {
-                    endGame(myPlayer);
-                }
-                myPlayer.setRandomAttacks();
-                game.newMove(new Move(myPlayer, opponent, randomWaterCordinate));
+                Toast.makeText(getBaseContext(), "Bleib doch fair...",
+                        Toast.LENGTH_LONG).show();
                 displayMyBattleField();
+
                 aiOpponentsMove();
+
             }
-
-        } else {
-            Toast.makeText(getBaseContext(), "Bleib doch fair...",
-                    Toast.LENGTH_LONG).show();
-            displayMyBattleField();
-
-            aiOpponentsMove();
-
         }
     }
 }
