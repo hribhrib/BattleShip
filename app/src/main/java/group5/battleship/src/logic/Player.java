@@ -53,6 +53,10 @@ public class Player {
         return battleField;
     }
 
+    public void setBattleField (int[][] battleField1) {
+        battleField = battleField1;
+    }
+
     public int getBattleFieldByCordinate(Cordinate c) {
         return battleField[c.x][c.y];
     }

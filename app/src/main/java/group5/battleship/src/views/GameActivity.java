@@ -52,6 +52,9 @@ public class GameActivity extends AppCompatActivity {
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
 
+    TextView tv;
+    boolean firebtnpressed = false;
+
 
     /////////////////////////////////////////
 
@@ -157,6 +160,7 @@ public class GameActivity extends AppCompatActivity {
             displayOpponentsBattleField();
             displayMyBattleField();
         }
+
     }
 
     public void onResume() {
@@ -232,7 +236,6 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-
     public void onPause() {
         mSensorManager.unregisterListener(mShakeDetector);
         super.onPause();
@@ -245,7 +248,31 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void cellClick(View view) {
-        TextView tv = (TextView) findViewById(view.getId());
+
+        final Button firebtn = (Button) findViewById(R.id.firebtn);
+
+        if (firebtn.getVisibility() == View.VISIBLE) {
+            // reset the view before setting the new target
+            displayMyBattleField();
+        }
+
+        tv = (TextView) findViewById(view.getId());
+        tv.setBackgroundResource(R.mipmap.crosshair_sea);
+
+
+        // press fire Button
+        firebtn.setVisibility(View.VISIBLE);
+        firebtnpressed = false;
+        firebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shotCell(tv);
+            }
+        });
+
+    }
+
+    public void shotCell(TextView tv) {
 
         Cordinate c = getRoutingByIDOpponentField(tv.getId());
 
@@ -295,6 +322,12 @@ public class GameActivity extends AppCompatActivity {
                 aiOpponentsMove();
             }
         }
+
+        //set fire button invisible agian
+        Button firebtn = (Button) findViewById(R.id.firebtn);
+        firebtn.setVisibility(View.INVISIBLE);
+
+
     }
 
     private void endGame(final Player winner) {
@@ -416,7 +449,6 @@ public class GameActivity extends AppCompatActivity {
         opponent.setShips(ship1, ship2, ship3);
     }
 
-
     private void initRealOpp() {
         Cordinate ship1, ship2, ship3;
         Log.d("My Log", "HOST DEB" + String.valueOf(host));
@@ -435,7 +467,6 @@ public class GameActivity extends AppCompatActivity {
 
         Log.d("My Log", "Opponents Ships: " + oppShips);
     }
-
 
     private void aiOpponentsMove() {
         tapHost.setCurrentTab(0);
@@ -521,7 +552,10 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void displayOpponentsBattleField() {
+
         int[][] opBattleField = opponent.getBattleField();
+
+        int[][] myShips = myPlayer.getShips();
 
         TextView tv;
         for (int i = 0; i < game.getSize(); i++) {
@@ -530,11 +564,36 @@ public class GameActivity extends AppCompatActivity {
                 tv.setTextSize(20);
                 tv.setTextColor(Color.WHITE);
                 if (opBattleField[i][j] == 1) {
-                    tv.setText("o");
+                    tv.setBackgroundResource(R.mipmap.sea_ship_destroyed);
                 } else if (opBattleField[i][j] == -1) {
-                    tv.setText("~");
+                    tv.setBackgroundResource(R.mipmap.sea_wronghit);
                 } else {
+                    // set the other ships so that you see where your ships are
+                    if (myShips[i][j] == 1 ) {
+                        tv.setBackgroundResource(R.mipmap.sea_ship);
+                    } else {
+                        tv.setBackgroundResource(R.mipmap.meer_neu);
+                    }
+                }
+            }
+        }
+    }
 
+    private void displayinitialOpponentsBattleField() {
+
+        opponent.setBattleField(opponent.getShips());
+        int[][] opBattleField = opponent.getBattleField();
+
+        TextView tv;
+        for (int i = 0; i < game.getSize(); i++) {
+            for (int j = 0; j < game.getSize(); j++) {
+                tv = (TextView) findViewById(getRoutingByCordinateMyField(i, j));
+                if (opBattleField[i][j] == 1) {
+                    tv.setBackgroundResource(R.mipmap.sea_ship);
+                } else if (opBattleField[i][j] == -1) {
+                    tv.setBackgroundResource(R.mipmap.meer_neu);
+                } else {
+                    tv.setBackgroundResource(R.mipmap.meer_neu);
                 }
             }
         }
@@ -550,11 +609,14 @@ public class GameActivity extends AppCompatActivity {
                 tv.setTextSize(20);
                 tv.setTextColor(Color.WHITE);
                 if (battleField[i][j] == 1) {
-                    tv.setText("o");
+                    //tv.setText("o");
+                    tv.setBackgroundResource(R.mipmap.sea_ship_destroyed);
                 } else if (battleField[i][j] == -1) {
-                    tv.setText("~");
+                    //tv.setText("~");
+                    tv.setBackgroundResource(R.mipmap.sea_wronghit);
                 } else {
-                    tv.setText("");
+                    //tv.setText("");
+                    tv.setBackgroundResource(R.mipmap.meer_neu);
                 }
             }
         }
