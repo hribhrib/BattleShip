@@ -205,7 +205,6 @@ public class GameActivity extends AppCompatActivity {
                                     if (waitDialog != null && !gameEnd) {
                                         waitDialog.dismiss();
                                     }
-
                                 }
                             }
                         };
@@ -382,16 +381,6 @@ public class GameActivity extends AppCompatActivity {
         waitDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        //Disconnect
-                        if (intent.getBooleanExtra("WIFI", false)) {
-                            if (host) {
-                                serverThread.close();
-                                serverThread = null;
-                            } else {
-                                clientThread.close();
-                                clientThread = null;
-                            }
-                        }
                         //go to homescreen
                         toStartScreen();
                     }
@@ -418,6 +407,16 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void toStartScreen() {
+        //Disconnect
+        if (intent.getBooleanExtra("WIFI", false)) {
+            if (host) {
+                serverThread.close();
+                serverThread = null;
+            } else {
+                clientThread.close();
+                clientThread = null;
+            }
+        }
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
@@ -451,13 +450,13 @@ public class GameActivity extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 });
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
 
         Log.d("My Log", "init Game nach Dialog");
 
         routingToTableLayout();
-
-
     }
 
     private void initDummyOpp() {
@@ -521,45 +520,50 @@ public class GameActivity extends AppCompatActivity {
         }
 
         displayOpponentsBattleField();
-
-        //display Opponents shot
         Context context = getApplicationContext();
         CharSequence text = c.x + "" + c.y;
         int duration = Toast.LENGTH_SHORT;
         Toast.makeText(context, text, duration).show();
 
         game.newMove(new Move(opponent, myPlayer, c));
-        //waitDialog.dismiss();
     }
 
     private void realOpponentsMove() {
         tapHost.setCurrentTab(0);
 
-        Cordinate c = new Cordinate((int) oppMove.charAt(0) - 48, (int) oppMove.charAt(1) - 48);
-
-        int[][] tmpMyShips = myPlayer.getShips();
-
-        if (tmpMyShips[c.x][c.y] == -1) {
-            opponent.updateBattleField(c.x, c.y, -1);
-        } else if (tmpMyShips[c.x][c.y] == 1) {
-            playSoundHitShip();
-            phoneVibrate();
-            opponent.updateBattleField(c.x, c.y, 1);
-            if (myPlayer.incShipDestroyed() == myPlayer.getMaxShips()) {
-                endGame(opponent);
-            }
+        //Opponent has quit
+        if (oppMove.charAt(0) == 'c') {
+            Toast.makeText(getBaseContext(), "The enemy gave up!",
+                    Toast.LENGTH_LONG).show();
+            toStartScreen();
         }
+        else {
+            Cordinate c = new Cordinate((int) oppMove.charAt(0) - 48, (int) oppMove.charAt(1) - 48);
 
-        displayOpponentsBattleField();
+            int[][] tmpMyShips = myPlayer.getShips();
+
+            if (tmpMyShips[c.x][c.y] == -1) {
+                opponent.updateBattleField(c.x, c.y, -1);
+            } else if (tmpMyShips[c.x][c.y] == 1) {
+                playSoundHitShip();
+                phoneVibrate();
+                opponent.updateBattleField(c.x, c.y, 1);
+                if (myPlayer.incShipDestroyed() == myPlayer.getMaxShips()) {
+                    endGame(opponent);
+                }
+            }
+
+            displayOpponentsBattleField();
 
 
-        //display Opponents shot
-        Context context = getApplicationContext();
-        CharSequence text = c.x + "" + c.y;
-        int duration = Toast.LENGTH_SHORT;
-        Toast.makeText(context, text, duration).show();
+            //display Opponents shot
+            Context context = getApplicationContext();
+            CharSequence text = c.x + "" + c.y;
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(context, text, duration).show();
 
-        game.newMove(new Move(opponent, myPlayer, c));
+            game.newMove(new Move(opponent, myPlayer, c));
+        }
     }
 
     private void displayMyShips() {
@@ -790,12 +794,16 @@ public class GameActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         if (intent.getBooleanExtra("WIFI", false)) {
+            //Ends the game on the other Device
             if (host) {
-                serverThread.close();
-                serverThread = null;
+                serverThread.dataReady("c");
             } else {
-                clientThread.close();
-                clientThread = null;
+                clientThread.dataReady("c");
+            }
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
         //go to homescreen

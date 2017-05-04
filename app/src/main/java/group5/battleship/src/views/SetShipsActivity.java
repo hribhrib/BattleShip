@@ -229,6 +229,13 @@ public class SetShipsActivity extends AppCompatActivity {
         textViews.add(tv);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent back = new Intent(this, MainActivity.class);
+        startActivity(back);
+
+    }
 
 
 

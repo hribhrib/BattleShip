@@ -102,12 +102,9 @@ public class WifiManagerActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int reason) {
-
                 if (reason == 0) {
                     myTextView.setText("Error, try it again");
                 }
-
-
             }
         });
     }
@@ -206,6 +203,8 @@ public class WifiManagerActivity extends AppCompatActivity {
         unregisterReceiver(myReceiver);
 
     }
+
+
 
 
 

@@ -10,33 +10,35 @@ import group5.battleship.R;
 
 public class MainActivity extends AppCompatActivity{
     EditText playername;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        intent=null;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
         playername = (EditText) (findViewById(R.id.editText));
     }
 
     public void startWifiGame(View view) {
-        Intent intent = new Intent(this, WifiManagerActivity.class);
-
+        intent = new Intent(this, WifiManagerActivity.class);
         intent.putExtra("NAME", playername.getText().toString());
         intent.putExtra("WIFI", true);
         startActivity(intent);
     }
 
     public void startLocalGame(View view) {
-        Intent intent = new Intent(this, SetShipsActivity.class);
+        intent = new Intent(this, SetShipsActivity.class);
         intent.putExtra("NAME", playername.getText().toString());
         intent.putExtra("WIFI", false);
         startActivity(intent);
     }
 
-    @Override
-    protected void onResume(){
-        super.onResume();
 
+
+    @Override
+    public void onBackPressed() {
+       //Disable the bach button
     }
 
 
