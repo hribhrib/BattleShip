@@ -521,6 +521,8 @@ public class GameActivity extends AppCompatActivity {
 
         int[][] opBattleField = opponent.getBattleField();
 
+        int[][] myShips = myPlayer.getShips();
+
         TextView tv;
         for (int i = 0; i < game.getSize(); i++) {
             for (int j = 0; j < game.getSize(); j++) {
@@ -532,7 +534,12 @@ public class GameActivity extends AppCompatActivity {
                 } else if (opBattleField[i][j] == -1) {
                     tv.setBackgroundResource(R.mipmap.sea_wronghit);
                 } else {
-                    tv.setBackgroundResource(R.mipmap.meer_neu);
+                    // set the other ships so that you see where your ships are
+                    if (myShips[i][j] == 1 ) {
+                        tv.setBackgroundResource(R.mipmap.sea_ship);
+                    } else {
+                        tv.setBackgroundResource(R.mipmap.meer_neu);
+                    }
                 }
             }
         }
