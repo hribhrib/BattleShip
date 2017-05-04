@@ -6,17 +6,15 @@ package group5.battleship.src.logic;
  * This class represent a move.
  */
 
-public class Move {
+public class Move{
     Player attacker;
     Player target;
-    int x;
-    int y;
+   Cordinate c;
 
     public Move(Player attacker, Player target, Cordinate c){
         this.attacker = attacker;
         this.target = target;
-        this.x = c.x;
-        this.y = c.y;
+        this.c = new Cordinate(c.x,c.y);
     }
 
 }

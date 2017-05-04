@@ -14,6 +14,7 @@ public class Player {
     int shipsDestroyed = 0;
     private int randomAttacks = 1;                  // so that random attack only works once a game, for now
 
+
     public Player(String name) {
         this.name = name;
     }
@@ -38,10 +39,11 @@ public class Player {
         return ships[c.x][c.y];
     }
 
-    public void updateBattleField(int x, int y, int state) {
+    public void updateBattleField(Cordinate c, int state) {
         //-1 = water
         //+1 = ship
-        battleField[x][y] = state;
+        battleField[c.x][c.y] = state;
+        
     }
     public void updateBattleField(Cordinate c, int state) {
         int x = c.x;

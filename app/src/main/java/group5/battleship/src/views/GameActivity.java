@@ -282,11 +282,12 @@ public class GameActivity extends AppCompatActivity {
 
             if (tmpOpponentShips[c.x][c.y] == -1) {
 
-                myPlayer.updateBattleField(c.x, c.y, -1);
+                myPlayer.updateBattleField(c, -1);
+
             } else if (tmpOpponentShips[c.x][c.y] == 1) {
                 playSoundHitShip();
-                myPlayer.updateBattleField(c.x, c.y, 1);
-                if (opponent.incShipDestroyed() == opponent.getMaxShips()) {
+                myPlayer.updateBattleField(c, 1);
+                if(opponent.incShipDestroyed()==opponent.getMaxShips()){
                     endGame(myPlayer);
                 }
             }
@@ -481,12 +482,13 @@ public class GameActivity extends AppCompatActivity {
         int[][] tmpMyShips = myPlayer.getShips();
 
         if (tmpMyShips[c.x][c.y] == -1) {
-            opponent.updateBattleField(c.x, c.y, -1);
+            opponent.updateBattleField(c, -1);
         } else if (tmpMyShips[c.x][c.y] == 1) {
             playSoundHitShip();
             phoneVibrate();
-            opponent.updateBattleField(c.x, c.y, 1);
-            if (myPlayer.incShipDestroyed() == myPlayer.getMaxShips()) {
+
+            opponent.updateBattleField(c, 1);
+            if(myPlayer.incShipDestroyed()==myPlayer.getMaxShips()){
                 endGame(opponent);
             }
         }
@@ -539,9 +541,12 @@ public class GameActivity extends AppCompatActivity {
         TextView tv;
         for (int i = 0; i < game.getSize(); i++) {
             for (int j = 0; j < game.getSize(); j++) {
-                tv = (TextView) findViewById(getRoutingByCordinateMyField(i, j));
+
+                tv = (TextView) findViewById(getRoutingByCordinateMyField(new Cordinate(i,j)));
+
                 tv.setTextSize(20);
                 tv.setTextColor(Color.WHITE);
+
                 if (ships[i][j] == 1) {
                     tv.setText("o");
                 } else {
@@ -560,7 +565,9 @@ public class GameActivity extends AppCompatActivity {
         TextView tv;
         for (int i = 0; i < game.getSize(); i++) {
             for (int j = 0; j < game.getSize(); j++) {
-                tv = (TextView) findViewById(getRoutingByCordinateMyField(i, j));
+
+                tv = (TextView) findViewById(getRoutingByCordinateMyField(new Cordinate(i, j)));
+
                 tv.setTextSize(20);
                 tv.setTextColor(Color.WHITE);
                 if (opBattleField[i][j] == 1) {
@@ -605,9 +612,12 @@ public class GameActivity extends AppCompatActivity {
         TextView tv;
         for (int i = 0; i < game.getSize(); i++) {
             for (int j = 0; j < game.getSize(); j++) {
-                tv = (TextView) findViewById(getRoutingByCordinateOpponentField(i, j));
+
+                tv = (TextView) findViewById(getRoutingByCordinateOpponentField(new Cordinate(i, j)));
+
                 tv.setTextSize(20);
                 tv.setTextColor(Color.WHITE);
+
                 if (battleField[i][j] == 1) {
                     //tv.setText("o");
                     tv.setBackgroundResource(R.mipmap.sea_ship_destroyed);
@@ -680,12 +690,12 @@ public class GameActivity extends AppCompatActivity {
         routingOpponentField[4][4] = findViewById(R.id.opponentTextView44).getId();
     }
 
-    private int getRoutingByCordinateMyField(int x, int y) {
-        return routingMyField[x][y];
+    private int getRoutingByCordinateMyField(Cordinate c) {
+        return routingMyField[c.x][c.y];
     }
 
-    private int getRoutingByCordinateOpponentField(int x, int y) {
-        return routingOpponentField[x][y];
+    private int getRoutingByCordinateOpponentField(Cordinate c) {
+        return routingOpponentField[c.x][c.y];
     }
 
     private Cordinate getRoutingByIDOpponentField(int id) {
@@ -756,6 +766,7 @@ public class GameActivity extends AppCompatActivity {
             }
         }
     }
+
 }
 
 
