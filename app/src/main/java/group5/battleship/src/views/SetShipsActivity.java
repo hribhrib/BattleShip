@@ -52,7 +52,8 @@ public class SetShipsActivity extends AppCompatActivity {
                 currentShips++;
 
                 tv.setTextColor(Color.WHITE);
-                tv.setText("o");
+                //tv.setText("o");
+                tv.setBackgroundResource(R.mipmap.sea_ship);
                 storeTextview(tv);
 
             } else {
@@ -71,7 +72,8 @@ public class SetShipsActivity extends AppCompatActivity {
                     currentShips++;
 
                     tv.setTextColor(Color.WHITE);
-                    tv.setText("o");
+                    //tv.setText("o");
+                    tv.setBackgroundResource(R.mipmap.sea_ship);
                     storeTextview(tv);
 
                     if (currentShips == MAX_SHIPS) {
@@ -180,7 +182,8 @@ public class SetShipsActivity extends AppCompatActivity {
         for (int i = textViews.size() - 1; i >= 0; i--) {
             Log.d("Size Array ", String.valueOf(i));
             tmp = textViews.get(i);
-            tmp.setText("");
+            tmp.setBackgroundResource(R.mipmap.meer_neu);
+            //tmp.setText("");
             //textViews.remove(i);
 
         }

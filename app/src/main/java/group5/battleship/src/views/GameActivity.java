@@ -25,11 +25,14 @@ import group5.battleship.src.logic.Game;
 import group5.battleship.src.logic.Move;
 import group5.battleship.src.logic.Player;
 import group5.battleship.src.logic.ShakeDetector;
+
 import android.widget.Button;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import group5.battleship.src.wifi.ClientThread;
 import group5.battleship.src.wifi.ServerThread;
 import group5.battleship.src.logic.randomShipCordinate;
@@ -47,6 +50,9 @@ public class GameActivity extends AppCompatActivity {
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
+
+    TextView tv;
+    boolean firebtnpressed = false;
 
 
     /////////////////////////////////////////
@@ -147,6 +153,7 @@ public class GameActivity extends AppCompatActivity {
             displayOpponentsBattleField();
             displayMyBattleField();
         }
+
     }
 
     public void onResume() {
@@ -218,7 +225,6 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-
     public void onPause() {
         mSensorManager.unregisterListener(mShakeDetector);
         super.onPause();
@@ -231,7 +237,31 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void cellClick(View view) {
-        TextView tv = (TextView) findViewById(view.getId());
+
+        final Button firebtn = (Button) findViewById(R.id.firebtn);
+
+        if (firebtn.getVisibility() == View.VISIBLE) {
+            // reset the view before setting the new target
+            displayMyBattleField();
+        }
+
+        tv = (TextView) findViewById(view.getId());
+        tv.setBackgroundResource(R.mipmap.crosshair_sea);
+
+
+        // press fire Button
+        firebtn.setVisibility(View.VISIBLE);
+        firebtnpressed = false;
+        firebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shotCell(tv);
+            }
+        });
+
+    }
+
+    public void shotCell(TextView tv) {
 
         Cordinate c = getRoutingByIDOpponentField(tv.getId());
 
@@ -267,6 +297,12 @@ public class GameActivity extends AppCompatActivity {
                 aiOpponentsMove();
             }
         }
+
+        //set fire button invisible agian
+        Button firebtn = (Button) findViewById(R.id.firebtn);
+        firebtn.setVisibility(View.INVISIBLE);
+
+
     }
 
     private void endGame(Player winner) {
@@ -352,7 +388,6 @@ public class GameActivity extends AppCompatActivity {
         opponent.setShips(ship1, ship2, ship3);
     }
 
-
     private void initRealOpp() {
         Cordinate ship1, ship2, ship3;
         Log.d("My Log", "HOST DEB" + String.valueOf(host));
@@ -370,7 +405,6 @@ public class GameActivity extends AppCompatActivity {
 
         Log.d("My Log", "Opponents Ships: " + oppShips);
     }
-
 
     private void aiOpponentsMove() {
         tapHost.setCurrentTab(0);
@@ -408,7 +442,7 @@ public class GameActivity extends AppCompatActivity {
 
     private void realOpponentsMove() {
 
-        Cordinate c = new Cordinate((int) oppMove.charAt(0) -48, (int)oppMove.charAt(1) -48);
+        Cordinate c = new Cordinate((int) oppMove.charAt(0) - 48, (int) oppMove.charAt(1) - 48);
 
         int[][] tmpMyShips = myPlayer.getShips();
 
@@ -453,6 +487,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void displayOpponentsBattleField() {
+
         int[][] opBattleField = opponent.getBattleField();
 
         TextView tv;
@@ -460,12 +495,31 @@ public class GameActivity extends AppCompatActivity {
             for (int j = 0; j < game.getSize(); j++) {
                 tv = (TextView) findViewById(getRoutingByCordinateMyField(i, j));
                 if (opBattleField[i][j] == 1) {
-                    tv.setText("o");
+                    tv.setBackgroundResource(R.mipmap.sea_ship_destroyed);
                 } else if (opBattleField[i][j] == -1) {
-                    tv.setText("~");
+                    tv.setBackgroundResource(R.mipmap.sea_wronghit);
                 } else {
+                    tv.setBackgroundResource(R.mipmap.meer_neu);
+                }
+            }
+        }
+    }
 
+    private void displayinitialOpponentsBattleField() {
 
+        opponent.setBattleField(opponent.getShips());
+        int[][] opBattleField = opponent.getBattleField();
+
+        TextView tv;
+        for (int i = 0; i < game.getSize(); i++) {
+            for (int j = 0; j < game.getSize(); j++) {
+                tv = (TextView) findViewById(getRoutingByCordinateMyField(i, j));
+                if (opBattleField[i][j] == 1) {
+                    tv.setBackgroundResource(R.mipmap.sea_ship);
+                } else if (opBattleField[i][j] == -1) {
+                    tv.setBackgroundResource(R.mipmap.meer_neu);
+                } else {
+                    tv.setBackgroundResource(R.mipmap.meer_neu);
                 }
             }
         }
@@ -481,11 +535,14 @@ public class GameActivity extends AppCompatActivity {
                 tv.setTextSize(20);
                 tv.setTextColor(Color.WHITE);
                 if (battleField[i][j] == 1) {
-                    tv.setText("o");
+                    //tv.setText("o");
+                    tv.setBackgroundResource(R.mipmap.sea_ship_destroyed);
                 } else if (battleField[i][j] == -1) {
-                    tv.setText("~");
+                    //tv.setText("~");
+                    tv.setBackgroundResource(R.mipmap.sea_wronghit);
                 } else {
-                    tv.setText("");
+                    //tv.setText("");
+                    tv.setBackgroundResource(R.mipmap.meer_neu);
                 }
             }
         }
@@ -584,12 +641,12 @@ public class GameActivity extends AppCompatActivity {
     public void randomAttack(int count) {
 
         if (myPlayer.getRandomAttacks() > 0) {
-            Cordinate randomShipCordinate = new randomShipCordinate(opponent,game);
+            Cordinate randomShipCordinate = new randomShipCordinate(opponent, game);
             Cordinate randomWaterCordinate = new randomWaterCordinate(opponent);
             Random r = new Random();
 
             if (r.nextInt(10) >= 4) {                               // increased chance to hit a ship
-                myPlayer.updateBattleField(randomShipCordinate,1);
+                myPlayer.updateBattleField(randomShipCordinate, 1);
                 playSoundHitShip();
                 if (opponent.incShipDestroyed() == opponent.getMaxShips()) {
                     endGame(myPlayer);
@@ -597,7 +654,7 @@ public class GameActivity extends AppCompatActivity {
                 myPlayer.setRandomAttacks();
                 game.newMove(new Move(myPlayer, opponent, randomShipCordinate));
                 displayMyBattleField();
-                Toast.makeText(getBaseContext(), "Verbleibende Zufallsangriffe: "+ myPlayer.getRandomAttacks(),
+                Toast.makeText(getBaseContext(), "Verbleibende Zufallsangriffe: " + myPlayer.getRandomAttacks(),
                         Toast.LENGTH_LONG).show();
                 aiOpponentsMove();
 
@@ -612,8 +669,7 @@ public class GameActivity extends AppCompatActivity {
                 aiOpponentsMove();
             }
 
-        }
-        else {
+        } else {
             Toast.makeText(getBaseContext(), "Bleib doch fair...",
                     Toast.LENGTH_LONG).show();
             displayMyBattleField();
