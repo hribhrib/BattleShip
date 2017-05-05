@@ -84,6 +84,8 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Log.d("MY LOG", "CREATE");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -148,9 +150,11 @@ public class GameActivity extends AppCompatActivity {
                 waitDialog.setCancelable(false);
                 waitDialog.setCanceledOnTouchOutside(false);
                 waitDialog.show();
+                Log.d("My Log", "ServerThread started");
             } else {
                 clientThread = new ClientThread(hostAddress, port);
                 new Thread(clientThread).start();
+                Log.d("My Log", "ClientThread started");
             }
 
             initGame();
@@ -164,6 +168,8 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void onResume() {
+        Log.d("MY LOG", "RESUME");
+
         super.onResume();
         mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
 
@@ -182,7 +188,8 @@ public class GameActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 //Got opp ships, only first time
-                                if (serverThread.getPlayer2String() != null && !oppReady) {
+                                if (serverThread != null &&
+                                        serverThread.getPlayer2String() != null && !oppReady) {
                                     oppReady = true;
                                     oppMove = serverThread.getPlayer2String();
                                     oppShips = serverThread.getPlayer2String();
@@ -191,14 +198,13 @@ public class GameActivity extends AppCompatActivity {
                                     displayMyBattleField();
                                 }
                                 //All other cycles, find new move
-                                else if (serverThread.getPlayer2String() != null &&
-                                        !serverThread.getPlayer2String().equals(oppMove)) {
+                                else if (serverThread != null && serverThread.getPlayer2String() != null
+                                        && !serverThread.getPlayer2String().equals(oppMove)) {
                                     oppMove = serverThread.getPlayer2String();
                                     realOpponentsMove();
                                     if (waitDialog != null && !gameEnd) {
                                         waitDialog.dismiss();
                                     }
-
                                 }
                             }
                         };
@@ -208,7 +214,8 @@ public class GameActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 //Got opp ships, only first time
-                                if (clientThread.getPlayer2String() != null && !oppReady) {
+                                if (clientThread != null &&
+                                        clientThread.getPlayer2String() != null && !oppReady) {
                                     oppReady = true;
                                     oppMove = clientThread.getPlayer2String();
                                     oppShips = clientThread.getPlayer2String();
@@ -218,8 +225,8 @@ public class GameActivity extends AppCompatActivity {
 
                                 }
                                 //All other cycles, find new move
-                                else if (clientThread.getPlayer2String() != null &&
-                                        !clientThread.getPlayer2String().equals(oppMove)) {
+                                else if (clientThread != null && clientThread.getPlayer2String() != null
+                                        && !clientThread.getPlayer2String().equals(oppMove)) {
                                     oppMove = clientThread.getPlayer2String();
                                     realOpponentsMove();
                                     if (waitDialog != null && !gameEnd) {
@@ -244,7 +251,17 @@ public class GameActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        android.os.Process.killProcess(android.os.Process.myPid());
+        if (intent.getBooleanExtra("WIFI", false)) {
+            host = getIntent().getBooleanExtra("IsHost", true);
+            if (host && serverThread!=null) {
+                serverThread.close();
+                serverThread = null;
+            } else if (clientThread != null){
+                clientThread.close();
+                clientThread = null;
+            }
+            android.os.Process.killProcess(android.os.Process.myPid());
+        }
     }
 
     public void cellClick(View view) {
@@ -333,50 +350,48 @@ public class GameActivity extends AppCompatActivity {
 
     private void endGame(final Player winner) {
 
-        Log.d("My LOG", winner.getName()+ " deb");
-        Log.d("My LOG", myPlayer.getName()+ " ich");
-        Log.d("My LOG", opponent.getName()+ " er");
-        if (waitDialog!=null) {
+
+
+        Log.d("My LOG", winner.getName() + " winner");
+        Log.d("My LOG", myPlayer.getName() + " me");
+        Log.d("My LOG", opponent.getName() + " he");
+        if (waitDialog != null) {
             waitDialog.dismiss();
         }
 
         waitDialog = new AlertDialog.Builder(GameActivity.this).create();
         waitDialog.setTitle("GAME END!");
-
-        if (!intent.getBooleanExtra("WIFI", true)) {
-            waitDialog.setMessage("Player: " + winner.getName() + " won!\nWant to play a new one?");
-            waitDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes!",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            //Set your ships on an other position
-                            startAgain();
-
+        waitDialog.setMessage("Player: " + winner.getName() + " won!\nWant to play a new one?");
+        waitDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes!",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Disconnect
+                        if (intent.getBooleanExtra("WIFI", false)) {
+                            if (host) {
+                                serverThread.close();
+                                serverThread = null;
+                            } else {
+                                clientThread.close();
+                                clientThread = null;
+                            }
                         }
-                    });
-            waitDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            //go to homescreen
-                            toStartScreen();
-                        }
-                    });
-        }
-        else {
-            waitDialog.setMessage("Player: " + winner.getName() + " won!");
-            waitDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Ok!",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            //go to homescreen
-                            toStartScreen();
-
-                        }
-                    });
-        }
-
+                        //Set your ships on an other position
+                        startAgain();
+                    }
+                });
+        waitDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //go to homescreen
+                        toStartScreen();
+                    }
+                });
         waitDialog.setIcon(android.R.drawable.ic_dialog_alert);
         waitDialog.setCancelable(false);
         waitDialog.setCanceledOnTouchOutside(false);
         waitDialog.show();
+
+
 
         gameEnd = true;
 
@@ -386,10 +401,23 @@ public class GameActivity extends AppCompatActivity {
         Intent restart = new Intent(this, SetShipsActivity.class);
         Log.d("MY LOG", intent.getStringExtra("NAME"));
         restart.putExtra("NAME", intent.getStringExtra("NAME"));
+        restart.putExtra("WIFI", getIntent().getBooleanExtra("WIFI", false));
+        restart.putExtra("IsHost", getIntent().getBooleanExtra("IsHost", false));
+        restart.putExtra("HostAddress", intent.getStringExtra("HostAddress"));
         startActivity(restart);
     }
 
     private void toStartScreen() {
+        //Disconnect
+        if (intent.getBooleanExtra("WIFI", false)) {
+            if (host) {
+                serverThread.close();
+                serverThread = null;
+            } else {
+                clientThread.close();
+                clientThread = null;
+            }
+        }
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
@@ -423,13 +451,13 @@ public class GameActivity extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 });
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
 
         Log.d("My Log", "init Game nach Dialog");
 
         routingToTableLayout();
-
-
     }
 
     private void initDummyOpp() {
@@ -440,11 +468,11 @@ public class GameActivity extends AppCompatActivity {
 
         do {
             ship2 = new Cordinate(r.nextInt(5), r.nextInt(5));
-        } while (ship1.equals(ship2) == true);
+        } while (ship1.equals(ship2));
 
         do {
             ship3 = new Cordinate(r.nextInt(5), r.nextInt(5));
-        } while (ship1.equals(ship3) == true && ship2.equals(ship3) == true);
+        } while (ship1.equals(ship3) && ship2.equals(ship3));
 
 
         opponent.setShips(ship1, ship2, ship3);
@@ -494,23 +522,28 @@ public class GameActivity extends AppCompatActivity {
         }
 
         displayOpponentsBattleField();
-
-        //display Opponents shot
         Context context = getApplicationContext();
         CharSequence text = c.x + "" + c.y;
         int duration = Toast.LENGTH_SHORT;
         Toast.makeText(context, text, duration).show();
 
         game.newMove(new Move(opponent, myPlayer, c));
-        //waitDialog.dismiss();
     }
 
     private void realOpponentsMove() {
         tapHost.setCurrentTab(0);
 
-        Cordinate c = new Cordinate((int) oppMove.charAt(0) - 48, (int) oppMove.charAt(1) - 48);
+        //Opponent has quit
+        if (oppMove.charAt(0) == 'c') {
+            Toast.makeText(getBaseContext(), "The enemy gave up!",
+                    Toast.LENGTH_LONG).show();
+            toStartScreen();
+        }
+        else {
+            Cordinate c = new Cordinate((int) oppMove.charAt(0) - 48, (int) oppMove.charAt(1) - 48);
 
-        int[][] tmpMyShips = myPlayer.getShips();
+            int[][] tmpMyShips = myPlayer.getShips();
+
 
         if (tmpMyShips[c.x][c.y] == -1) {
             opponent.updateBattleField(c, -1);
@@ -520,19 +553,20 @@ public class GameActivity extends AppCompatActivity {
             opponent.updateBattleField(c, 1);
             if (myPlayer.incShipDestroyed() == myPlayer.getMaxShips()) {
                 endGame(opponent);
+
             }
+
+            displayOpponentsBattleField();
+
+
+            //display Opponents shot
+            Context context = getApplicationContext();
+            CharSequence text = c.x + "" + c.y;
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(context, text, duration).show();
+
+            game.newMove(new Move(opponent, myPlayer, c));
         }
-
-        displayOpponentsBattleField();
-
-
-        //display Opponents shot
-        Context context = getApplicationContext();
-        CharSequence text = c.x + "" + c.y;
-        int duration = Toast.LENGTH_SHORT;
-        Toast.makeText(context, text, duration).show();
-
-        game.newMove(new Move(opponent, myPlayer, c));
     }
 
     private void displayMyShips() {
@@ -576,7 +610,7 @@ public class GameActivity extends AppCompatActivity {
                     tv.setBackgroundResource(R.mipmap.sea_wronghit);
                 } else {
                     // set the other ships so that you see where your ships are
-                    if (myShips[i][j] == 1 ) {
+                    if (myShips[i][j] == 1) {
                         tv.setBackgroundResource(R.mipmap.sea_ship);
                     } else {
                         tv.setBackgroundResource(R.mipmap.meer_neu);
@@ -765,6 +799,27 @@ public class GameActivity extends AppCompatActivity {
 
             }
         }
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (intent.getBooleanExtra("WIFI", false)) {
+            //Ends the game on the other Device
+            if (host) {
+                serverThread.dataReady("c");
+            } else {
+                clientThread.dataReady("c");
+            }
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        //go to homescreen
+        toStartScreen();
     }
 
 }

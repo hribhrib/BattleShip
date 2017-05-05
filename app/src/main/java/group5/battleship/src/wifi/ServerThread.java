@@ -40,8 +40,9 @@ public class ServerThread implements Runnable, Serializable {
             //Open the socket, if its not already done
             try {
                 if (socket == null) {
+                    Log.d("MY LOG", "New ServerSocket");
                     socket = new DatagramSocket(myPort);
-                    //socket.setSoTimeout(1);
+                    socket.setSoTimeout(1200000);                                               //////NEW
                 }
             } catch (IOException e) {
                 if (e.getMessage() == null) {
@@ -52,7 +53,7 @@ public class ServerThread implements Runnable, Serializable {
             }
 
 
-            //receive
+            //receive data from client
             DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
             Log.e("MyTag", "Waiting for Packet");
             try {
@@ -121,9 +122,14 @@ public class ServerThread implements Runnable, Serializable {
     }
 
     public synchronized void dataReady(String dataToSend) {
+        //Tells the server when data is ready, so he continue to work
         this.dataToSend = dataToSend;
         dataReady = true;
         notifyAll();
+    }
+
+    public void close() {
+        socket.close();
     }
 }
 
