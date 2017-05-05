@@ -253,10 +253,10 @@ public class GameActivity extends AppCompatActivity {
         super.onDestroy();
         if (intent.getBooleanExtra("WIFI", false)) {
             host = getIntent().getBooleanExtra("IsHost", true);
-            if (host && serverThread!=null) {
+            if (host && serverThread != null) {
                 serverThread.close();
                 serverThread = null;
-            } else if (clientThread != null){
+            } else if (clientThread != null) {
                 clientThread.close();
                 clientThread = null;
             }
@@ -304,7 +304,7 @@ public class GameActivity extends AppCompatActivity {
             } else if (tmpOpponentShips[c.x][c.y] == 1) {
                 playSoundHitShip();
                 myPlayer.updateBattleField(c, 1);
-                if(opponent.incShipDestroyed()==opponent.getMaxShips()){
+                if (opponent.incShipDestroyed() == opponent.getMaxShips()) {
                     endGame(myPlayer);
                 }
             }
@@ -351,7 +351,6 @@ public class GameActivity extends AppCompatActivity {
     private void endGame(final Player winner) {
 
 
-
         Log.d("My LOG", winner.getName() + " winner");
         Log.d("My LOG", myPlayer.getName() + " me");
         Log.d("My LOG", opponent.getName() + " he");
@@ -390,7 +389,6 @@ public class GameActivity extends AppCompatActivity {
         waitDialog.setCancelable(false);
         waitDialog.setCanceledOnTouchOutside(false);
         waitDialog.show();
-
 
 
         gameEnd = true;
@@ -458,6 +456,8 @@ public class GameActivity extends AppCompatActivity {
         Log.d("My Log", "init Game nach Dialog");
 
         routingToTableLayout();
+
+
     }
 
     private void initDummyOpp() {
@@ -516,7 +516,7 @@ public class GameActivity extends AppCompatActivity {
             phoneVibrate();
 
             opponent.updateBattleField(c, 1);
-            if(myPlayer.incShipDestroyed()==myPlayer.getMaxShips()){
+            if (myPlayer.incShipDestroyed() == myPlayer.getMaxShips()) {
                 endGame(opponent);
             }
         }
@@ -538,34 +538,34 @@ public class GameActivity extends AppCompatActivity {
             Toast.makeText(getBaseContext(), "The enemy gave up!",
                     Toast.LENGTH_LONG).show();
             toStartScreen();
-        }
-        else {
+        } else {
             Cordinate c = new Cordinate((int) oppMove.charAt(0) - 48, (int) oppMove.charAt(1) - 48);
 
             int[][] tmpMyShips = myPlayer.getShips();
 
 
-        if (tmpMyShips[c.x][c.y] == -1) {
-            opponent.updateBattleField(c, -1);
-        } else if (tmpMyShips[c.x][c.y] == 1) {
-            playSoundHitShip();
-            phoneVibrate();
-            opponent.updateBattleField(c, 1);
-            if (myPlayer.incShipDestroyed() == myPlayer.getMaxShips()) {
-                endGame(opponent);
+            if (tmpMyShips[c.x][c.y] == -1) {
+                opponent.updateBattleField(c, -1);
+            } else if (tmpMyShips[c.x][c.y] == 1) {
+                playSoundHitShip();
+                phoneVibrate();
+                opponent.updateBattleField(c, 1);
+                if (myPlayer.incShipDestroyed() == myPlayer.getMaxShips()) {
+                    endGame(opponent);
 
+                }
+
+                displayOpponentsBattleField();
+
+
+                //display Opponents shot
+                Context context = getApplicationContext();
+                CharSequence text = c.x + "" + c.y;
+                int duration = Toast.LENGTH_SHORT;
+                Toast.makeText(context, text, duration).show();
+
+                game.newMove(new Move(opponent, myPlayer, c));
             }
-
-            displayOpponentsBattleField();
-
-
-            //display Opponents shot
-            Context context = getApplicationContext();
-            CharSequence text = c.x + "" + c.y;
-            int duration = Toast.LENGTH_SHORT;
-            Toast.makeText(context, text, duration).show();
-
-            game.newMove(new Move(opponent, myPlayer, c));
         }
     }
 
@@ -576,7 +576,7 @@ public class GameActivity extends AppCompatActivity {
         for (int i = 0; i < game.getSize(); i++) {
             for (int j = 0; j < game.getSize(); j++) {
 
-                tv = (TextView) findViewById(getRoutingByCordinateMyField(new Cordinate(i,j)));
+                tv = (TextView) findViewById(getRoutingByCordinateMyField(new Cordinate(i, j)));
 
                 tv.setTextSize(20);
                 tv.setTextColor(Color.WHITE);
@@ -628,7 +628,7 @@ public class GameActivity extends AppCompatActivity {
         TextView tv;
         for (int i = 0; i < game.getSize(); i++) {
             for (int j = 0; j < game.getSize(); j++) {
-                tv = (TextView) findViewById(getRoutingByCordinateMyField(new Cordinate(i,j)));
+                tv = (TextView) findViewById(getRoutingByCordinateMyField(new Cordinate(i, j)));
                 if (opBattleField[i][j] == 1) {
                     tv.setBackgroundResource(R.mipmap.sea_ship);
                 } else if (opBattleField[i][j] == -1) {
