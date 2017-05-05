@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_home_screen);
         playername = (EditText) (findViewById(R.id.editText));
         playername.setBackgroundColor(Color.WHITE);
+        playername.setTextColor(Color.BLACK);
     }
 
     public void startWifiGame(View view) {
