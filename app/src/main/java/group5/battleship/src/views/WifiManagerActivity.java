@@ -105,6 +105,9 @@ public class WifiManagerActivity extends AppCompatActivity {
                 if (reason == 0) {
                     myTextView.setText("Error, try it again");
                 }
+                else if (reason == 2){
+                    myTextView.setText("Error, wifi is disabled");
+                }
             }
         });
     }
