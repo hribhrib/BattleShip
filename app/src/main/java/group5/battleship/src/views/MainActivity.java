@@ -1,6 +1,7 @@
 package group5.battleship.src.views;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +16,8 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
         playername = (EditText) (findViewById(R.id.editText));
+        playername.setBackgroundColor(Color.WHITE);
+        playername.setTextColor(Color.BLACK);
     }
 
     public void startWifiGame(View view) {
