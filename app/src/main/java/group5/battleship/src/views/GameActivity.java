@@ -606,17 +606,17 @@ public class GameActivity extends AppCompatActivity {
                     tv.setBackgroundResource(R.mipmap.sea_ship_destroyed);
                 } else if (opBattleField[i][j] == -1) {
                     tv.setBackgroundResource(R.mipmap.sea_wronghit);
-                } else {
+                } else
                     // set the other ships so that you see where your ships are
                     if (myShips[i][j] == 1) {
                         tv.setBackgroundResource(R.mipmap.sea_ship);
                     } else {
                         tv.setBackgroundResource(R.mipmap.meer_neu);
                     }
-                }
             }
         }
     }
+
 
     private void displayinitialOpponentsBattleField() {
 
@@ -629,8 +629,8 @@ public class GameActivity extends AppCompatActivity {
                 if (opBattleField[i][j] == 1) {
                     tv.setBackgroundResource(R.mipmap.sea_ship);
                 } else if (opBattleField[i][j] == -1) {
-                    tv.setBackgroundResource(R.mipmap.meer_neu);
-                } else {
+                    tv.setBackgroundResource(R.mipmap.sea_wronghit);
+                } else if (opBattleField[i][j] == 0) {
                     tv.setBackgroundResource(R.mipmap.meer_neu);
                 }
             }
