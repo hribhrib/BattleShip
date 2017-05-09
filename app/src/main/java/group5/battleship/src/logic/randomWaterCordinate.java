@@ -6,16 +6,17 @@ import java.util.Random;
  * Created by seluh on 30.04.2017.
  */
 // used for randomAttack method
-public class randomWaterCordinate extends Cordinate {
+public class randomWaterCordinate {
+    public Cordinate c = new Cordinate(0,0);
 
     public randomWaterCordinate (Player opponent){                     //gets random waterfield cordinates
         int[][] tmpOpponentShips = opponent.getShips();
         Random r = new Random();
         boolean help = true;
         while (help == true) {
-            x = r.nextInt(5);
-            y = r.nextInt(5);
-            if (tmpOpponentShips[x][y] == -1) {
+            c.x = r.nextInt(5);
+            c.y = r.nextInt(5);
+            if (tmpOpponentShips[c.x][c.y] == -1) {
                 break;
             }
         }

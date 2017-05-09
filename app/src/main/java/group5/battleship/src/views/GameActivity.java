@@ -7,8 +7,6 @@ import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Vibrator;
-import android.support.annotation.IntegerRes;
-import android.support.design.widget.TabLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -608,21 +606,20 @@ public class GameActivity extends AppCompatActivity {
                     tv.setBackgroundResource(R.mipmap.sea_ship_destroyed);
                 } else if (opBattleField[i][j] == -1) {
                     tv.setBackgroundResource(R.mipmap.sea_wronghit);
-                } else {
+                } else
                     // set the other ships so that you see where your ships are
                     if (myShips[i][j] == 1) {
                         tv.setBackgroundResource(R.mipmap.sea_ship);
                     } else {
                         tv.setBackgroundResource(R.mipmap.meer_neu);
                     }
-                }
             }
         }
     }
 
+
     private void displayinitialOpponentsBattleField() {
 
-        opponent.setBattleField(opponent.getShips());
         int[][] opBattleField = opponent.getBattleField();
 
         TextView tv;
@@ -632,8 +629,8 @@ public class GameActivity extends AppCompatActivity {
                 if (opBattleField[i][j] == 1) {
                     tv.setBackgroundResource(R.mipmap.sea_ship);
                 } else if (opBattleField[i][j] == -1) {
-                    tv.setBackgroundResource(R.mipmap.meer_neu);
-                } else {
+                    tv.setBackgroundResource(R.mipmap.sea_wronghit);
+                } else if (opBattleField[i][j] == 0) {
                     tv.setBackgroundResource(R.mipmap.meer_neu);
                 }
             }
@@ -762,8 +759,8 @@ public class GameActivity extends AppCompatActivity {
 
 
             if (myPlayer.getRandomAttacks() > 0) {
-                Cordinate randomShipCordinate = new randomShipCordinate(opponent, game);
-                Cordinate randomWaterCordinate = new randomWaterCordinate(opponent);
+                Cordinate randomShipCordinate = (new randomShipCordinate(opponent, game)).c;
+                Cordinate randomWaterCordinate = (new randomWaterCordinate(opponent)).c;
                 Random r = new Random();
 
                 if (r.nextInt(10) >= 4) {                               // increased chance to hit a ship
@@ -772,7 +769,7 @@ public class GameActivity extends AppCompatActivity {
                     if (opponent.incShipDestroyed() == opponent.getMaxShips()) {
                         endGame(myPlayer);
                     }
-                    myPlayer.setRandomAttacks();
+                    myPlayer.decRandomAttacks();
                     game.newMove(new Move(myPlayer, opponent, randomShipCordinate));
                     displayMyBattleField();
                     Toast.makeText(getBaseContext(), "Verbleibende Zufallsangriffe: " + myPlayer.getRandomAttacks(),
@@ -784,7 +781,7 @@ public class GameActivity extends AppCompatActivity {
                     if (opponent.incShipDestroyed() == opponent.getMaxShips()) {
                         endGame(myPlayer);
                     }
-                    myPlayer.setRandomAttacks();
+                    myPlayer.decRandomAttacks();
                     game.newMove(new Move(myPlayer, opponent, randomWaterCordinate));
                     displayMyBattleField();
                     aiOpponentsMove();
