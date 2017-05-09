@@ -7,8 +7,6 @@ import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Vibrator;
-import android.support.annotation.IntegerRes;
-import android.support.design.widget.TabLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -622,7 +620,6 @@ public class GameActivity extends AppCompatActivity {
 
     private void displayinitialOpponentsBattleField() {
 
-        opponent.setBattleField(opponent.getShips());
         int[][] opBattleField = opponent.getBattleField();
 
         TextView tv;
@@ -762,8 +759,8 @@ public class GameActivity extends AppCompatActivity {
 
 
             if (myPlayer.getRandomAttacks() > 0) {
-                Cordinate randomShipCordinate = new randomShipCordinate(opponent, game);
-                Cordinate randomWaterCordinate = new randomWaterCordinate(opponent);
+                Cordinate randomShipCordinate = (new randomShipCordinate(opponent, game)).c;
+                Cordinate randomWaterCordinate = (new randomWaterCordinate(opponent)).c;
                 Random r = new Random();
 
                 if (r.nextInt(10) >= 4) {                               // increased chance to hit a ship
@@ -772,7 +769,7 @@ public class GameActivity extends AppCompatActivity {
                     if (opponent.incShipDestroyed() == opponent.getMaxShips()) {
                         endGame(myPlayer);
                     }
-                    myPlayer.setRandomAttacks();
+                    myPlayer.decRandomAttacks();
                     game.newMove(new Move(myPlayer, opponent, randomShipCordinate));
                     displayMyBattleField();
                     Toast.makeText(getBaseContext(), "Verbleibende Zufallsangriffe: " + myPlayer.getRandomAttacks(),
@@ -784,7 +781,7 @@ public class GameActivity extends AppCompatActivity {
                     if (opponent.incShipDestroyed() == opponent.getMaxShips()) {
                         endGame(myPlayer);
                     }
-                    myPlayer.setRandomAttacks();
+                    myPlayer.decRandomAttacks();
                     game.newMove(new Move(myPlayer, opponent, randomWaterCordinate));
                     displayMyBattleField();
                     aiOpponentsMove();

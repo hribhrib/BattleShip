@@ -8,6 +8,9 @@ package group5.battleship.src.logic;
 
 public class Player {
     String name;
+    //-1 = water
+    // 0 = undef
+    //+1 = ship
     int[][] battleField;
     int[][] ships;
     int MAX_SHIPS = 3;
@@ -51,10 +54,6 @@ public class Player {
         return battleField;
     }
 
-    public void setBattleField(int[][] battleField1) {
-        battleField = battleField1;
-    }
-
     public int getBattleFieldByCordinate(Cordinate c) {
         return battleField[c.x][c.y];
     }
@@ -72,7 +71,7 @@ public class Player {
         return name;
     }
 
-    public void setRandomAttacks() {
+    public void decRandomAttacks() {
         this.randomAttacks = randomAttacks - 1;
     }
 
