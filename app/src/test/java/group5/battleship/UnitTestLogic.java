@@ -47,12 +47,19 @@ public class UnitTestLogic {
     }
 
     @Test
-    public void PlayerInitFields() throws Exception {
-        Player tmp = new Player("tmp");
-
+    public void PlayerInitMyField() throws Exception {
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                assertEquals(pl.getShipByCordinate(new Cordinate(i, j)), pl.getShipByCordinate(new Cordinate(i, j)));
+                assertEquals(pl.getShipByCordinate(new Cordinate(i, j)),-1);
+            }
+        }
+    }
+
+    @Test
+    public void PlayerInitBattleField() throws Exception {
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                assertEquals(pl.getBattleFieldByCordinate(new Cordinate(i, j)),0);
             }
         }
     }
