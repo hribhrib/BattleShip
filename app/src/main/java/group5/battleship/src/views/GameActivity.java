@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,7 +34,6 @@ import java.net.UnknownHostException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import group5.battleship.src.logic.WaitingThread;
 import group5.battleship.src.wifi.ClientThread;
 import group5.battleship.src.wifi.ServerThread;
 import group5.battleship.src.logic.randomShipCordinate;
@@ -47,7 +47,7 @@ public class GameActivity extends AppCompatActivity {
     int[][] routingMyField;
     int[][] routingOpponentField;
     TabHost tabHost;
-    WaitingThread waiting;
+    boolean touchable = true;
 
     // for shakeDetection
     private SensorManager mSensorManager;
@@ -166,9 +166,6 @@ public class GameActivity extends AppCompatActivity {
             displayOpponentsBattleField();
             displayMyBattleField();
         }
-
-        //initiate the waitingThread
-        waiting = new WaitingThread(1000);
 
     }
 
@@ -317,7 +314,8 @@ public class GameActivity extends AppCompatActivity {
             game.newMove(new Move(myPlayer, opponent, c));
             displayMyBattleField();
 
-            //TODO
+
+            toggleWindowTouchable();
 
             //waiting.run(tabHost,0);
             Handler handler = new Handler();
@@ -325,7 +323,7 @@ public class GameActivity extends AppCompatActivity {
                 public void run() {
                     tabHost.setCurrentTab(0);
                 }
-            }, 1000);
+            }, 850);
 
 
             if (intent.getBooleanExtra("WIFI", true)) {
@@ -550,8 +548,9 @@ public class GameActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             public void run() {
                 tabHost.setCurrentTab(1);
+                toggleWindowTouchable();
             }
-        }, 2000);
+        }, 1700);
     }
 
     private void realOpponentsMove() {
@@ -596,8 +595,9 @@ public class GameActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             public void run() {
                 tabHost.setCurrentTab(1);
+                toggleWindowTouchable();
             }
-        }, 2000);
+        }, 1700);
     }
 
     private void displayMyShips() {
@@ -850,6 +850,18 @@ public class GameActivity extends AppCompatActivity {
         }
         //go to homescreen
         toStartScreen();
+    }
+
+    private void toggleWindowTouchable(){
+        if(touchable){
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            touchable = false;
+        } else if(!touchable){
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            touchable = true;
+        }
+
     }
 
 }
