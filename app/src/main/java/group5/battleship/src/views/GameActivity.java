@@ -6,12 +6,14 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.os.Handler;
 import android.os.Vibrator;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,7 +46,9 @@ public class GameActivity extends AppCompatActivity {
     private Player opponent;
     int[][] routingMyField;
     int[][] routingOpponentField;
-    TabHost tapHost;
+    TabHost tabHost;
+    boolean touchable = true;
+
     // for shakeDetection
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
@@ -87,20 +91,20 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        tapHost = (TabHost) findViewById(R.id.tabHost);
-        tapHost.setup();
+        tabHost = (TabHost) findViewById(R.id.tabHost);
+        tabHost.setup();
 
         //Tab 1
-        TabHost.TabSpec spec = tapHost.newTabSpec("MyField");
+        TabHost.TabSpec spec = tabHost.newTabSpec("MyField");
         spec.setContent(R.id.MyField);
         spec.setIndicator("MyField");
-        tapHost.addTab(spec);
+        tabHost.addTab(spec);
 
         //Tab 2
-        spec = tapHost.newTabSpec("OpponentField");
+        spec = tabHost.newTabSpec("OpponentField");
         spec.setContent(R.id.OpponentField);
         spec.setIndicator("OpponentField");
-        tapHost.addTab(spec);
+        tabHost.addTab(spec);
 
 
         // ShakeDetector initialization
@@ -310,6 +314,18 @@ public class GameActivity extends AppCompatActivity {
             game.newMove(new Move(myPlayer, opponent, c));
             displayMyBattleField();
 
+
+            toggleWindowTouchable();
+
+            //waiting.run(tabHost,0);
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    tabHost.setCurrentTab(0);
+                }
+            }, 850);
+
+
             if (intent.getBooleanExtra("WIFI", true)) {
 
                 send = String.valueOf(c.x) + String.valueOf(c.y);
@@ -496,7 +512,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void aiOpponentsMove() {
-        tapHost.setCurrentTab(0);
+        //tabHost.setCurrentTab(0);
 
         Random r = new Random();
         Cordinate c;
@@ -526,10 +542,19 @@ public class GameActivity extends AppCompatActivity {
         Toast.makeText(context, text, duration).show();
 
         game.newMove(new Move(opponent, myPlayer, c));
+
+        //waiting.run(tabHost,1);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                tabHost.setCurrentTab(1);
+                toggleWindowTouchable();
+            }
+        }, 1700);
     }
 
     private void realOpponentsMove() {
-        tapHost.setCurrentTab(0);
+        //tabHost.setCurrentTab(0);
 
         //Opponent has quit
         if (oppMove.charAt(0) == 'c') {
@@ -565,6 +590,14 @@ public class GameActivity extends AppCompatActivity {
                 game.newMove(new Move(opponent, myPlayer, c));
             }
         }
+        //waiting.run(tabHost,1);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                tabHost.setCurrentTab(1);
+                toggleWindowTouchable();
+            }
+        }, 1700);
     }
 
     private void displayMyShips() {
@@ -817,6 +850,18 @@ public class GameActivity extends AppCompatActivity {
         }
         //go to homescreen
         toStartScreen();
+    }
+
+    private void toggleWindowTouchable(){
+        if(touchable){
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            touchable = false;
+        } else if(!touchable){
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            touchable = true;
+        }
+
     }
 
 }
