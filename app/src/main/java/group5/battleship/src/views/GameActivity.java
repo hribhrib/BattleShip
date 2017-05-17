@@ -356,7 +356,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void endGame(final Player winner) {
-        if (winner == myPlayer) {
+        if (winner .equals(myPlayer) ) {
         playWinSound.start();
         updateStats(this,true);
         } else {
@@ -375,7 +375,7 @@ public class GameActivity extends AppCompatActivity {
         waitDialog.setTitle(getString(R.string.title_game_end));
 
         if (!intent.getBooleanExtra("WIFI", true)) {
-            waitDialog.setMessage(getString(R.string.string_fragment_player) + winner.getName() + getString(R.string.string_fragment_won) + "/n" + getString(R.string.message_play_one_more));
+            waitDialog.setMessage(getString(R.string.string_fragment_player) + winner.getName() + getString(R.string.string_fragment_won) + getString(R.string.message_play_one_more));
             waitDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.button_yes),
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
@@ -513,10 +513,8 @@ public class GameActivity extends AppCompatActivity {
         int[][] tmpMyShips = myPlayer.getShips();
 
         if (tmpMyShips[c.x][c.y] == -1) {
-            playMissSound.start();
             opponent.updateBattleField(c.x, c.y, -1);
         } else if (tmpMyShips[c.x][c.y] == 1) {
-            playHitSound.start();
             phoneVibrate();
             opponent.updateBattleField(c.x, c.y, 1);
             if (myPlayer.incShipDestroyed() == myPlayer.getMaxShips()) {

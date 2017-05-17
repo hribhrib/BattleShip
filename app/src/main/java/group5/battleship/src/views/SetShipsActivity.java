@@ -28,7 +28,6 @@ public class SetShipsActivity extends AppCompatActivity {
     int currentShips = 0;
     ArrayList<TextView> textViews = new ArrayList<>();
 
-    public MediaPlayer playMenuSound;
     public MediaPlayer playPutSound;
 
     @Override
@@ -89,6 +88,7 @@ public class SetShipsActivity extends AppCompatActivity {
                 if (shipSet == true && dublicate == false) {
                     ships = (ships + (String) view.getTag());
                     currentShips++;
+                    playPutSound.start();
 
                     tv.setTextColor(Color.WHITE);
                     //tv.setText("o");
