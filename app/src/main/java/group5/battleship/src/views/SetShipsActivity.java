@@ -133,8 +133,10 @@ public class SetShipsActivity extends AppCompatActivity {
 
         } else if (currentShips == MAX_SHIPS) {
 
+           /*
+
             // this code is not needed at the moment
-/*
+
             Context context = getApplicationContext();
             CharSequence text = "All ships are set";
             int duration = Toast.LENGTH_SHORT;
@@ -148,8 +150,9 @@ public class SetShipsActivity extends AppCompatActivity {
             View table = findViewById(R.id.table);
 
             table.setVisibility(View.INVISIBLE);
+            */
 
-*/
+
             
 
 

@@ -203,7 +203,20 @@ public class GameActivity extends AppCompatActivity {
                                 else if (serverThread != null && serverThread.getPlayer2String() != null
                                         && !serverThread.getPlayer2String().equals(oppMove)) {
                                     oppMove = serverThread.getPlayer2String();
+
+                                    toggleWindowTouchable();
+
+                                    //waiting.run(tabHost,0);
+                                    Handler handler = new Handler();
+                                    handler.postDelayed(new Runnable() {
+                                        public void run() {
+                                            tabHost.setCurrentTab(0);
+                                        }
+                                    }, 1250);
+
+
                                     realOpponentsMove();
+
                                     if (waitDialog != null && !gameEnd) {
                                         waitDialog.dismiss();
                                     }
@@ -230,7 +243,19 @@ public class GameActivity extends AppCompatActivity {
                                 else if (clientThread != null && clientThread.getPlayer2String() != null
                                         && !clientThread.getPlayer2String().equals(oppMove)) {
                                     oppMove = clientThread.getPlayer2String();
+
+                                    toggleWindowTouchable();
+
+                                    //waiting.run(tabHost,0);
+                                    Handler handler = new Handler();
+                                    handler.postDelayed(new Runnable() {
+                                        public void run() {
+                                            tabHost.setCurrentTab(0);
+                                        }
+                                    }, 1250);
                                     realOpponentsMove();
+
+
                                     if (waitDialog != null && !gameEnd) {
                                         waitDialog.dismiss();
                                     }
@@ -315,15 +340,18 @@ public class GameActivity extends AppCompatActivity {
             displayMyBattleField();
 
 
-            toggleWindowTouchable();
+            if (!intent.getBooleanExtra("WIFI", false)) {
+                toggleWindowTouchable();
 
-            //waiting.run(tabHost,0);
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                public void run() {
-                    tabHost.setCurrentTab(0);
-                }
-            }, 850);
+                //waiting.run(tabHost,0);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        tabHost.setCurrentTab(0);
+                    }
+                }, 1250);
+
+            }
 
 
             if (intent.getBooleanExtra("WIFI", true)) {
@@ -354,6 +382,7 @@ public class GameActivity extends AppCompatActivity {
                 aiOpponentsMove();
             }
         }
+
 
         //set fire button invisible agian
         Button firebtn = (Button) findViewById(R.id.firebtn);
@@ -544,13 +573,15 @@ public class GameActivity extends AppCompatActivity {
         game.newMove(new Move(opponent, myPlayer, c));
 
         //waiting.run(tabHost,1);
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
             public void run() {
                 tabHost.setCurrentTab(1);
                 toggleWindowTouchable();
             }
         }, 1700);
+
+
     }
 
     private void realOpponentsMove() {
@@ -569,6 +600,7 @@ public class GameActivity extends AppCompatActivity {
 
             if (tmpMyShips[c.x][c.y] == -1) {
                 opponent.updateBattleField(c, -1);
+                Log.d("My Log:", "nicht getroffen" + String.valueOf(tmpMyShips[c.x][c.y]));
             } else if (tmpMyShips[c.x][c.y] == 1) {
                 playSoundHitShip();
                 phoneVibrate();
@@ -578,7 +610,7 @@ public class GameActivity extends AppCompatActivity {
 
                 }
 
-                displayOpponentsBattleField();
+                //displayOpponentsBattleField();
 
 
                 //display Opponents shot
@@ -587,17 +619,20 @@ public class GameActivity extends AppCompatActivity {
                 int duration = Toast.LENGTH_SHORT;
                 Toast.makeText(context, text, duration).show();
 
-                game.newMove(new Move(opponent, myPlayer, c));
             }
+            game.newMove(new Move(opponent, myPlayer, c));
+            displayOpponentsBattleField();
         }
         //waiting.run(tabHost,1);
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+
+        Handler handler1 = new Handler();
+        handler1.postDelayed(new Runnable() {
             public void run() {
                 tabHost.setCurrentTab(1);
                 toggleWindowTouchable();
             }
         }, 1700);
+
     }
 
     private void displayMyShips() {
@@ -625,6 +660,7 @@ public class GameActivity extends AppCompatActivity {
 
         int[][] opBattleField = opponent.getBattleField();
 
+        Log.d("My Log:", "nicht getroffen hugo " + opBattleField[0][0]);
         int[][] myShips = myPlayer.getShips();
 
         TextView tv;
@@ -639,13 +675,19 @@ public class GameActivity extends AppCompatActivity {
                     tv.setBackgroundResource(R.mipmap.sea_ship_destroyed);
                 } else if (opBattleField[i][j] == -1) {
                     tv.setBackgroundResource(R.mipmap.sea_wronghit);
-                } else
+                    Log.d("My Log:", "nicht getroffen hugo");
+                } else if (opBattleField[i][j] == -1 && Character.getNumericValue(oppMove.charAt(0)) == i
+                        && Character.getNumericValue(oppMove.charAt(1)) == j) {
+                    tv.setBackgroundResource(R.mipmap.sea_wronghit);
+                    Log.d("My Log:", "nicht getroffen hugo");
+                } else {
                     // set the other ships so that you see where your ships are
                     if (myShips[i][j] == 1) {
                         tv.setBackgroundResource(R.mipmap.sea_ship);
                     } else {
                         tv.setBackgroundResource(R.mipmap.meer_neu);
                     }
+                }
             }
         }
     }
@@ -852,12 +894,12 @@ public class GameActivity extends AppCompatActivity {
         toStartScreen();
     }
 
-    private void toggleWindowTouchable(){
-        if(touchable){
+    private void toggleWindowTouchable() {
+        if (touchable) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             touchable = false;
-        } else if(!touchable){
+        } else if (!touchable) {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             touchable = true;
         }
