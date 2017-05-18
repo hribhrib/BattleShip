@@ -340,16 +340,18 @@ public class GameActivity extends AppCompatActivity {
             displayMyBattleField();
 
 
-            /*toggleWindowTouchable();
+            if (!intent.getBooleanExtra("WIFI", false)) {
+                toggleWindowTouchable();
 
-            //waiting.run(tabHost,0);
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                public void run() {
-                    tabHost.setCurrentTab(0);
-                }
-            }, 850);
-            */
+                //waiting.run(tabHost,0);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        tabHost.setCurrentTab(0);
+                    }
+                }, 1250);
+
+            }
 
 
             if (intent.getBooleanExtra("WIFI", true)) {
@@ -674,13 +676,11 @@ public class GameActivity extends AppCompatActivity {
                 } else if (opBattleField[i][j] == -1) {
                     tv.setBackgroundResource(R.mipmap.sea_wronghit);
                     Log.d("My Log:", "nicht getroffen hugo");
-                } else if (opBattleField[i][j] == -1 && Character.getNumericValue(oppMove.charAt(0))== i
-                        && Character.getNumericValue(oppMove.charAt(1))== j ) {
+                } else if (opBattleField[i][j] == -1 && Character.getNumericValue(oppMove.charAt(0)) == i
+                        && Character.getNumericValue(oppMove.charAt(1)) == j) {
                     tv.setBackgroundResource(R.mipmap.sea_wronghit);
                     Log.d("My Log:", "nicht getroffen hugo");
-                }
-
-                else {
+                } else {
                     // set the other ships so that you see where your ships are
                     if (myShips[i][j] == 1) {
                         tv.setBackgroundResource(R.mipmap.sea_ship);
