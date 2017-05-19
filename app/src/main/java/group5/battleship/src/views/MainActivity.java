@@ -13,10 +13,13 @@ public class MainActivity extends AppCompatActivity{
     EditText playername;
     Intent intent;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        intent=null;
+        Log.d("my Log", "OnCreate MainAct");
+
         super.onCreate(savedInstanceState);
+        intent=null;
         setContentView(R.layout.activity_home_screen);
         playername = (EditText) (findViewById(R.id.editText));
         playername.setBackgroundColor(Color.WHITE);
@@ -24,6 +27,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void startWifiGame(View view) {
+        Log.d("my Log", "start Wifi MainAct");
         intent = new Intent(this, WifiManagerActivity.class);
         intent.putExtra("NAME", playername.getText().toString());
         intent.putExtra("WIFI", true);
@@ -35,13 +39,13 @@ public class MainActivity extends AppCompatActivity{
         intent.putExtra("NAME", playername.getText().toString());
         intent.putExtra("WIFI", false);
         startActivity(intent);
-    }
 
+    }
 
 
     @Override
     public void onBackPressed() {
-       //Disable the bach button
+       //Disable the back button
     }
 
 

@@ -20,7 +20,9 @@ public class ClientThread implements Runnable, Serializable {
     private byte[] receiveData = new byte[64];
     private String player2String;
     private boolean dataReady = false;
+    private boolean active = true;
     private String dataToSend;
+
 
 
     //the datatransfer activity passes the adress of the group host and the port
@@ -37,7 +39,7 @@ public class ClientThread implements Runnable, Serializable {
         if (myHostAddress != null && myPort != 0) {
 
             int i = 0;
-            while (true) {
+            while (active) {
                 Log.d("#######################", "CLIENT_Round"+i);
                 i++;
                 try {
@@ -121,6 +123,7 @@ public class ClientThread implements Runnable, Serializable {
     }
 
     public void close() {
+        active = false;
         socket.close();
     }
 
