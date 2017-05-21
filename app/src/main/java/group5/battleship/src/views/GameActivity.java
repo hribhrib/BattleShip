@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.support.v7.app.AlertDialog;
@@ -38,6 +39,7 @@ import group5.battleship.src.wifi.ClientThread;
 import group5.battleship.src.wifi.ServerThread;
 import group5.battleship.src.logic.randomShipCordinate;
 import group5.battleship.src.logic.randomWaterCordinate;
+import group5.battleship.src.wifi.WifiBroadcastReciever;
 
 
 public class GameActivity extends AppCompatActivity {
@@ -79,6 +81,7 @@ public class GameActivity extends AppCompatActivity {
     boolean oppReady = false;
     String oppShips = "";
     String oppMove;
+    Handler handlerAi = new Handler();
 
 
     //////////////////////////////////////////
@@ -106,6 +109,7 @@ public class GameActivity extends AppCompatActivity {
         spec.setIndicator("OpponentField");
         tabHost.addTab(spec);
 
+        tabHost.setCurrentTab(1);
 
         // ShakeDetector initialization
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -212,10 +216,15 @@ public class GameActivity extends AppCompatActivity {
                                         public void run() {
                                             tabHost.setCurrentTab(0);
                                         }
-                                    }, 1250);
+                                    }, 1200);
 
+                                    handler.postDelayed(new Runnable() {
+                                        public void run() {
+                                            realOpponentsMove();
+                                        }
+                                    }, 2500);
 
-                                    realOpponentsMove();
+                                    //realOpponentsMove();
 
                                     if (waitDialog != null && !gameEnd) {
                                         waitDialog.dismiss();
@@ -252,8 +261,13 @@ public class GameActivity extends AppCompatActivity {
                                         public void run() {
                                             tabHost.setCurrentTab(0);
                                         }
-                                    }, 1250);
-                                    realOpponentsMove();
+                                    }, 1200);
+
+                                    handler.postDelayed(new Runnable() {
+                                        public void run() {
+                                            realOpponentsMove();
+                                        }
+                                    }, 2500);
 
 
                                     if (waitDialog != null && !gameEnd) {
@@ -277,6 +291,7 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     public void onDestroy() {
+        Log.d("My Log", "OnDestroy");
         super.onDestroy();
         if (intent.getBooleanExtra("WIFI", false)) {
             host = getIntent().getBooleanExtra("IsHost", true);
@@ -344,12 +359,12 @@ public class GameActivity extends AppCompatActivity {
                 toggleWindowTouchable();
 
                 //waiting.run(tabHost,0);
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
+
+                handlerAi.postDelayed(new Runnable() {
                     public void run() {
                         tabHost.setCurrentTab(0);
                     }
-                }, 1250);
+                }, 1200);
 
             }
 
@@ -373,13 +388,14 @@ public class GameActivity extends AppCompatActivity {
                 }
 
             } else {
-                /*
-                waitDialog = new AlertDialog.Builder(GameActivity.this).create();
-                waitDialog.setMessage("Wait for the counter attack...");
-                waitDialog.setCancelable(false);
-                waitDialog.setCanceledOnTouchOutside(false);
-                waitDialog.show();*/
-                aiOpponentsMove();
+               // Handler handler = new Handler();
+                handlerAi.postDelayed(new Runnable() {
+                    public void run() {
+                        aiOpponentsMove();
+                    }
+                }, 2500);
+
+
             }
         }
 
@@ -451,6 +467,11 @@ public class GameActivity extends AppCompatActivity {
     private void toStartScreen() {
         //Disconnect
         if (intent.getBooleanExtra("WIFI", false)) {
+
+            //Removes device from WifiP2pGroup
+            WifiManagerActivity wm = new WifiManagerActivity();
+            wm.disconnect();
+
             if (host) {
                 serverThread.close();
                 serverThread = null;
@@ -572,6 +593,8 @@ public class GameActivity extends AppCompatActivity {
 
         game.newMove(new Move(opponent, myPlayer, c));
 
+
+
         //waiting.run(tabHost,1);
         Handler handler1 = new Handler();
         handler1.postDelayed(new Runnable() {
@@ -579,7 +602,8 @@ public class GameActivity extends AppCompatActivity {
                 tabHost.setCurrentTab(1);
                 toggleWindowTouchable();
             }
-        }, 1700);
+        }, 1000);
+
 
 
     }
@@ -631,7 +655,7 @@ public class GameActivity extends AppCompatActivity {
                 tabHost.setCurrentTab(1);
                 toggleWindowTouchable();
             }
-        }, 1700);
+        }, 1000);
 
     }
 
@@ -691,7 +715,6 @@ public class GameActivity extends AppCompatActivity {
             }
         }
     }
-
 
     private void displayinitialOpponentsBattleField() {
 
@@ -885,7 +908,7 @@ public class GameActivity extends AppCompatActivity {
                 clientThread.dataReady("c");
             }
             try {
-                Thread.sleep(100);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

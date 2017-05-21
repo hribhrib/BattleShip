@@ -22,6 +22,7 @@ public class ServerThread implements Runnable, Serializable {
     private String player2String;
     private String dataToSend;
     private boolean dataReady;
+    private boolean active = true;
 
 
     //the datatransfer activity passes the adress of the group host and the port
@@ -35,14 +36,14 @@ public class ServerThread implements Runnable, Serializable {
 
 
         int i = 0;
-        while (true) {
+        while (active) {
             Log.d("#######################", "SERVER_Round" + i);
             //Open the socket, if its not already done
             try {
                 if (socket == null) {
                     Log.d("MY LOG", "New ServerSocket");
                     socket = new DatagramSocket(myPort);
-                    socket.setSoTimeout(1200000);                                               //////NEW
+                    socket.setSoTimeout(1200000);
                 }
             } catch (IOException e) {
                 if (e.getMessage() == null) {
@@ -129,6 +130,7 @@ public class ServerThread implements Runnable, Serializable {
     }
 
     public void close() {
+        active = false;
         socket.close();
     }
 }
