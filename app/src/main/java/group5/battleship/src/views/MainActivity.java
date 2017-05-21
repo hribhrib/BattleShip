@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("my Log", "OnCreate MainAct");
 
+
         super.onCreate(savedInstanceState);
         intent=null;
         setContentView(R.layout.activity_home_screen);
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity{
 
     @Override
     public void onBackPressed() {
-       //Disable the back button
+        //Disable back button
     }
 
 

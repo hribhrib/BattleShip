@@ -81,6 +81,7 @@ public class GameActivity extends AppCompatActivity {
     boolean oppReady = false;
     String oppShips = "";
     String oppMove;
+    Handler handlerAi = new Handler();
 
 
     //////////////////////////////////////////
@@ -215,10 +216,15 @@ public class GameActivity extends AppCompatActivity {
                                         public void run() {
                                             tabHost.setCurrentTab(0);
                                         }
-                                    }, 1250);
+                                    }, 1200);
 
+                                    handler.postDelayed(new Runnable() {
+                                        public void run() {
+                                            realOpponentsMove();
+                                        }
+                                    }, 2500);
 
-                                    realOpponentsMove();
+                                    //realOpponentsMove();
 
                                     if (waitDialog != null && !gameEnd) {
                                         waitDialog.dismiss();
@@ -255,8 +261,13 @@ public class GameActivity extends AppCompatActivity {
                                         public void run() {
                                             tabHost.setCurrentTab(0);
                                         }
-                                    }, 1250);
-                                    realOpponentsMove();
+                                    }, 1200);
+
+                                    handler.postDelayed(new Runnable() {
+                                        public void run() {
+                                            realOpponentsMove();
+                                        }
+                                    }, 2500);
 
 
                                     if (waitDialog != null && !gameEnd) {
@@ -348,12 +359,12 @@ public class GameActivity extends AppCompatActivity {
                 toggleWindowTouchable();
 
                 //waiting.run(tabHost,0);
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
+
+                handlerAi.postDelayed(new Runnable() {
                     public void run() {
                         tabHost.setCurrentTab(0);
                     }
-                }, 1250);
+                }, 1200);
 
             }
 
@@ -377,13 +388,14 @@ public class GameActivity extends AppCompatActivity {
                 }
 
             } else {
-                /*
-                waitDialog = new AlertDialog.Builder(GameActivity.this).create();
-                waitDialog.setMessage("Wait for the counter attack...");
-                waitDialog.setCancelable(false);
-                waitDialog.setCanceledOnTouchOutside(false);
-                waitDialog.show();*/
-                aiOpponentsMove();
+               // Handler handler = new Handler();
+                handlerAi.postDelayed(new Runnable() {
+                    public void run() {
+                        aiOpponentsMove();
+                    }
+                }, 2500);
+
+
             }
         }
 
@@ -581,6 +593,8 @@ public class GameActivity extends AppCompatActivity {
 
         game.newMove(new Move(opponent, myPlayer, c));
 
+
+
         //waiting.run(tabHost,1);
         Handler handler1 = new Handler();
         handler1.postDelayed(new Runnable() {
@@ -588,7 +602,8 @@ public class GameActivity extends AppCompatActivity {
                 tabHost.setCurrentTab(1);
                 toggleWindowTouchable();
             }
-        }, 1700);
+        }, 1000);
+
 
 
     }
@@ -640,7 +655,7 @@ public class GameActivity extends AppCompatActivity {
                 tabHost.setCurrentTab(1);
                 toggleWindowTouchable();
             }
-        }, 2700);
+        }, 1000);
 
     }
 
@@ -893,7 +908,7 @@ public class GameActivity extends AppCompatActivity {
                 clientThread.dataReady("c");
             }
             try {
-                Thread.sleep(5000);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
