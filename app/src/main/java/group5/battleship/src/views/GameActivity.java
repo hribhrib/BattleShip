@@ -379,7 +379,14 @@ public class GameActivity extends AppCompatActivity {
                 waitDialog.setCancelable(false);
                 waitDialog.setCanceledOnTouchOutside(false);
                 waitDialog.show();*/
-                aiOpponentsMove();
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        aiOpponentsMove();
+                    }
+                }, 2500);
+
             }
         }
 
