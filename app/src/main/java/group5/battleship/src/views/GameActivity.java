@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.net.wifi.p2p.WifiP2pManager;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.support.v7.app.AlertDialog;
@@ -79,9 +80,11 @@ public class GameActivity extends AppCompatActivity {
     AlertDialog waitDialog;
     int port = 8888;
     boolean oppReady = false;
+    boolean hitHomeButton = true;
     String oppShips = "";
     String oppMove;
     Handler handlerAi = new Handler();
+    AlertDialog alertDialog = null;
 
 
     //////////////////////////////////////////
@@ -93,6 +96,7 @@ public class GameActivity extends AppCompatActivity {
         Log.d("MY LOG", "CREATE");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         tabHost = (TabHost) findViewById(R.id.tabHost);
         tabHost.setup();
@@ -177,6 +181,7 @@ public class GameActivity extends AppCompatActivity {
         Log.d("MY LOG", "RESUME");
 
         super.onResume();
+        hitHomeButton = true; //boolean to cut connection by pressing homebutton
         mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
 
 
@@ -199,9 +204,11 @@ public class GameActivity extends AppCompatActivity {
                                     oppReady = true;
                                     oppMove = serverThread.getPlayer2String();
                                     oppShips = serverThread.getPlayer2String();
+                                    alertDialog.dismiss();
                                     initRealOpp();
                                     displayOpponentsBattleField();
                                     displayMyBattleField();
+
                                 }
                                 //All other cycles, find new move
                                 else if (serverThread != null && serverThread.getPlayer2String() != null
@@ -285,8 +292,10 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void onPause() {
-        mSensorManager.unregisterListener(mShakeDetector);
         super.onPause();
+        mSensorManager.unregisterListener(mShakeDetector);
+
+
     }
 
     @Override
@@ -294,6 +303,12 @@ public class GameActivity extends AppCompatActivity {
         Log.d("My Log", "OnDestroy");
         super.onDestroy();
         if (intent.getBooleanExtra("WIFI", false)) {
+            //Disconnect
+
+            //Removes device from WifiP2pGroup
+            WifiManagerActivity wm = new WifiManagerActivity();
+            wm.disconnect();
+
             host = getIntent().getBooleanExtra("IsHost", true);
             if (host && serverThread != null) {
                 serverThread.close();
@@ -388,7 +403,7 @@ public class GameActivity extends AppCompatActivity {
                 }
 
             } else {
-               // Handler handler = new Handler();
+                // Handler handler = new Handler();
                 handlerAi.postDelayed(new Runnable() {
                     public void run() {
                         aiOpponentsMove();
@@ -433,6 +448,7 @@ public class GameActivity extends AppCompatActivity {
                                 clientThread = null;
                             }
                         }
+                        hitHomeButton = false;
                         //Set your ships on an other position
                         startAgain();
                     }
@@ -441,6 +457,7 @@ public class GameActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         //go to homescreen
+                        hitHomeButton = false;
                         toStartScreen();
                     }
                 });
@@ -468,10 +485,10 @@ public class GameActivity extends AppCompatActivity {
         //Disconnect
         if (intent.getBooleanExtra("WIFI", false)) {
 
+
             //Removes device from WifiP2pGroup
             WifiManagerActivity wm = new WifiManagerActivity();
             wm.disconnect();
-
             if (host) {
                 serverThread.close();
                 serverThread = null;
@@ -479,6 +496,8 @@ public class GameActivity extends AppCompatActivity {
                 clientThread.close();
                 clientThread = null;
             }
+
+
         }
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
@@ -491,7 +510,10 @@ public class GameActivity extends AppCompatActivity {
 
         myPlayer.setShips(getIntent().getStringExtra("SHIPS"));
 
+        startCounter();
 
+/*
+        //Startbutton
         //On button click the coordinates get send to opp
         AlertDialog alertDialog = new AlertDialog.Builder(GameActivity.this).create();
         alertDialog.setMessage("\t\t\t\tAre you ready?");
@@ -519,6 +541,8 @@ public class GameActivity extends AppCompatActivity {
 
         Log.d("My Log", "init Game nach Dialog");
 
+*/
+        Log.d("My Log", "after start()");
         routingToTableLayout();
 
 
@@ -594,7 +618,6 @@ public class GameActivity extends AppCompatActivity {
         game.newMove(new Move(opponent, myPlayer, c));
 
 
-
         //waiting.run(tabHost,1);
         Handler handler1 = new Handler();
         handler1.postDelayed(new Runnable() {
@@ -603,7 +626,6 @@ public class GameActivity extends AppCompatActivity {
                 toggleWindowTouchable();
             }
         }, 1000);
-
 
 
     }
@@ -615,6 +637,7 @@ public class GameActivity extends AppCompatActivity {
         if (oppMove.charAt(0) == 'c') {
             Toast.makeText(getBaseContext(), "The enemy gave up!",
                     Toast.LENGTH_LONG).show();
+            hitHomeButton = false;
             toStartScreen();
         } else {
             Cordinate c = new Cordinate((int) oppMove.charAt(0) - 48, (int) oppMove.charAt(1) - 48);
@@ -657,6 +680,72 @@ public class GameActivity extends AppCompatActivity {
             }
         }, 1000);
 
+    }
+
+    private void startCounter() {
+
+        if (intent.getBooleanExtra("WIFI", true)) {
+            host = getIntent().getBooleanExtra("IsHost", true);
+            send = getIntent().getStringExtra("SHIPS");
+            //On coordinates of the ships get send on zero
+            alertDialog = new AlertDialog.Builder(GameActivity.this).create();
+
+            if (host) {
+                Log.d("My Log", "send" + send);
+
+                alertDialog.setMessage("\t\t\t\tGame is starting");
+                alertDialog.setCancelable(false);
+                alertDialog.setCanceledOnTouchOutside(false);
+                alertDialog.show();
+
+
+                new CountDownTimer(10000, 500) {
+                    String wait = ".";
+
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        alertDialog.setMessage("\t\t\t\tGame is starting" + wait);
+                        if (wait.length() < 3) {
+                            wait = wait + ".";
+                        } else {
+                            wait = "";
+                        }
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        serverThread.dataReady(send);
+                    }
+                }.start();
+
+
+            } else if (!host) {
+
+                alertDialog.setMessage("\t\t\t\tGame starts in  ");
+                alertDialog.setCancelable(false);
+                alertDialog.setCanceledOnTouchOutside(false);
+                alertDialog.show();
+
+                new CountDownTimer(10000, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        alertDialog.setMessage("\t\t\t\tGame starts in  " + (millisUntilFinished / 1000));
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        //info.setVisibility(View.GONE);
+                        alertDialog.dismiss();
+
+                        if (!host) {
+                            Log.d("My Log", "send" + send);
+                            clientThread.dataReady(send);
+                        }
+                    }
+                }.start();
+            }
+        }
     }
 
     private void displayMyShips() {
@@ -899,8 +988,27 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        Log.d("my Log", " Game Activity onStop()");
         super.onBackPressed();
+        hitHomeButton=false;
+        giveUp();
+    }
+
+
+    @Override
+    public void onStop() {
+        Log.d("my Log", " Game Activity onStop()");
+        //if HomeButton gets pressed, cut connection
+        super.onStop();
+        if (hitHomeButton) {
+            giveUp();
+        }
+
+    }
+
+    private void giveUp() {
         if (intent.getBooleanExtra("WIFI", false)) {
+
             //Ends the game on the other Device
             if (host) {
                 serverThread.dataReady("c");
@@ -912,6 +1020,7 @@ public class GameActivity extends AppCompatActivity {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
         }
         //go to homescreen
         toStartScreen();
@@ -928,6 +1037,7 @@ public class GameActivity extends AppCompatActivity {
         }
 
     }
+
 
 }
 

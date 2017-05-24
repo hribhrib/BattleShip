@@ -106,8 +106,9 @@ public class SetShipsActivity extends AppCompatActivity {
                         yesbtn.setVisibility(View.VISIBLE);
                         nobtn.setVisibility(View.VISIBLE);
 
-/*
 
+
+/*
                         // Dialog to confirm the arrangement of the ships
                         new AlertDialog.Builder(SetShipsActivity.this)
                                 .setTitle("All ships are set")
@@ -125,8 +126,8 @@ public class SetShipsActivity extends AppCompatActivity {
                                 })
                                 .setIcon(android.R.drawable.ic_dialog_alert)
                                 .show();
-*/
 
+*/
                     }
                 }
             }
@@ -239,6 +240,8 @@ public class SetShipsActivity extends AppCompatActivity {
         startActivity(back);
 
     }
+
+
 
 
 
