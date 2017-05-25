@@ -85,6 +85,7 @@ public class GameActivity extends AppCompatActivity {
     String oppMove;
     Handler handlerAi = new Handler();
     AlertDialog alertDialog = null;
+    int counter = 0;
 
 
     //////////////////////////////////////////
@@ -183,7 +184,6 @@ public class GameActivity extends AppCompatActivity {
         super.onResume();
         hitHomeButton = true; //boolean to cut connection by pressing homebutton
         mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
-
 
         //The hostdevice will display host for player 1, and upon receiving the packets from client
         //Client will display for player 2
@@ -331,6 +331,7 @@ public class GameActivity extends AppCompatActivity {
         }
 
         tv = (TextView) findViewById(view.getId());
+
         tv.setBackgroundResource(R.mipmap.crosshair_sea);
 
 
@@ -344,7 +345,20 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
+        firebtn.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                counter++;
+                if (counter >= 5) {
+                    Toast.makeText(getBaseContext(), oppShips,
+                            Toast.LENGTH_LONG).show();
+                }
+
+                return false;
+            }
+        });
     }
+
 
     public void shotCell(TextView tv) {
 
@@ -409,8 +423,6 @@ public class GameActivity extends AppCompatActivity {
                         aiOpponentsMove();
                     }
                 }, 2500);
-
-
             }
         }
 
@@ -423,7 +435,6 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void endGame(final Player winner) {
-
 
         Log.d("My LOG", winner.getName() + " winner");
         Log.d("My LOG", myPlayer.getName() + " me");
@@ -562,7 +573,8 @@ public class GameActivity extends AppCompatActivity {
             ship3 = new Cordinate(r.nextInt(5), r.nextInt(5));
         } while (ship1.equals(ship3) && ship2.equals(ship3));
 
-
+        oppShips = String.valueOf(ship1.x + "" + ship1.y + "" + ship2.x + ""
+                + ship2.y + "" + ship3.x + "" + ship3.y);
         opponent.setShips(ship1, ship2, ship3);
     }
 
@@ -985,15 +997,13 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     public void onBackPressed() {
         Log.d("my Log", " Game Activity onStop()");
         super.onBackPressed();
-        hitHomeButton=false;
+        hitHomeButton = false;
         giveUp();
     }
-
 
     @Override
     public void onStop() {
@@ -1038,8 +1048,9 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
-
 }
+
+
 
 
 

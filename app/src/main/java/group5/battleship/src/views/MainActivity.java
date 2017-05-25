@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity{
         playername = (EditText) (findViewById(R.id.editText));
         playername.setBackgroundColor(Color.WHITE);
         playername.setTextColor(Color.BLACK);
+
     }
 
     public void startWifiGame(View view) {
@@ -39,6 +40,12 @@ public class MainActivity extends AppCompatActivity{
         intent = new Intent(this, SetShipsActivity.class);
         intent.putExtra("NAME", playername.getText().toString());
         intent.putExtra("WIFI", false);
+        startActivity(intent);
+
+    }
+
+    public void showInfo(View view) {
+        intent = new Intent(this, InfoActivity.class);
         startActivity(intent);
 
     }

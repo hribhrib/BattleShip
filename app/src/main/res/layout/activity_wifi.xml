@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/holo_blue_light"
     android:fitsSystemWindows="false"
     android:visibility="visible"
     tools:context="group5.battleship.src.views.WifiManagerActivity">
@@ -12,17 +13,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/background_light">
-
-        <ListView
-            android:id="@+id/listView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/firebtn"
-            android:layout_marginTop="18dp"
-            android:visibility="visible" />
+        android:background="@android:color/holo_blue_light">
 
         <TextView
             android:id="@+id/textView2"
@@ -38,6 +29,7 @@
 
         <Button
             android:id="@+id/firebtn"
+            style="@android:style/Widget.Button.Inset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -48,5 +40,16 @@
             android:layout_marginTop="34dp"
             android:text="Search" />
 
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="175dp"
+            android:visibility="visible"
+            android:layout_below="@+id/firebtn"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="25dp" />
+
     </RelativeLayout>
+
 </android.support.design.widget.CoordinatorLayout>
