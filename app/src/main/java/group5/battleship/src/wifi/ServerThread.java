@@ -1,11 +1,15 @@
 package group5.battleship.src.wifi;
 
 import android.util.Log;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 /**
@@ -23,6 +27,7 @@ public class ServerThread implements Runnable, Serializable {
     private String dataToSend;
     private boolean dataReady;
     private boolean active = true;
+    private DatagramPacket receivePacket;
 
 
     //the datatransfer activity passes the adress of the group host and the port
@@ -31,11 +36,11 @@ public class ServerThread implements Runnable, Serializable {
         myPort = intitPort;
     }
 
+    int i = 0;
     @Override
     public synchronized void run() {
 
 
-        int i = 0;
         while (active) {
             Log.d("#######################", "SERVER_Round" + i);
             //Open the socket, if its not already done
@@ -55,8 +60,10 @@ public class ServerThread implements Runnable, Serializable {
 
 
             //receive data from client
-            DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+            receivePacket = new DatagramPacket(receiveData, receiveData.length);
             Log.e("MyTag", "Waiting for Packet");
+
+
             try {
 
                 socket.receive(receivePacket);
@@ -115,7 +122,6 @@ public class ServerThread implements Runnable, Serializable {
             i++;
         }
     }
-
 
 
     public String getPlayer2String() {

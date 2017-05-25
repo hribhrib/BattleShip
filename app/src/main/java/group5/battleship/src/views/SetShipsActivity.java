@@ -106,6 +106,7 @@ public class SetShipsActivity extends AppCompatActivity {
                         yesbtn.setVisibility(View.VISIBLE);
                         nobtn.setVisibility(View.VISIBLE);
 
+
 /*
 
                         // Dialog to confirm the arrangement of the ships
@@ -239,6 +240,8 @@ public class SetShipsActivity extends AppCompatActivity {
         startActivity(back);
 
     }
+
+
 
 
 

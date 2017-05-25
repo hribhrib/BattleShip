@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity{
         playername = (EditText) (findViewById(R.id.editText));
         playername.setBackgroundColor(Color.WHITE);
         playername.setTextColor(Color.BLACK);
+
     }
 
     public void startWifiGame(View view) {
@@ -43,11 +44,19 @@ public class MainActivity extends AppCompatActivity{
 
     }
 
+    public void showInfo(View view) {
+        intent = new Intent(this, InfoActivity.class);
+        startActivity(intent);
+
+    }
+
 
     @Override
     public void onBackPressed() {
         //Disable back button
     }
+
+
 
 
 
