@@ -102,6 +102,7 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         tapHost = (TabHost) findViewById(R.id.tabHost);
         tapHost.setup();
 
@@ -121,8 +122,8 @@ public class GameActivity extends AppCompatActivity {
         playHitSound = MediaPlayer.create(GameActivity.this, R.raw.ship_hit);
         playMissSound = MediaPlayer.create(GameActivity.this, R.raw.water_hit);
         playWinSound = MediaPlayer.create(GameActivity.this, R.raw.win);
-        //playGameSound = MediaPlayer.create(GameActivity.this, R.raw.gameSound);
-        //playLoseSound = MediaPlayer.create(GameActivity.this, R.raw.loseSound);
+        playGameSound = MediaPlayer.create(GameActivity.this, R.raw.battlemusic);
+        playLoseSound = MediaPlayer.create(GameActivity.this, R.raw.lose);
 
         // ShakeDetector initialization
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -187,6 +188,8 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void onResume() {
+        playGameSound.start();
+        playGameSound.setLooping(true);
         super.onResume();
         mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
 
@@ -262,6 +265,7 @@ public class GameActivity extends AppCompatActivity {
     public void onPause() {
         mSensorManager.unregisterListener(mShakeDetector);
         super.onPause();
+        playGameSound.stop();
     }
 
     @Override
@@ -269,7 +273,10 @@ public class GameActivity extends AppCompatActivity {
         super.onDestroy();
         android.os.Process.killProcess(android.os.Process.myPid());
     }
-
+    public void playBattleSound(){
+        playGameSound.setLooping(true);
+        playGameSound.start();
+    }
 
     public void cellClick(View view) {
 
@@ -356,6 +363,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void endGame(final Player winner) {
+        playGameSound.stop();
         if (winner .equals(myPlayer) ) {
         playWinSound.start();
         updateStats(this,true);
@@ -375,7 +383,7 @@ public class GameActivity extends AppCompatActivity {
         waitDialog.setTitle(getString(R.string.title_game_end));
 
         if (!intent.getBooleanExtra("WIFI", true)) {
-            waitDialog.setMessage(getString(R.string.string_fragment_player) + winner.getName() + getString(R.string.string_fragment_won) + getString(R.string.message_play_one_more));
+            waitDialog.setMessage(getString(R.string.string_fragment_player) + winner.getName() + " " + getString(R.string.string_fragment_won) + " " + getString(R.string.message_play_one_more));
             waitDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.button_yes),
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
@@ -429,7 +437,7 @@ public class GameActivity extends AppCompatActivity {
         myPlayer = new Player(getIntent().getStringExtra("NAME"));
         opponent = new Player("Opponent");
         game = new Game(myPlayer, opponent, 5); //5 = static size
-
+        playBattleSound();
         myPlayer.setShips(getIntent().getStringExtra("SHIPS"));
 
 
