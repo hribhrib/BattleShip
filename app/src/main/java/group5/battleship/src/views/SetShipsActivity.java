@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.media.MediaPlayer;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,7 +27,6 @@ public class SetShipsActivity extends AppCompatActivity {
     int currentShips = 0;
     ArrayList<TextView> textViews = new ArrayList<>();
 
-    public MediaPlayer playPutSound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +38,6 @@ public class SetShipsActivity extends AppCompatActivity {
         int duration = Toast.LENGTH_SHORT;
 
         Toast.makeText(context, text, duration).show();
-
-       // playMenuSound = MediaPlayer.create(SetShipsActivity.this,R.raw.menuSound);
-        playPutSound = MediaPlayer.create(SetShipsActivity.this,R.raw.put_sound);
 
 
     }
@@ -59,7 +54,7 @@ public class SetShipsActivity extends AppCompatActivity {
     }
 
 
-    //playMenuSound.start();
+
     public void cellClick(View view) {
         TextView tv = (TextView) findViewById(view.getId());
 
@@ -72,7 +67,6 @@ public class SetShipsActivity extends AppCompatActivity {
                 tv.setTextColor(Color.WHITE);
                 //tv.setText("o");
                 tv.setBackgroundResource(R.mipmap.sea_ship);
-                playPutSound.start();
                 storeTextview(tv);
 
             } else {
@@ -89,7 +83,6 @@ public class SetShipsActivity extends AppCompatActivity {
                 if (shipSet == true && dublicate == false) {
                     ships = (ships + (String) view.getTag());
                     currentShips++;
-                    playPutSound.start();
 
                     tv.setTextColor(Color.WHITE);
                     //tv.setText("o");
