@@ -44,11 +44,12 @@ public class MainActivity extends AppCompatActivity{
 
     }
 
-    public void showInfo(View view) {
-        intent = new Intent(this, InfoActivity.class);
+    public void openPreferences (View view) {
+        Intent intent = new Intent(this,PreferencesActivity.class);
         startActivity(intent);
 
     }
+
 
     public void viewStats(View view){
         Intent intent = new Intent(this,HighScoresActivity.class);

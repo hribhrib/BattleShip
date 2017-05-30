@@ -71,13 +71,15 @@
 
     <TextView
         android:id="@+id/info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:drawable/ic_menu_info_details"
-        android:onClick="showInfo"
+        android:layout_width="41dp"
+        android:layout_height="40dp"
+        android:background="@android:drawable/ic_menu_preferences"
+        android:onClick="openPreferences"
         android:textSize="6sp"
-        tools:layout_editor_absoluteX="336dp"
-        tools:layout_editor_absoluteY="16dp" />
+        tools:layout_editor_absoluteY="16dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_editor_absoluteX="335dp" />
 
 
     <Button

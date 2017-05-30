@@ -17,11 +17,11 @@
     <string name="button_ok">Ok!</string>
     <string name="message_are_you_rdy">\t\t\t\tAre you ready?</string>
     <string name="toast_remaining_randomAttacks">Verbleibende Zufallsangriffe: </string>
-    <string name ="total_games">Total games played: </string>
-    <string name ="games_won">Total games won: </string>
-    <string name ="games_lost">Total games lost: </string>
+    <string name="total_games">Total games played: </string>
+    <string name="games_won">Total games won: </string>
+    <string name="games_lost">Total games lost: </string>
     <string name="shortest_game">Shortest game won (Turns): </string>
-    <string name ="button_back">Back</string>
+    <string name="button_back">Back</string>
 
 
 </resources>
