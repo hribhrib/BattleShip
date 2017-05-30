@@ -24,6 +24,7 @@ public class HighScoresActivity extends AppCompatActivity {
         countTotalGamesWon.setText(getStats(this,"totalGamesWon"));
         countTotalGamesLost.setText(getStats(this,"totalGamesLost"));
         countShortestGame.setText((getStats(this,"shortestGame")));
+
     }
     public String getStats (Context context, String key){
         SharedPreferences prefs;
