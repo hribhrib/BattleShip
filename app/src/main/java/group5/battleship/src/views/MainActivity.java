@@ -7,12 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-
-import java.io.File;
-
 import group5.battleship.R;
-
-
 
 public class MainActivity extends AppCompatActivity{
     EditText playername;
@@ -28,16 +23,8 @@ public class MainActivity extends AppCompatActivity{
         intent=null;
         setContentView(R.layout.activity_home_screen);
         playername = (EditText) (findViewById(R.id.editText));
-
-
-    }
-    public void viewStats(View view){
-        Intent intent = new Intent(this,HighScoresActivity.class);
-        startActivity(intent);
-
         playername.setBackgroundColor(Color.WHITE);
         playername.setTextColor(Color.BLACK);
-
 
     }
 
