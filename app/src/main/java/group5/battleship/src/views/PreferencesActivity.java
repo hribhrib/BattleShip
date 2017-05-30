@@ -28,6 +28,6 @@ public class PreferencesActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public
+
 
 }
