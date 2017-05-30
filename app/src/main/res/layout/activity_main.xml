@@ -823,7 +823,7 @@
                             android:visibility="invisible" />
 
                         <Button
-                            android:id="@+id/button25"
+                            android:id="@+id/radarBtn"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_column="6"
