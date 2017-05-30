@@ -1,0 +1,848 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="group5.battleship.src.views.GameActivity">
+
+
+    <TabHost
+        android:id="@+id/tabHost"
+        android:layout_width="0dp"
+        android:layout_height="495dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_editor_absoluteY="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/background_light" />
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/MyField"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/background_light"
+                    android:orientation="vertical">
+
+                    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/table"
+                        android:layout_width="match_parent"
+                        android:layout_height="362dp"
+                        android:layout_margin="0dp"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:stretchColumns="0,1,2,3,4"
+                        tools:clickable="true"
+                        tools:layout_editor_absoluteX="0dp"
+                        tools:layout_editor_absoluteY="8dp">
+
+                        <TableRow
+                            android:id="@+id/tableRow0"
+                            android:layout_width="fill_parent"
+                            android:layout_height="0dp"
+                            android:layout_margin="0dp"
+                            android:layout_weight="1"
+                            android:background="#000000"
+
+                            >
+
+                            <TextView
+                                android:id="@+id/textView00"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_column="0"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+
+                                android:tag="00"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/textView01"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="1"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+
+                                android:tag="01"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/textView02"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="2"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+
+                                android:tag="02"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/textView03"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="3"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+
+                                android:tag="03"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/textView04"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="4"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+
+                                android:tag="04"
+                                android:text="" />
+                        </TableRow>
+
+                        <TableRow
+                            android:id="@+id/tableRow1"
+                            android:layout_width="fill_parent"
+                            android:layout_height="0dp"
+                            android:layout_margin="0dp"
+                            android:layout_weight="1"
+                            android:background="#000000"
+                            android:clickable="false">
+
+                            <TextView
+                                android:id="@+id/textView10"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_column="0"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+
+                                android:tag="10"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/textView11"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="1"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+
+                                android:tag="11"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/textView12"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="2"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+
+                                android:tag="12"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/textView13"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="3"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+
+                                android:tag="13"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/textView14"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="4"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+
+                                android:tag="14"
+                                android:text="" />
+                        </TableRow>
+
+
+                        <TableRow
+                            android:id="@+id/tableRow2"
+                            android:layout_width="fill_parent"
+                            android:layout_height="0dp"
+                            android:layout_margin="0dp"
+                            android:layout_weight="1"
+                            android:background="#000000">
+
+                            <TextView
+                                android:id="@+id/textView20"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_column="0"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+
+                                android:tag="20"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/textView21"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="1"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+
+                                android:tag="21"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/textView22"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="2"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+
+                                android:tag="22"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/textView23"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="3"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+
+                                android:tag="23"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/textView24"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="4"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+
+                                android:tag="24"
+                                android:text="" />
+                        </TableRow>
+
+                        <TableRow
+                            android:id="@+id/tableRow3"
+                            android:layout_width="fill_parent"
+                            android:layout_height="0dp"
+                            android:layout_margin="0dp"
+                            android:layout_weight="1"
+                            android:background="#000000">
+
+                            <TextView
+                                android:id="@+id/textView30"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_column="0"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+
+                                android:tag="30"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/textView31"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="1"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+
+                                android:tag="31"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/textView32"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="2"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+
+                                android:tag="32"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/textView33"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="3"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+
+                                android:tag="33"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/textView34"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="4"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+
+                                android:tag="34"
+                                android:text="" />
+                        </TableRow>
+
+                        <TableRow
+                            android:id="@+id/tableRow4"
+                            android:layout_width="fill_parent"
+                            android:layout_height="0dp"
+                            android:layout_margin="0dp"
+                            android:layout_weight="1"
+                            android:background="#000000">
+
+                            <TextView
+                                android:id="@+id/textView40"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_column="0"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+
+                                android:tag="40"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/textView41"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="1"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+
+                                android:tag="41"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/textView42"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="2"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+
+                                android:tag="42"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/textView43"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="3"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+
+                                android:tag="43"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/textView44"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="4"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+
+                                android:tag="44"
+                                android:text="" />
+                        </TableRow>
+
+                    </TableLayout>
+
+                    <GridLayout
+                        android:id="@+id/ButtonBarMyField"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/background_light">
+
+                        <Button
+                            android:id="@+id/buttona"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="Button"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/button5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="6"
+                            android:layout_row="0"
+                            android:text="Button"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/firebtn1"
+                            android:layout_width="190dp"
+                            android:layout_height="match_parent"
+                            android:layout_column="2"
+                            android:layout_row="0"
+                            android:onClick="onButtonClick"
+                            android:text="Fire!"
+                            android:visibility="invisible" />
+                    </GridLayout>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/OpponentField"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/background_light"
+                    android:orientation="vertical">
+
+                    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/tableOpponent"
+                        android:layout_width="match_parent"
+                        android:layout_height="362dp"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:stretchColumns="0,1,2,3,4"
+                        tools:clickable="true"
+                        tools:layout_editor_absoluteX="0dp"
+                        tools:layout_editor_absoluteY="8dp">
+
+                        <TableRow
+                            android:id="@+id/opponentTableRow0"
+                            android:layout_width="fill_parent"
+                            android:layout_height="0dp"
+                            android:layout_margin="0dp"
+                            android:layout_weight="1"
+                            android:background="#000000"
+
+                            >
+
+                            <TextView
+                                android:id="@+id/opponentTextView00"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_column="0"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+                                android:onClick="cellClick"
+                                android:tag="00"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/opponentTextView01"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="1"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+                                android:onClick="cellClick"
+                                android:tag="01"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/opponentTextView02"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="2"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+                                android:onClick="cellClick"
+                                android:tag="02"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/opponentTextView03"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="3"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+                                android:onClick="cellClick"
+                                android:tag="03"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/opponentTextView04"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="4"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+                                android:onClick="cellClick"
+                                android:tag="04"
+                                android:text="" />
+                        </TableRow>
+
+                        <TableRow
+                            android:id="@+id/opponentTableRow1"
+                            android:layout_width="fill_parent"
+                            android:layout_height="0dp"
+                            android:layout_margin="0dp"
+                            android:layout_weight="1"
+                            android:background="#000000"
+                            android:clickable="false">
+
+                            <TextView
+                                android:id="@+id/opponentTextView10"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_column="0"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+                                android:onClick="cellClick"
+                                android:tag="10"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/opponentTextView11"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="1"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+                                android:onClick="cellClick"
+                                android:tag="11"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/opponentTextView12"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="2"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+                                android:onClick="cellClick"
+                                android:tag="12"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/opponentTextView13"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="3"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+                                android:onClick="cellClick"
+                                android:tag="13"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/opponentTextView14"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="4"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+                                android:onClick="cellClick"
+                                android:tag="14"
+                                android:text="" />
+                        </TableRow>
+
+
+                        <TableRow
+                            android:id="@+id/opponentTableRow2"
+                            android:layout_width="fill_parent"
+                            android:layout_height="0dp"
+                            android:layout_margin="0dp"
+                            android:layout_weight="1"
+                            android:background="#000000">
+
+                            <TextView
+                                android:id="@+id/opponentTextView20"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_column="0"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+                                android:onClick="cellClick"
+                                android:tag="20"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/opponentTextView21"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="1"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+                                android:onClick="cellClick"
+                                android:tag="21"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/opponentTextView22"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="2"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+                                android:onClick="cellClick"
+                                android:tag="22"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/opponentTextView23"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="3"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+                                android:onClick="cellClick"
+                                android:tag="23"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/opponentTextView24"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="4"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+                                android:onClick="cellClick"
+                                android:tag="24"
+                                android:text="" />
+                        </TableRow>
+
+                        <TableRow
+                            android:id="@+id/opponentTableRow3"
+                            android:layout_width="fill_parent"
+                            android:layout_height="0dp"
+                            android:layout_margin="0dp"
+                            android:layout_weight="1"
+                            android:background="#000000">
+
+                            <TextView
+                                android:id="@+id/opponentTextView30"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_column="0"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+                                android:onClick="cellClick"
+                                android:tag="30"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/opponentTextView31"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="1"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+                                android:onClick="cellClick"
+                                android:tag="31"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/opponentTextView32"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="2"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+                                android:onClick="cellClick"
+                                android:tag="32"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/opponentTextView33"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="3"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+                                android:onClick="cellClick"
+                                android:tag="33"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/opponentTextView34"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="4"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+                                android:onClick="cellClick"
+                                android:tag="34"
+                                android:text="" />
+                        </TableRow>
+
+                        <TableRow
+                            android:id="@+id/opponentTableRow4"
+                            android:layout_width="fill_parent"
+                            android:layout_height="0dp"
+                            android:layout_margin="0dp"
+                            android:layout_weight="1"
+                            android:background="#000000">
+
+                            <TextView
+                                android:id="@+id/opponentTextView40"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_column="0"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+                                android:onClick="cellClick"
+                                android:tag="40"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/opponentTextView41"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="1"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+                                android:onClick="cellClick"
+                                android:tag="41"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/opponentTextView42"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="2"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+                                android:onClick="cellClick"
+                                android:tag="42"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/opponentTextView43"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="3"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+                                android:onClick="cellClick"
+                                android:tag="43"
+                                android:text="" />
+
+                            <TextView
+                                android:id="@+id/opponentTextView44"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_column="4"
+                                android:layout_margin="1dp"
+                                android:background="@mipmap/meer_neu"
+                                android:gravity="center"
+                                android:onClick="cellClick"
+                                android:tag="44"
+                                android:text="" />
+                        </TableRow>
+                    </TableLayout>
+
+                    <GridLayout
+                        android:id="@+id/ButtonBarOpponentField"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/background_light">
+
+                        <Button
+                            android:id="@+id/button23"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="Button"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/button25"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="6"
+                            android:layout_row="0"
+                            android:text="Radar"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/firebtn"
+                            android:layout_width="190dp"
+                            android:layout_height="match_parent"
+                            android:layout_column="2"
+                            android:layout_row="0"
+                            android:text="Fire!"
+                            android:visibility="invisible" />
+                    </GridLayout>
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+
+</android.support.constraint.ConstraintLayout>
