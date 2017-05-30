@@ -3,9 +3,11 @@ package group5.battleship.src.views;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -88,6 +90,17 @@ public class GameActivity extends AppCompatActivity {
     int counter = 0;
 
 
+    //soundfiles
+    public MediaPlayer playShootingSound;
+    public MediaPlayer playMissSound;
+    public MediaPlayer playHitSound;
+    public MediaPlayer playGameSound;
+    public MediaPlayer playWinSound;
+    public MediaPlayer playLoseSound;
+
+
+
+    int tempRoundCount = 0;
     //////////////////////////////////////////
 
 
@@ -98,6 +111,13 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        playHitSound = MediaPlayer.create(GameActivity.this, R.raw.ship_hit);
+        playMissSound = MediaPlayer.create(GameActivity.this, R.raw.water_hit);
+        playWinSound = MediaPlayer.create(GameActivity.this, R.raw.win);
+        playGameSound = MediaPlayer.create(GameActivity.this, R.raw.battlemusic);
+        playLoseSound = MediaPlayer.create(GameActivity.this, R.raw.lose);
+
 
         tabHost = (TabHost) findViewById(R.id.tabHost);
         tabHost.setup();
@@ -176,9 +196,14 @@ public class GameActivity extends AppCompatActivity {
             displayMyBattleField();
         }
 
+
+
     }
 
     public void onResume() {
+        playGameSound.start();
+        playGameSound.setLooping(true);
+
         Log.d("MY LOG", "RESUME");
 
         super.onResume();
@@ -293,9 +318,13 @@ public class GameActivity extends AppCompatActivity {
 
     public void onPause() {
         super.onPause();
+        playGameSound.stop();
         mSensorManager.unregisterListener(mShakeDetector);
+    }
 
-
+    public void playBattleSound(){
+        playGameSound.setLooping(true);
+        playGameSound.start();
     }
 
     @Override
@@ -371,9 +400,10 @@ public class GameActivity extends AppCompatActivity {
             if (tmpOpponentShips[c.x][c.y] == -1) {
 
                 myPlayer.updateBattleField(c, -1);
+                playMissSound.start();
 
             } else if (tmpOpponentShips[c.x][c.y] == 1) {
-                playSoundHitShip();
+                playHitSound.start();
                 myPlayer.updateBattleField(c, 1);
                 if (opponent.incShipDestroyed() == opponent.getMaxShips()) {
                     endGame(myPlayer);
@@ -382,7 +412,7 @@ public class GameActivity extends AppCompatActivity {
 
             game.newMove(new Move(myPlayer, opponent, c));
             displayMyBattleField();
-
+            tempRoundCount++;
 
             if (!intent.getBooleanExtra("WIFI", false)) {
                 toggleWindowTouchable();
@@ -435,6 +465,15 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void endGame(final Player winner) {
+
+        playGameSound.stop();
+        if (winner.equals(myPlayer) ) {
+            playWinSound.start();
+            updateStats(this,true);
+        } else {
+            playLoseSound.start();
+            updateStats(this,false);
+        }
 
         Log.d("My LOG", winner.getName() + " winner");
         Log.d("My LOG", myPlayer.getName() + " me");
@@ -518,7 +557,7 @@ public class GameActivity extends AppCompatActivity {
         myPlayer = new Player(getIntent().getStringExtra("NAME"));
         opponent = new Player("Opponent");
         game = new Game(myPlayer, opponent);
-
+        playBattleSound();
         myPlayer.setShips(getIntent().getStringExtra("SHIPS"));
 
         startCounter();
@@ -659,9 +698,10 @@ public class GameActivity extends AppCompatActivity {
 
             if (tmpMyShips[c.x][c.y] == -1) {
                 opponent.updateBattleField(c, -1);
+                playMissSound.start();
                 Log.d("My Log:", "nicht getroffen" + String.valueOf(tmpMyShips[c.x][c.y]));
             } else if (tmpMyShips[c.x][c.y] == 1) {
-                playSoundHitShip();
+                playHitSound.start();
                 phoneVibrate();
                 opponent.updateBattleField(c, 1);
                 if (myPlayer.incShipDestroyed() == myPlayer.getMaxShips()) {
@@ -958,13 +998,14 @@ public class GameActivity extends AppCompatActivity {
 
 
             if (myPlayer.getRandomAttacks() > 0) {
+                tempRoundCount++;
                 Cordinate randomShipCordinate = (new randomShipCordinate(opponent, game)).c;
                 Cordinate randomWaterCordinate = (new randomWaterCordinate(opponent)).c;
                 Random r = new Random();
 
                 if (r.nextInt(10) >= 4) {                               // increased chance to hit a ship
                     myPlayer.updateBattleField(randomShipCordinate, 1);
-                    playSoundHitShip();
+                    playHitSound.start();
                     if (opponent.incShipDestroyed() == opponent.getMaxShips()) {
                         endGame(myPlayer);
                     }
@@ -977,6 +1018,7 @@ public class GameActivity extends AppCompatActivity {
 
                 } else {
                     myPlayer.updateBattleField(randomWaterCordinate, -1);
+                    playMissSound.start();
                     if (opponent.incShipDestroyed() == opponent.getMaxShips()) {
                         endGame(myPlayer);
                     }
@@ -1046,6 +1088,30 @@ public class GameActivity extends AppCompatActivity {
             touchable = true;
         }
 
+    }
+
+    public void updateStats (Context context, boolean win){
+        //for storing gamestatistics
+
+        SharedPreferences prefs = this.getSharedPreferences("stats",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor;
+        editor = prefs.edit();
+
+        int gameCount = prefs.getInt("totalGamesPlayed",0);
+        int winCount = prefs.getInt("totalGamesWon",0);
+        int loseCount = prefs.getInt("totalGamesLost",0);
+        int roundCount = prefs.getInt("shortestGame",0);
+
+        editor.putInt("totalGamesPlayed",gameCount+1);
+        if (win){
+            editor.putInt("totalGamesWon",winCount+1);
+        } else {
+            editor.putInt("totalGamesLost",loseCount+1);
+        }
+        if(tempRoundCount<roundCount&&win){
+            editor.putInt("shortestGame",tempRoundCount);}
+
+        editor.apply();
     }
 
 }

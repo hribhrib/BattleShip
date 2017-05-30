@@ -50,6 +50,11 @@ public class MainActivity extends AppCompatActivity{
 
     }
 
+    public void viewStats(View view){
+        Intent intent = new Intent(this,HighScoresActivity.class);
+        startActivity(intent);
+    }
+
 
     @Override
     public void onBackPressed() {
