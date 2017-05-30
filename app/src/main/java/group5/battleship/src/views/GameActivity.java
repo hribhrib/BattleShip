@@ -112,6 +112,13 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
+        playHitSound = MediaPlayer.create(GameActivity.this, R.raw.ship_hit);
+        playMissSound = MediaPlayer.create(GameActivity.this, R.raw.water_hit);
+        playWinSound = MediaPlayer.create(GameActivity.this, R.raw.win);
+        playGameSound = MediaPlayer.create(GameActivity.this, R.raw.battlemusic);
+        playLoseSound = MediaPlayer.create(GameActivity.this, R.raw.lose);
+
+
         tabHost = (TabHost) findViewById(R.id.tabHost);
         tabHost.setup();
 
@@ -190,12 +197,6 @@ public class GameActivity extends AppCompatActivity {
         }
 
 
-        playShootingSound = MediaPlayer.create(GameActivity.this, R.raw.shooting);
-        playHitSound = MediaPlayer.create(GameActivity.this, R.raw.ship_hit);
-        playMissSound = MediaPlayer.create(GameActivity.this, R.raw.water_hit);
-        playWinSound = MediaPlayer.create(GameActivity.this, R.raw.win);
-        playGameSound = MediaPlayer.create(GameActivity.this, R.raw.battlemusic);
-        playLoseSound = MediaPlayer.create(GameActivity.this, R.raw.lose);
 
     }
 

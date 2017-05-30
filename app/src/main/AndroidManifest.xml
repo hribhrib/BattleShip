@@ -17,6 +17,8 @@
         android:required="true" />
 
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -41,20 +43,23 @@
             android:name=".src.views.GameActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/FullscreenTheme" />
-        <activity android:name=".src.views.SetShipsActivity" />
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".src.views.HighScoresActivity"
+            android:label="BattleShip"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".src.views.SetShipsActivity"
+            android:label="BattleShip"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name=".src.views.WifiManagerActivity"
             android:label="BattleShip"
-            android:screenOrientation="portrait"
-            android:theme="@style/FullscreenTheme" />
-        <activity
-            android:name=".src.views.DataTransferDisplay"
-            android:label="BattleShip"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".src.views.InfoActivity"></activity>
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>
