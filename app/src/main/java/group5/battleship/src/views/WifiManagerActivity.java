@@ -11,6 +11,7 @@ import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 
 
 import java.net.InetAddress;
+
 import group5.battleship.R;
 import group5.battleship.src.wifi.WifiBroadcastReciever;
 
@@ -31,19 +33,21 @@ import group5.battleship.src.wifi.WifiBroadcastReciever;
 public class WifiManagerActivity extends AppCompatActivity {
 
 
-    WifiP2pManager.Channel myChannel;
-    WifiP2pManager myManager;
+    public static WifiP2pManager.Channel myChannel;
+    public static WifiP2pManager myManager;
     public TextView myTextView;
     ListView myListView;
     ArrayAdapter<String> wifiP2PAdapter;
     Button searchButton;
-    WifiBroadcastReciever myReceiver;
-    IntentFilter intentFilter;
+    static WifiBroadcastReciever myReceiver;
+    static IntentFilter intentFilter;
     Intent setShipIntent;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Log.d("my Log", "Wifi Manager onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wifi);
 
@@ -59,36 +63,8 @@ public class WifiManagerActivity extends AppCompatActivity {
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
 
 
-        myTextView = (TextView) findViewById(R.id.textView2);
-        myListView = (ListView) findViewById(R.id.listView);
-
-        searchButton = (Button) findViewById(R.id.firebtn);
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                search(v);
-            }
-        });
-
-        wifiP2PAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
-        myListView.setAdapter(wifiP2PAdapter);
-        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                 myReceiver.connect(position);
-            }
-        });
-
-
-        myManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
-        myChannel = myManager.initialize(this, getMainLooper(), null);
-        myReceiver = new WifiBroadcastReciever(myManager, myChannel, this);
-
-        //dataDisplay = new Intent(WifiManagerActivity.this, DataTransferDisplay.class);
-        setShipIntent = new Intent(WifiManagerActivity.this, SetShipsActivity.class);
-
-
     }
+
 
     public void search(View v) {
         myManager.discoverPeers(myChannel, new WifiP2pManager.ActionListener() {
@@ -100,8 +76,11 @@ public class WifiManagerActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int reason) {
-                myTextView.setText("Error: Code " + reason);
-
+                if (reason == 0) {
+                    myTextView.setText("Error, try it again");
+                } else if (reason == 2) {
+                    myTextView.setText("Error, wifi is disabled");
+                }
             }
         });
     }
@@ -111,6 +90,7 @@ public class WifiManagerActivity extends AppCompatActivity {
     // and status as host or client has determined
     public void play(InetAddress hostAddress, Boolean host) {
 
+        Log.d("My Log", "play()");
         setShipIntent.putExtra("HostAddress", hostAddress.getHostAddress()); //Address of the host
         setShipIntent.putExtra("IsHost", host);   //Is this device the host
         setShipIntent.putExtra("Connected", true); //Was connection succesul
@@ -134,6 +114,49 @@ public class WifiManagerActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        Log.d("my Log", "Wifi Manager onResume");
+
+
+        myChannel = null;
+        myManager = null;
+        myTextView = null;
+        myListView = null;
+        wifiP2PAdapter = null;
+        myReceiver = null;
+        searchButton = null;
+        setShipIntent = null;
+
+
+        myTextView = (TextView) findViewById(R.id.textView2);
+        myListView = (ListView) findViewById(R.id.listView);
+
+        searchButton = (Button) findViewById(R.id.firebtn);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                search(v);
+            }
+        });
+
+        wifiP2PAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+        myListView.setAdapter(wifiP2PAdapter);
+        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                myReceiver.connect(position);
+            }
+        });
+
+
+        myManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
+        myChannel = myManager.initialize(this, getMainLooper(), null);
+        myReceiver = new WifiBroadcastReciever(myManager, myChannel, this);
+
+
+        setShipIntent = new Intent(WifiManagerActivity.this, SetShipsActivity.class);
+
+
         registerReceiver(myReceiver, intentFilter);
     }
 
@@ -142,6 +165,13 @@ public class WifiManagerActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         unregisterReceiver(myReceiver);
+
+    }
+
+    public void disconnect() {
+
+        Log.d("MyTag", "Receiver disconnect");
+        myReceiver.disconnect();
 
     }
 

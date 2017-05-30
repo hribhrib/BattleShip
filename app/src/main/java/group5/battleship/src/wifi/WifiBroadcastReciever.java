@@ -26,8 +26,8 @@ import group5.battleship.src.views.WifiManagerActivity;
 
 public class WifiBroadcastReciever extends BroadcastReceiver {
 
-    private WifiP2pManager myManager;
-    private WifiP2pManager.Channel myChannel;
+    private static WifiP2pManager myManager;
+    private static WifiP2pManager.Channel myChannel;
     private WifiManagerActivity myManagerActivity;
     private List<WifiP2pDevice> myPeers;
     private List<WifiP2pConfig> myConfigs;
@@ -83,8 +83,6 @@ public class WifiBroadcastReciever extends BroadcastReceiver {
                     }
                 };
                 myManager.requestPeers(myChannel, peerListListener);
-
-
             }
 
         } else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION.equals(action)) {
@@ -113,10 +111,9 @@ public class WifiBroadcastReciever extends BroadcastReceiver {
             WifiP2pDevice device = (WifiP2pDevice) intent
                     .getParcelableExtra(WifiP2pManager.EXTRA_WIFI_P2P_DEVICE);
             Log.d("MyLog", "Device status -" + device.status);
-
-
         }
     }
+
 
     public void connect(int position) {
 
@@ -166,6 +163,9 @@ public class WifiBroadcastReciever extends BroadcastReceiver {
     };
 
     public void disconnect() {
+
+        Log.d("MyTag", "Receiver disconnect");
+
         myManager.removeGroup(myChannel, new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
@@ -177,5 +177,6 @@ public class WifiBroadcastReciever extends BroadcastReceiver {
                 Log.d("MyTag", "Remove Group Failed: Error " + reason);
             }
         });
+
     }
 }

@@ -8,14 +8,19 @@ package group5.battleship.src.logic;
 
 public class Player {
     String name;
+    //-1 = water
+    // 0 = undef
+    //+1 = ship
     int[][] battleField;
     int[][] ships;
     int MAX_SHIPS = 3;
     int shipsDestroyed = 0;
     private int randomAttacks = 1;                  // so that random attack only works once a game, for now
 
+
     public Player(String name) {
         this.name = name;
+        initFieldArrays();
     }
 
     public void setShips(String s) {
@@ -38,23 +43,15 @@ public class Player {
         return ships[c.x][c.y];
     }
 
-    public void updateBattleField(int x, int y, int state) {
+    public void updateBattleField(Cordinate c, int state) {
         //-1 = water
         //+1 = ship
-        battleField[x][y] = state;
-    }
-    public void updateBattleField(Cordinate c, int state) {
-        int x = c.x;
-        int y = c.y;
-        battleField[x][y]= state;
+        battleField[c.x][c.y] = state;
+
     }
 
     public int[][] getBattleField() {
         return battleField;
-    }
-
-    public void setBattleField (int[][] battleField1) {
-        battleField = battleField1;
     }
 
     public int getBattleFieldByCordinate(Cordinate c) {
@@ -74,10 +71,25 @@ public class Player {
         return name;
     }
 
-    public void setRandomAttacks() {
-        this.randomAttacks = randomAttacks -1 ;
+    public void decRandomAttacks() {
+        this.randomAttacks = randomAttacks - 1;
     }
+
     public int getRandomAttacks() {
         return randomAttacks;
+    }
+
+    private void initFieldArrays() {
+        this.battleField = new int[5][5];
+        this.ships = new int[5][5];
+
+
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                this.battleField[i][j] = 0;
+                this.ships[i][j] = -1;
+            }
+        }
+
     }
 }

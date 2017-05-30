@@ -1,11 +1,15 @@
 package group5.battleship.src.wifi;
 
 import android.util.Log;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 /**
@@ -22,6 +26,8 @@ public class ServerThread implements Runnable, Serializable {
     private String player2String;
     private String dataToSend;
     private boolean dataReady;
+    private boolean active = true;
+    private DatagramPacket receivePacket;
 
 
     //the datatransfer activity passes the adress of the group host and the port
@@ -30,18 +36,19 @@ public class ServerThread implements Runnable, Serializable {
         myPort = intitPort;
     }
 
+    int i = 0;
     @Override
     public synchronized void run() {
 
 
-        int i = 0;
-        while (true) {
+        while (active) {
             Log.d("#######################", "SERVER_Round" + i);
             //Open the socket, if its not already done
             try {
                 if (socket == null) {
+                    Log.d("MY LOG", "New ServerSocket");
                     socket = new DatagramSocket(myPort);
-                    //socket.setSoTimeout(1);
+                    socket.setSoTimeout(1200000);
                 }
             } catch (IOException e) {
                 if (e.getMessage() == null) {
@@ -52,9 +59,11 @@ public class ServerThread implements Runnable, Serializable {
             }
 
 
-            //receive
-            DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+            //receive data from client
+            receivePacket = new DatagramPacket(receiveData, receiveData.length);
             Log.e("MyTag", "Waiting for Packet");
+
+
             try {
 
                 socket.receive(receivePacket);
@@ -115,15 +124,20 @@ public class ServerThread implements Runnable, Serializable {
     }
 
 
-
     public String getPlayer2String() {
         return player2String;
     }
 
     public synchronized void dataReady(String dataToSend) {
+        //Tells the server when data is ready, so he continue to work
         this.dataToSend = dataToSend;
         dataReady = true;
         notifyAll();
+    }
+
+    public void close() {
+        active = false;
+        socket.close();
     }
 }
 
