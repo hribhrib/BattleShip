@@ -310,7 +310,6 @@ public class GameActivity extends AppCompatActivity {
 
         final Button firebtn = (Button) findViewById(R.id.firebtn);
 
-
         if (firebtn.getVisibility() == View.VISIBLE) {
             // reset the view before setting the new target
             displayMyBattleField();
@@ -322,8 +321,6 @@ public class GameActivity extends AppCompatActivity {
 
         // press fire Button
         firebtn.setVisibility(View.VISIBLE);
-
-
         firebtnpressed = false;
         firebtn.setOnClickListener(new View.OnClickListener() {
             @Override
