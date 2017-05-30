@@ -3,13 +3,22 @@ package group5.battleship.src.views;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+
+import android.media.MediaPlayer;
+import android.os.Vibrator;
+import android.provider.MediaStore;
+import android.support.annotation.IntegerRes;
+import android.support.design.widget.TabLayout;
+
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Vibrator;
+
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,6 +28,7 @@ import android.view.WindowManager;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.media.MediaPlayer;
 
 import java.util.Random;
 
@@ -56,6 +66,17 @@ public class GameActivity extends AppCompatActivity {
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
+    //soundfiles
+    public MediaPlayer playShootingSound;
+    public MediaPlayer playMissSound;
+    public MediaPlayer playHitSound;
+    public MediaPlayer playGameSound;
+    public MediaPlayer playWinSound;
+    public MediaPlayer playLoseSound;
+
+    int tempRoundCount = 0;
+
+
 
     TextView tv;
     boolean firebtnpressed = false;
@@ -99,8 +120,10 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        tabHost = (TabHost) findViewById(R.id.tabHost);
-        tabHost.setup();
+
+
+        tapHost = (TabHost) findViewById(R.id.tabHost);
+        tapHost.setup();
 
         //Tab 1
         TabHost.TabSpec spec = tabHost.newTabSpec("MyField");
@@ -114,7 +137,16 @@ public class GameActivity extends AppCompatActivity {
         spec.setIndicator("OpponentField");
         tabHost.addTab(spec);
 
+
+        playShootingSound = MediaPlayer.create(GameActivity.this, R.raw.shooting);
+        playHitSound = MediaPlayer.create(GameActivity.this, R.raw.ship_hit);
+        playMissSound = MediaPlayer.create(GameActivity.this, R.raw.water_hit);
+        playWinSound = MediaPlayer.create(GameActivity.this, R.raw.win);
+        playGameSound = MediaPlayer.create(GameActivity.this, R.raw.battlemusic);
+        playLoseSound = MediaPlayer.create(GameActivity.this, R.raw.lose);
+
         tabHost.setCurrentTab(1);
+
 
         // ShakeDetector initialization
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -154,10 +186,11 @@ public class GameActivity extends AppCompatActivity {
             Log.d("My Log", "Is HOST?!" + String.valueOf(host));
             //the Host runs the Server-Thread, Client runs the Client-Thread
             if (host) {
+
                 serverThread = new ServerThread(port);
                 new Thread(serverThread).start();
                 waitDialog = new AlertDialog.Builder(GameActivity.this).create();
-                waitDialog.setMessage("Wait for the attack...");
+                waitDialog.setMessage(getString(R.string.message_wait_for_attack));
                 waitDialog.setCancelable(false);
                 waitDialog.setCanceledOnTouchOutside(false);
                 waitDialog.show();
@@ -176,9 +209,14 @@ public class GameActivity extends AppCompatActivity {
             displayMyBattleField();
         }
 
+
     }
 
     public void onResume() {
+
+        playGameSound.start();
+        playGameSound.setLooping(true);
+
         Log.d("MY LOG", "RESUME");
 
         super.onResume();
@@ -293,7 +331,11 @@ public class GameActivity extends AppCompatActivity {
 
     public void onPause() {
         super.onPause();
+
+        playGameSound.stop();
+
         mSensorManager.unregisterListener(mShakeDetector);
+
 
 
     }
@@ -319,6 +361,10 @@ public class GameActivity extends AppCompatActivity {
             }
             android.os.Process.killProcess(android.os.Process.myPid());
         }
+    }
+    public void playBattleSound(){
+        playGameSound.setLooping(true);
+        playGameSound.start();
     }
 
     public void cellClick(View view) {
@@ -363,18 +409,20 @@ public class GameActivity extends AppCompatActivity {
     public void shotCell(TextView tv) {
 
         Cordinate c = getRoutingByIDOpponentField(tv.getId());
-
         if (myPlayer.getBattleFieldByCordinate(c) == 0) {
 
             int[][] tmpOpponentShips = opponent.getShips();
 
             if (tmpOpponentShips[c.x][c.y] == -1) {
 
-                myPlayer.updateBattleField(c, -1);
 
+                myPlayer.updateBattleField(c.x, c.y, -1);
+                playHitSound.start();
+            
             } else if (tmpOpponentShips[c.x][c.y] == 1) {
-                playSoundHitShip();
+                 playMissSound.start();
                 myPlayer.updateBattleField(c, 1);
+
                 if (opponent.incShipDestroyed() == opponent.getMaxShips()) {
                     endGame(myPlayer);
                 }
@@ -382,6 +430,7 @@ public class GameActivity extends AppCompatActivity {
 
             game.newMove(new Move(myPlayer, opponent, c));
             displayMyBattleField();
+            tempRoundCount++;
 
 
             if (!intent.getBooleanExtra("WIFI", false)) {
@@ -410,7 +459,7 @@ public class GameActivity extends AppCompatActivity {
                 }
                 if (!gameEnd) {
                     waitDialog = new AlertDialog.Builder(GameActivity.this).create();
-                    waitDialog.setMessage("Wait for the counter attack...");
+                    waitDialog.setMessage(getString(R.string.message_wait_for_counterattack));
                     waitDialog.setCancelable(false);
                     waitDialog.setCanceledOnTouchOutside(false);
                     waitDialog.show();
@@ -435,18 +484,59 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void endGame(final Player winner) {
+        playGameSound.stop();
+        if (winner .equals(myPlayer) ) {
+        playWinSound.start();
+        updateStats(this,true);
+        } else {
+            playLoseSound.start();
+            updateStats(this,false);
+        }
+
+
+        Log.d("My LOG", winner.getName() + " deb");
+        Log.d("My LOG", myPlayer.getName() + " ich");
+        Log.d("My LOG", opponent.getName() + " er");
 
         Log.d("My LOG", winner.getName() + " winner");
         Log.d("My LOG", myPlayer.getName() + " me");
         Log.d("My LOG", opponent.getName() + " he");
+
         if (waitDialog != null) {
             waitDialog.dismiss();
         }
 
         waitDialog = new AlertDialog.Builder(GameActivity.this).create();
-        waitDialog.setTitle("GAME END!");
-        waitDialog.setMessage("Player: " + winner.getName() + " won!\nWant to play a new one?");
-        waitDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes!",
+
+        waitDialog.setTitle(getString(R.string.title_game_end));
+
+        if (!intent.getBooleanExtra("WIFI", true)) {
+            waitDialog.setMessage(getString(R.string.string_fragment_player) + winner.getName() + " " + getString(R.string.string_fragment_won) + " " + getString(R.string.message_play_one_more));
+            waitDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.button_yes),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            //Set your ships on an other position
+                            startAgain();
+
+                        }
+                    });
+            waitDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.button_no),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            //go to homescreen
+                            toStartScreen();
+                        }
+                    });
+        } else {
+            //playLoseSound.start();
+            waitDialog.setMessage(getString(R.string.string_fragment_player) + winner.getName() + getString(R.string.string_fragment_won));
+            waitDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.button_ok),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            //go to homescreen
+                            toStartScreen();
+
+
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         //Disconnect
@@ -458,6 +548,7 @@ public class GameActivity extends AppCompatActivity {
                                 clientThread.close();
                                 clientThread = null;
                             }
+
                         }
                         hitHomeButton = false;
                         //Set your ships on an other position
@@ -517,7 +608,9 @@ public class GameActivity extends AppCompatActivity {
     private void initGame() {
         myPlayer = new Player(getIntent().getStringExtra("NAME"));
         opponent = new Player("Opponent");
-        game = new Game(myPlayer, opponent);
+
+        game = new Game(myPlayer, opponent, 5); //5 = static size
+        playBattleSound();
 
         myPlayer.setShips(getIntent().getStringExtra("SHIPS"));
 
@@ -527,8 +620,8 @@ public class GameActivity extends AppCompatActivity {
         //Startbutton
         //On button click the coordinates get send to opp
         AlertDialog alertDialog = new AlertDialog.Builder(GameActivity.this).create();
-        alertDialog.setMessage("\t\t\t\tAre you ready?");
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes!",
+        alertDialog.setMessage(getString(R.string.message_are_you_rdy));
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.button_yes),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         if (intent.getBooleanExtra("WIFI", true)) {
@@ -612,7 +705,6 @@ public class GameActivity extends AppCompatActivity {
         if (tmpMyShips[c.x][c.y] == -1) {
             opponent.updateBattleField(c, -1);
         } else if (tmpMyShips[c.x][c.y] == 1) {
-            playSoundHitShip();
             phoneVibrate();
 
             opponent.updateBattleField(c, 1);
@@ -657,17 +749,17 @@ public class GameActivity extends AppCompatActivity {
             int[][] tmpMyShips = myPlayer.getShips();
 
 
-            if (tmpMyShips[c.x][c.y] == -1) {
-                opponent.updateBattleField(c, -1);
-                Log.d("My Log:", "nicht getroffen" + String.valueOf(tmpMyShips[c.x][c.y]));
-            } else if (tmpMyShips[c.x][c.y] == 1) {
-                playSoundHitShip();
-                phoneVibrate();
-                opponent.updateBattleField(c, 1);
-                if (myPlayer.incShipDestroyed() == myPlayer.getMaxShips()) {
-                    endGame(opponent);
 
-                }
+        if (tmpMyShips[c.x][c.y] == -1) {
+            playMissSound.start();
+            opponent.updateBattleField(c.x, c.y, -1);
+        } else if (tmpMyShips[c.x][c.y] == 1) {
+            playHitSound.start();
+            phoneVibrate();
+            opponent.updateBattleField(c.x, c.y, 1);
+            if (myPlayer.incShipDestroyed() == myPlayer.getMaxShips()) {
+                endGame(opponent);
+            }
 
                 //displayOpponentsBattleField();
 
@@ -677,6 +769,7 @@ public class GameActivity extends AppCompatActivity {
                 CharSequence text = c.x + "" + c.y;
                 int duration = Toast.LENGTH_SHORT;
                 Toast.makeText(context, text, duration).show();
+
 
             }
             game.newMove(new Move(opponent, myPlayer, c));
@@ -952,22 +1045,52 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
+    private void printInfo() {
+        Toast.makeText(getBaseContext(), getString(R.string.toast_remaining_randomAttacks) + myPlayer.getRandomAttacks(),
+                Toast.LENGTH_LONG).show();
+    }
+
     public void randomAttack(int count) {
+        if (myPlayer.getRandomAttacks() > 0) {
+            tempRoundCount++;
+            Cordinate randomShipCordinate = new randomShipCordinate(opponent, game);
+            Cordinate randomWaterCordinate = new randomWaterCordinate(opponent);
+            Random r = new Random();
 
-        if (intent.getBooleanExtra("WIFI", true)) {
+            if (r.nextInt(10) >= 4) {
+
+                myPlayer.updateBattleField(randomShipCordinate, 1);
+                playHitSound.start();
+                if (opponent.incShipDestroyed() == opponent.getMaxShips()) {
+                    endGame(myPlayer);
+                }
+                myPlayer.setRandomAttacks();
+                game.newMove(new Move(myPlayer, opponent, randomShipCordinate));
+                displayMyBattleField();
+                printInfo();
+                if (intent.getBooleanExtra("WIFI", true)) {
 
 
-            if (myPlayer.getRandomAttacks() > 0) {
-                Cordinate randomShipCordinate = (new randomShipCordinate(opponent, game)).c;
-                Cordinate randomWaterCordinate = (new randomWaterCordinate(opponent)).c;
-                Random r = new Random();
+                    send = String.valueOf(randomShipCordinate.x) + String.valueOf(randomShipCordinate.y);
+                    host = getIntent().getBooleanExtra("IsHost", true);
+                    if (host) {
+                        serverThread.dataReady(send);
+                    } else if (!host) {
+                        clientThread.dataReady(send);
 
-                if (r.nextInt(10) >= 4) {                               // increased chance to hit a ship
-                    myPlayer.updateBattleField(randomShipCordinate, 1);
-                    playSoundHitShip();
-                    if (opponent.incShipDestroyed() == opponent.getMaxShips()) {
-                        endGame(myPlayer);
+
                     }
+
+                    if (!gameEnd) {
+                        waitDialog = new AlertDialog.Builder(GameActivity.this).create();
+                        waitDialog.setMessage(getString(R.string.message_wait_for_counterattack));
+                        waitDialog.setCancelable(false);
+                        waitDialog.setCanceledOnTouchOutside(false);
+                        waitDialog.show();
+                    }
+
+                } else {
+
                     myPlayer.decRandomAttacks();
                     game.newMove(new Move(myPlayer, opponent, randomShipCordinate));
                     displayMyBattleField();
@@ -975,27 +1098,76 @@ public class GameActivity extends AppCompatActivity {
                             Toast.LENGTH_LONG).show();
                     aiOpponentsMove();
 
-                } else {
-                    myPlayer.updateBattleField(randomWaterCordinate, -1);
-                    if (opponent.incShipDestroyed() == opponent.getMaxShips()) {
-                        endGame(myPlayer);
-                    }
-                    myPlayer.decRandomAttacks();
-                    game.newMove(new Move(myPlayer, opponent, randomWaterCordinate));
-                    displayMyBattleField();
-                    aiOpponentsMove();
+                
+    aiOpponentsMove();
                 }
 
             } else {
-                Toast.makeText(getBaseContext(), "Bleib doch fair...",
-                        Toast.LENGTH_LONG).show();
+                myPlayer.updateBattleField(randomWaterCordinate, -1);
+                playMissSound.start();
+                if (opponent.incShipDestroyed() == opponent.getMaxShips()) {
+                    endGame(myPlayer);
+                }
+                myPlayer.setRandomAttacks();
+                game.newMove(new Move(myPlayer, opponent, randomWaterCordinate));
                 displayMyBattleField();
+                printInfo();
+                if (intent.getBooleanExtra("WIFI", true)) {
 
-                aiOpponentsMove();
+                    send = String.valueOf(randomWaterCordinate.x) + String.valueOf(randomWaterCordinate.y);
+                    host = getIntent().getBooleanExtra("IsHost", true);
+                    if (host) {
+                        serverThread.dataReady(send);
+                    } else if (!host) {
+                        clientThread.dataReady(send);
 
+                    }
+                    if (!gameEnd) {
+                        waitDialog = new AlertDialog.Builder(GameActivity.this).create();
+                        waitDialog.setMessage(getString(R.string.message_wait_for_counterattack));
+                        waitDialog.setCancelable(false);
+                        waitDialog.setCanceledOnTouchOutside(false);
+                        waitDialog.show();
+                    }
+
+                }
+                else {
+                    aiOpponentsMove();
+                }
             }
+
+        } else {
+            printInfo();
+            displayMyBattleField();
+            aiOpponentsMove();
+
         }
     }
+    public void updateStats (Context context, boolean win){
+        //for storing gamestatistics
+
+        SharedPreferences prefs = this.getSharedPreferences("stats",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor;
+        editor = prefs.edit();
+
+        int gameCount = prefs.getInt("totalGamesPlayed",0);
+        int winCount = prefs.getInt("totalGamesWon",0);
+        int loseCount = prefs.getInt("totalGamesLost",0);
+        int roundCount = prefs.getInt("shortestGame",0);
+
+        editor.putInt("totalGamesPlayed",gameCount+1);
+        if (win){
+            editor.putInt("totalGamesWon",winCount+1);
+        } else {
+            editor.putInt("totalGamesLost",loseCount+1);
+        }
+        if(tempRoundCount<roundCount&&win){
+        editor.putInt("shortestGame",tempRoundCount);}
+
+        editor.apply();
+    }
+
+
 
     @Override
     public void onBackPressed() {
@@ -1048,8 +1220,8 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
-}
 
+}
 
 
 
