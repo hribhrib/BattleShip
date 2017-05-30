@@ -60,6 +60,11 @@
             android:name=".src.views.PreferencesActivity"
             android:label="BattleShip"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".src.views.InfoActivity"
+            android:label="BattleShip"
+            android:screenOrientation="portrait" />
+
 
     </application>
 

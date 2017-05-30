@@ -29,5 +29,12 @@ public class PreferencesActivity extends AppCompatActivity {
     }
 
 
+    //to make sure you get back to the Main Activity with this button
+    @Override
+    public void onBackPressed () {
+        super.onBackPressed();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
 
 }

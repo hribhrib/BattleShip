@@ -16,7 +16,7 @@ public class InfoActivity extends AppCompatActivity {
     }
 
     public void closeInfo(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, PreferencesActivity.class);
         startActivity(intent);
 
     }
