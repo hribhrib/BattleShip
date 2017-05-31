@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- homescreen -->
     <string name="app_name">BattleShip</string>
     <string name="vsFriend">gegen Freund</string>
-    <string name="vsBot" translatable="false">gegen Ai</string>
+    <string name="vsBot" >gegen Ai</string>
+    <string name="textFieldHint">gib deinen Namen ein</string>
+
+
 </resources>

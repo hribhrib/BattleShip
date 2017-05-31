@@ -1,10 +1,12 @@
 package group5.battleship.src.views;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Spinner;
 
@@ -17,6 +19,9 @@ public class PreferencesActivity extends AppCompatActivity {
     private String language;
     private boolean sound;
     private String difficulty;
+    private int langPosition;
+    private boolean positionChanged = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,9 +29,20 @@ public class PreferencesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_preferences);
 
         // set defaults
-        language = "en";
         sound = true;
         difficulty = "Easy";
+
+        if (!positionChanged) {
+            langPosition = 0;
+        } else {
+            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+            String pos = settings.getString("POS", "");
+            Log.d("Position ", pos);
+            langPosition = Integer.getInteger(pos);
+        }
+
+        Spinner langSelect = (Spinner) findViewById(R.id.langSelection);
+        langSelect.setSelection(langPosition);
     }
 
     public void closePreferences(View view) {
@@ -35,7 +51,6 @@ public class PreferencesActivity extends AppCompatActivity {
 
         // give the settings as extra
         intent.putExtra("sound", sound);
-        intent.putExtra("language", language);
         intent.putExtra("difficulty", difficulty);
 
 
@@ -64,10 +79,12 @@ public class PreferencesActivity extends AppCompatActivity {
 
         int position = langSelect.getSelectedItemPosition();
 
+        positionChanged = true;
+        langPosition = position;
+
         switch (position) {
 
             case 0: // english
-
                 PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit()
                         .putString("LANG", "en").commit();
                 setLangRecreate("en");
@@ -85,6 +102,10 @@ public class PreferencesActivity extends AppCompatActivity {
                 break;
         }
 
+        // save the position of the spinner
+        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit()
+                .putString("POS", String.valueOf(position)).commit();
+
 
     }
 
@@ -98,6 +119,7 @@ public class PreferencesActivity extends AppCompatActivity {
 
         getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         recreate();
+
 
     }
 

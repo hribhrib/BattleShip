@@ -33,9 +33,9 @@
     <string name="button_back" translatable="false">Back</string>
 
     <!-- home screen -->
-    <string name="vsFriend">vs. Friend hugo</string>
+    <string name="vsFriend">vs. Friend </string>
     <string name="vsBot">vs. Bot</string>
-    <string name="textFieldHint" translatable="false">Enter your Name</string>
+    <string name="textFieldHint">Enter your Name</string>
 
 
 

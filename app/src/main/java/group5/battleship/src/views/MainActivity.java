@@ -17,7 +17,7 @@ import java.util.Locale;
 
 import group5.battleship.R;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
     EditText playername;
     Intent intent;
 
@@ -35,19 +35,19 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
 
 
-        intent=null;
+        intent = null;
         setContentView(R.layout.activity_home_screen);
         playername = (EditText) (findViewById(R.id.textfieldName));
         playername.setBackgroundColor(Color.WHITE);
         playername.setTextColor(Color.BLACK);
-        //playername.setHint(playerNameHint);
+
 
         // set the language
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-        Configuration config = getBaseContext().getResources().getConfiguration();
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this); // get the stored language setting
+        Configuration config = getBaseContext().getResources().getConfiguration(); // load the old config
 
         String lang = settings.getString("LANG", "");
-        if (! "".equals(lang) && ! config.locale.getLanguage().equals(lang)) {
+        if (!"".equals(lang) && !config.locale.getLanguage().equals(lang)) {
             Locale locale = new Locale(lang);
             Locale.setDefault(locale);
             config.locale = locale;
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity{
         // set the text
         vsFriend.setText(R.string.vsFriend);
         vsBotbtn.setText(R.string.vsBot);
-
+        playername.setHint(R.string.textFieldHint);
 
 
     }
@@ -83,22 +83,22 @@ public class MainActivity extends AppCompatActivity{
         intent.putExtra("WIFI", false);
 
         //pass on settings
-        intent.putExtra("sound",getIntent().getBooleanExtra("sound",true));
-        intent.putExtra("language",getIntent().getStringExtra("language"));
-        intent.putExtra("difficulty",getIntent().getStringExtra("difficulty"));
+        intent.putExtra("sound", getIntent().getBooleanExtra("sound", true));
+        intent.putExtra("language", getIntent().getStringExtra("language"));
+        intent.putExtra("difficulty", getIntent().getStringExtra("difficulty"));
         startActivity(intent);
 
     }
 
-    public void openPreferences (View view) {
-        Intent intent = new Intent(this,PreferencesActivity.class);
+    public void openPreferences(View view) {
+        Intent intent = new Intent(this, PreferencesActivity.class);
         startActivity(intent);
 
     }
 
 
-    public void viewStats(View view){
-        Intent intent = new Intent(this,HighScoresActivity.class);
+    public void viewStats(View view) {
+        Intent intent = new Intent(this, HighScoresActivity.class);
         startActivity(intent);
     }
 
@@ -114,25 +114,18 @@ public class MainActivity extends AppCompatActivity{
 
         switch (language) {
 
-            case "en" : ;
+            case "en":
+                ;
                 break;
 
-            case "de" : ;
+            case "de":
+                ;
                 break;
 
         }
 
 
     }
-
-
-
-
-
-
-
-
-
 
 
 }
