@@ -246,6 +246,12 @@ public class SetShipsActivity extends AppCompatActivity {
 
     }
 
+    public void setLanguage () {
+
+
+
+    }
+
 
 
 

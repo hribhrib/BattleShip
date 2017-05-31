@@ -39,27 +39,20 @@
                 android:layout_height="wrap_content">
 
 
-                <RadioGroup
+                <Spinner
+                    android:id="@+id/langSelection"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <RadioButton
-                        android:id="@+id/German"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="German" />
-
-                    <RadioButton
-                        android:id="@+id/English"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checked="true"
-                        android:text="English" />
-
-                </RadioGroup>
+                    android:layout_height="wrap_content"
+                    android:entries="@array/lang_select"
+                    android:padding="10dp" />
             </ScrollView>
+
+            <Button
+                android:id="@+id/setLang"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="changeLanguage"
+                android:text="Change" />
 
             <TextView
                 android:id="@+id/spaceOne"
@@ -119,7 +112,7 @@
                 android:textStyle="bold" />
 
             <CheckBox
-                android:id="@+id/checkBox"
+                android:id="@+id/soundCheckbox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:checked="true"
@@ -149,6 +142,7 @@
                 android:layout_height="match_parent">
 
                 <RadioGroup
+                    android:id="@+id/difficultyRBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -157,8 +151,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Easy"
-                        android:checked="true"/>
+                        android:checked="true"
+                        android:text="Easy" />
 
                     <RadioButton
                         android:id="@+id/diffMedium"

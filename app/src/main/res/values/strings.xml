@@ -1,27 +1,50 @@
 <resources>
     <string name="app_name">BattleShip</string>
 
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="title_activity_main2">Main2Activity</string>
-    <string name="title_activity_wifi">activity_wifi</string>
-    <string name="title_activity_data_transfer_display">DataTransferDisplay</string>
-    <string name="message_wait_for_attack">Wait for the attack...</string>
-    <string name="message_wait_for_counterattack">Wait for the counter attack...</string>
-    <string name="title_game_end">GAME END!</string>
-    <string name="string_fragment_player">"Player: </string>
-    <string name="message_play_one_more"> Want to play a new one?</string>
-    <string name="string_fragment_won">won!</string>
-    <string name="button_yes">Yes!</string>
-    <string name="button_no">No</string>
-    <string name="button_ok">Ok!</string>
-    <string name="message_are_you_rdy">\t\t\t\tAre you ready?</string>
-    <string name="toast_remaining_randomAttacks">Verbleibende Zufallsangriffe: </string>
-    <string name="total_games">Total games played: </string>
-    <string name="games_won">Total games won: </string>
-    <string name="games_lost">Total games lost: </string>
-    <string name="shortest_game">Shortest game won (Turns): </string>
-    <string name="button_back">Back</string>
+    <string name="dummy_button" translatable="false">Dummy Button</string>
+    <string name="dummy_content" translatable="false">DUMMY\nCONTENT</string>
+    <string name="title_activity_main2" translatable="false">Main2Activity</string>
+    <string name="title_activity_wifi" translatable="false">activity_wifi</string>
+    <string name="title_activity_data_transfer_display" translatable="false">DataTransferDisplay</string>
+
+
+    <string name="message_wait_for_attack" translatable="false">Wait for the attack...</string>
+    <string name="message_wait_for_counterattack" translatable="false">Wait for the counter attack...</string>
+
+    <!-- game end -->
+    <string name="title_game_end" translatable="false">GAME END!</string>
+    <string name="string_fragment_player" translatable="false">"Player: </string>
+    <string name="message_play_one_more" translatable="false"> Want to play a new one?</string>
+    <string name="string_fragment_won" translatable="false">won!</string>
+    <string name="button_yes" translatable="false">Yes!</string>
+    <string name="button_no" translatable="false">No</string>
+    <string name="button_ok" translatable="false">Ok!</string>
+
+    <string name="message_are_you_rdy" translatable="false">\t\t\t\tAre you ready?</string>
+
+    <string name="toast_remaining_randomAttacks" translatable="false">Verbleibende Zufallsangriffe: </string>
+
+
+    <!-- stats -->
+    <string name="total_games" translatable="false">Total games played: </string>
+    <string name="games_won" translatable="false">Total games won: </string>
+    <string name="games_lost" translatable="false">Total games lost: </string>
+    <string name="shortest_game" translatable="false">Shortest game won (Turns): </string>
+    <string name="button_back" translatable="false">Back</string>
+
+    <!-- home screen -->
+    <string name="vsFriend">vs. Friend hugo</string>
+    <string name="vsBot">vs. Bot</string>
+    <string name="textFieldHint" translatable="false">Enter your Name</string>
+
+
+
+
+    <!-- language selection -->
+    <string-array name="lang_select">
+        <item>English</item>
+        <item>German</item>
+    </string-array>
 
 
 </resources>
