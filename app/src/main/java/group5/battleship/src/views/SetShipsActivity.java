@@ -15,6 +15,7 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.security.cert.Extension;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -38,6 +39,10 @@ public class SetShipsActivity extends AppCompatActivity {
         int duration = Toast.LENGTH_SHORT;
 
         Toast.makeText(context, text, duration).show();
+
+
+
+
 
 
     }
@@ -238,6 +243,12 @@ public class SetShipsActivity extends AppCompatActivity {
         super.onBackPressed();
         Intent back = new Intent(this, MainActivity.class);
         startActivity(back);
+
+    }
+
+    public void setLanguage () {
+
+
 
     }
 
