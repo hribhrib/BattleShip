@@ -109,6 +109,7 @@ public class PreferencesActivity extends AppCompatActivity {
 
     }
 
+    // safe the last setting to default when starting up again
     public void setLangRecreate(String langval) {
 
         Configuration config = getBaseContext().getResources().getConfiguration();
