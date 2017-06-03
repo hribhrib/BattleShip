@@ -45,7 +45,19 @@
     <string name="failureOne">"Error, try it again"</string>
     <string name="failureTwo">"Error, wifi is disabled"</string>
 
+    <!-- set ships -->
+    <string name="acceptText">Are you sure you want to keep this arrangement?</string>
+    <string name="yesBtn">Yes</string>
+    <string name="noBtn">No</string>
+    <string name="setShips">Set your three Ships!</string>
 
+    <!-- info -->
+    <string name="developer">Developer</string>
+    <string name="developerGui">Developer/GUI</string>
+    <string name="gameFrom"> a game from </string>
+    <string name="themeSong"> Themesong from  </string>
+    <string name="architect">Architect</string>
+    <string name="organisation">organisation</string>
 
 
     <!-- language selection -->

@@ -350,7 +350,7 @@ public class GameActivity extends AppCompatActivity {
 
     public void cellClick(View view) {
 
-        final Button firebtn = (Button) findViewById(R.id.searchBtn);
+        final Button firebtn = (Button) findViewById(R.id.fireBtn);
 
 
         if (firebtn.getVisibility() == View.VISIBLE) {
@@ -375,7 +375,7 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
-        firebtn.setOnLongClickListener(new View.OnLongClickListener() {
+        /*firebtn.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 counter++;
@@ -386,7 +386,7 @@ public class GameActivity extends AppCompatActivity {
 
                 return false;
             }
-        });
+        });*/
     }
 
 
@@ -459,7 +459,7 @@ public class GameActivity extends AppCompatActivity {
 
 
         //set fire button invisible agian
-        Button firebtn = (Button) findViewById(R.id.searchBtn);
+        Button firebtn = (Button) findViewById(R.id.fireBtn);
         firebtn.setVisibility(View.INVISIBLE);
 
 

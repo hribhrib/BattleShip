@@ -54,17 +54,19 @@ public class MainActivity extends AppCompatActivity {
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
 
-
         TextView gameTitle = (TextView) findViewById(R.id.game_Title);
         gameTitle.setText(R.string.app_name);
 
         Button vsFriend = (Button) findViewById(R.id.vsFriend);
         Button vsBotbtn = (Button) findViewById(R.id.vsBot);
+        Button stats = (Button) findViewById(R.id.stats);
 
         // set the text
         vsFriend.setText(R.string.vsFriend);
         vsBotbtn.setText(R.string.vsBot);
         playername.setHint(R.string.textFieldHint);
+        stats.setText(R.string.stats);
+
 
 
     }

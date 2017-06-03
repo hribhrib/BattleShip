@@ -50,6 +50,9 @@ public class PreferencesActivity extends AppCompatActivity {
 
         Spinner langSelect = (Spinner) findViewById(R.id.langSelection);
         langSelect.setSelection(langPosition);
+
+
+
     }
 
     public void closePreferences(View view) {

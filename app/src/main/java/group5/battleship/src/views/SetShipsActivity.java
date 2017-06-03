@@ -58,11 +58,16 @@ public class SetShipsActivity extends AppCompatActivity {
 
         // get all elements of the GUI
         TextView setShips = (TextView) findViewById(R.id.setShips);
+        TextView acceptText = (TextView) findViewById(R.id.acceptText);
+        Button yesBtn = (Button) findViewById(R.id.yesbtn);
+        Button noBtn = (Button) findViewById(R.id.nobtn);
 
 
-
-
-
+        //Get the text fot the GUI Items
+        setShips.setText(R.string.setShips);
+        acceptText.setText(R.string.acceptText);
+        yesBtn.setText(R.string.yesBtn);
+        noBtn.setText(R.string.noBtn);
 
     }
 

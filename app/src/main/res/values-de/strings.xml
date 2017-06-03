@@ -15,5 +15,20 @@
     <string name="failureTwo">"Error, Wifi ist deaktiviert!"</string>
 
 
+    <!-- set ships -->
+    <string name="acceptText">Sind Sie mit der Anordnung der Schiffe zufrieden?</string>
+    <string name="yesBtn">Ja</string>
+    <string name="noBtn">Nein</string>
+    <string name="setShips">Setze drei Schiffe!</string>
+
+    <!-- info -->
+    <string name="developer">Entwickler</string>
+    <string name="developerGui">Entwickler/GUI</string>
+    <string name="gameFrom"> ein Spiel von </string>
+    <string name="themeSong"> Titelmelodie von </string>
+    <string name="architect">Architekt</string>
+    <string name="organisation">Organisation</string>
+
+
 
 </resources>
