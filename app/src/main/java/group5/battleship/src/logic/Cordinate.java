@@ -25,4 +25,8 @@ public class Cordinate {
             return false;
         }
     }
+    public Cordinate (String tag){
+        this.x=tag.charAt(0);
+        this.y=tag.charAt(1);
+    }
 }

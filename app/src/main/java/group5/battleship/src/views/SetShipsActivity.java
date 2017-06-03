@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,19 +20,28 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import group5.battleship.R;
+import group5.battleship.src.logic.Battlefield;
+import group5.battleship.src.logic.Cordinate;
+import group5.battleship.src.logic.Game;
+import group5.battleship.src.logic.Ship;
 
-
+// this activity is meant for different shiptypes, the standart gamemode should use the old version of this activity
 public class SetShipsActivity extends AppCompatActivity {
     String ships = ""; //XYXYXY
     int MAX_SHIPS = 3;
     int currentShips = 0;
+    int activeShip = 0; // 0 = undefined, 1 = small, 3 = medium, 5 = big
+    String tempDirection;
     ArrayList<TextView> textViews = new ArrayList<>();
+    Battlefield tmpBattlefield = new Battlefield(5); 
+    // TODO: 03.06.2017 should get the max_ships and size of battlefield as extra  
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_set_ships);
+        // TODO: 03.06.2017 contentview should be received from the button in main 
+        setContentView(R.layout.activity_normal_game_mod);
 
         Context context = getApplicationContext();
         CharSequence text = "Click on the area to set 3 ships!";
@@ -39,72 +49,98 @@ public class SetShipsActivity extends AppCompatActivity {
 
         Toast.makeText(context, text, duration).show();
 
-
     }
 
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
-        Log.d("my tag", getIntent().getStringExtra("NAME")+ " debug");
+        Log.d("my tag", getIntent().getStringExtra("NAME") + " debug");
         Log.d("my tag", "Resume in set ship");
-        ships="";
-        currentShips=0;
+        ships = "";
+        currentShips = 0;
 
     }
 
+    // TODO: 03.06.2017 add a textview and a 'if-else' to the layout that dec the number of available ships of a special type after setting  
+    public void chooseShip(View view) {
+        tempDirection = "v";
+        ImageButton small = (ImageButton) findViewById(R.id.smallShip);
+        ImageButton medium = (ImageButton) findViewById(R.id.mediumShip);
+        ImageButton big = (ImageButton) findViewById(R.id.bigShip);
+
+        small.setVisibility(View.VISIBLE);
+        medium.setVisibility(View.VISIBLE);
+        big.setVisibility(View.VISIBLE);
+
+        switch (view.getId()) {
+            case R.id.smallShip:
+                activeShip = 1;
+                break;
+            case R.id.mediumShip:
+                activeShip = 3;
+                break;
+            case R.id.bigShip:
+                activeShip = 5;
+        }
+        small.setVisibility(View.INVISIBLE);
+        medium.setVisibility(View.INVISIBLE);
+        big.setVisibility(View.INVISIBLE);
+
+    }
+
+    public void rotate() {
+        if (tempDirection == "v"){
+            tempDirection = "h";
+        } else {
+            tempDirection = "v";
+        }
+    }
+    // TODO: 03.06.2017 add a rotate button to activity_normal_game_mod as well as a rotated imageview of the selected ship- 
 
 
     public void cellClick(View view) {
         TextView tv = (TextView) findViewById(view.getId());
-
-
-        if (currentShips < MAX_SHIPS) {
-            if (ships.length() < 2) {
+        if (activeShip != 0) {
+            Cordinate cordinate = new Cordinate((String) view.getTag());
+            if (currentShips < MAX_SHIPS) {
                 ships = (ships + (String) view.getTag());
-                currentShips++;
-
-                tv.setTextColor(Color.WHITE);
-                //tv.setText("o");
-                tv.setBackgroundResource(R.mipmap.sea_ship);
-                storeTextview(tv);
-
-            } else {
-                boolean shipSet = false;
-                boolean dublicate = false;
-                for (int i = 0; i < ships.length() - 1; i = i + 2) {
-                    String tmp = (ships.substring(i, i + 2));
-                    if (!tmp.equals((String) view.getTag())) {
-                        shipSet = true;
-                    } else {
-                        dublicate = true;
-                    }
-                }
-                if (shipSet == true && dublicate == false) {
-                    ships = (ships + (String) view.getTag());
+                Cordinate mainCordinate = new Cordinate((String) view.getTag());
+                Ship ship = new Ship(activeShip, tempDirection, mainCordinate);
+                if (tmpBattlefield.checkSpace(ship)) {
+                    tmpBattlefield.addShip(ship);
                     currentShips++;
-
+                    // // TODO: 03.06.2017 - add assets for different ships, and place it over the used cordinates - 
                     tv.setTextColor(Color.WHITE);
                     //tv.setText("o");
                     tv.setBackgroundResource(R.mipmap.sea_ship);
                     storeTextview(tv);
+                } else {
+                    Context context = getApplicationContext();
+                    CharSequence text = "Ship cant be set here!";
+                    int duration = Toast.LENGTH_SHORT;
 
-                    if (currentShips == MAX_SHIPS) {
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
+                
+            }
+            if (currentShips == MAX_SHIPS) {
 
 
-                        // set the text and the button visible to confirm the arrangement
+                // set the text and the button visible to confirm the arrangement
 
-                        TextView setShipsText = (TextView) findViewById(R.id.setShips);
-                        setShipsText.setVisibility(View.INVISIBLE);
+                TextView setShipsText = (TextView) findViewById(R.id.setShips);
+                setShipsText.setVisibility(View.INVISIBLE);
 
-                        TextView acceptText = (TextView) findViewById(R.id.acceptText);
-                        acceptText.setVisibility(View.VISIBLE);
+                TextView acceptText = (TextView) findViewById(R.id.acceptText);
+                acceptText.setVisibility(View.VISIBLE);
 
-                        Button yesbtn = (Button) findViewById(R.id.yesbtn);
-                        Button nobtn = (Button) findViewById(R.id.nobtn);
+                Button yesbtn = (Button) findViewById(R.id.yesbtn);
+                Button nobtn = (Button) findViewById(R.id.nobtn);
 
-                        yesbtn.setVisibility(View.VISIBLE);
-                        nobtn.setVisibility(View.VISIBLE);
+                yesbtn.setVisibility(View.VISIBLE);
+                nobtn.setVisibility(View.VISIBLE);
 
 
 /*
@@ -128,11 +164,7 @@ public class SetShipsActivity extends AppCompatActivity {
                                 .show();
 */
 
-                    }
-                }
-            }
-
-        } else if (currentShips == MAX_SHIPS) {
+            } else if (currentShips == MAX_SHIPS) {
 
            /*
 
@@ -154,11 +186,12 @@ public class SetShipsActivity extends AppCompatActivity {
             */
 
 
-            
-
-
+            }
+        } else {
+            chooseShip(view);
         }
     }
+
 
     public void settingFinished(View view) {
 
@@ -166,7 +199,7 @@ public class SetShipsActivity extends AppCompatActivity {
         Log.d("My Log t", String.valueOf(getIntent().getBooleanExtra("WIFI", true)));
         Log.d("My Log isHost f", String.valueOf(getIntent().getBooleanExtra("IsHost", false)));
         Log.d("My Log isHost t", String.valueOf(getIntent().getBooleanExtra("IsHost", true)));
-
+// TODO: 03.06.2017 putSeriazable with the battlefield and the ship objects 
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra("SHIPS", ships);
         intent.putExtra("NAME", getIntent().getStringExtra("NAME"));
@@ -196,7 +229,7 @@ public class SetShipsActivity extends AppCompatActivity {
     }
 
     public void resetShips(View view) {
-
+        // TODO: 03.06.2017 re-write this method for different ship types 
         TextView tmp;
 
         for (int i = textViews.size() - 1; i >= 0; i--) {
@@ -241,8 +274,9 @@ public class SetShipsActivity extends AppCompatActivity {
 
     }
 
+    public void updateTempBattlefield(Cordinate c, String tempDirection) {
 
-
+    }
 
 
 }

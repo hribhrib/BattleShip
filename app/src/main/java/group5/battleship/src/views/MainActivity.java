@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity{
         startActivity(intent);
 
     }
+    // TODO: 03.06.2017 add a button to start different gamemodes and call the SetShipsActivity with different contentviews 
 
     public void showInfo(View view) {
         intent = new Intent(this, InfoActivity.class);
