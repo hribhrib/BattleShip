@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">BattleShip</string>
 
     <!-- homescreen -->
-    <string name="app_name">BattleShip</string>
     <string name="vsFriend">gegen Freund</string>
     <string name="vsBot" >gegen Ai</string>
     <string name="textFieldHint">gib deinen Namen ein</string>
+    <string name="stats">Statistiken</string>
+
+    <!-- wifi manager -->
+    <string name="searchBtn">Suchen</string>
+    <string name="connection">"Wifi-Direct: Suchen..."</string>
+    <string name="failureOne">"Versuchen sie es erneut"</string>
+    <string name="failureTwo">"Error, Wifi ist deaktiviert!"</string>
+
 
 
 </resources>

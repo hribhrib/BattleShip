@@ -36,6 +36,14 @@
     <string name="vsFriend">vs. Friend </string>
     <string name="vsBot">vs. Bot</string>
     <string name="textFieldHint">Enter your Name</string>
+    <string name="stats">Stats</string>
+
+
+    <!-- wifi manager -->
+    <string name="searchBtn">Search</string>
+    <string name="connection">"Wifi-Direct: Searching..."</string>
+    <string name="failureOne">"Error, try it again"</string>
+    <string name="failureTwo">"Error, wifi is disabled"</string>
 
 
 

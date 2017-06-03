@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
-import android.net.wifi.p2p.WifiP2pManager;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Vibrator;
@@ -42,7 +41,6 @@ import group5.battleship.src.wifi.ClientThread;
 import group5.battleship.src.wifi.ServerThread;
 import group5.battleship.src.logic.randomShipCordinate;
 import group5.battleship.src.logic.randomWaterCordinate;
-import group5.battleship.src.wifi.WifiBroadcastReciever;
 
 
 public class GameActivity extends AppCompatActivity {
@@ -352,7 +350,7 @@ public class GameActivity extends AppCompatActivity {
 
     public void cellClick(View view) {
 
-        final Button firebtn = (Button) findViewById(R.id.firebtn);
+        final Button firebtn = (Button) findViewById(R.id.searchBtn);
 
 
         if (firebtn.getVisibility() == View.VISIBLE) {
@@ -461,7 +459,7 @@ public class GameActivity extends AppCompatActivity {
 
 
         //set fire button invisible agian
-        Button firebtn = (Button) findViewById(R.id.firebtn);
+        Button firebtn = (Button) findViewById(R.id.searchBtn);
         firebtn.setVisibility(View.INVISIBLE);
 
 
