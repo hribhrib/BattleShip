@@ -4,24 +4,29 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
-import android.net.wifi.p2p.WifiP2pManager;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TabHost;
+import android.widget.TabWidget;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Locale;
 import java.util.Random;
 
 import group5.battleship.R;
@@ -42,7 +47,6 @@ import group5.battleship.src.wifi.ClientThread;
 import group5.battleship.src.wifi.ServerThread;
 import group5.battleship.src.logic.randomShipCordinate;
 import group5.battleship.src.logic.randomWaterCordinate;
-import group5.battleship.src.wifi.WifiBroadcastReciever;
 
 
 public class GameActivity extends AppCompatActivity {
@@ -99,7 +103,6 @@ public class GameActivity extends AppCompatActivity {
     public MediaPlayer playLoseSound;
 
 
-
     int tempRoundCount = 0;
     //////////////////////////////////////////
 
@@ -118,20 +121,22 @@ public class GameActivity extends AppCompatActivity {
         playGameSound = MediaPlayer.create(GameActivity.this, R.raw.battlemusic);
         playLoseSound = MediaPlayer.create(GameActivity.this, R.raw.lose);
 
+        setLanguage();
 
         tabHost = (TabHost) findViewById(R.id.tabHost);
         tabHost.setup();
 
+
         //Tab 1
         TabHost.TabSpec spec = tabHost.newTabSpec("MyField");
         spec.setContent(R.id.MyField);
-        spec.setIndicator("MyField");
+        spec.setIndicator(getString(R.string.myField));
         tabHost.addTab(spec);
 
         //Tab 2
         spec = tabHost.newTabSpec("OpponentField");
         spec.setContent(R.id.OpponentField);
-        spec.setIndicator("OpponentField");
+        spec.setIndicator(getString(R.string.opField));
         tabHost.addTab(spec);
 
         tabHost.setCurrentTab(1);
@@ -195,7 +200,6 @@ public class GameActivity extends AppCompatActivity {
             displayOpponentsBattleField();
             displayMyBattleField();
         }
-
 
 
     }
@@ -322,7 +326,7 @@ public class GameActivity extends AppCompatActivity {
         mSensorManager.unregisterListener(mShakeDetector);
     }
 
-    public void playBattleSound(){
+    public void playBattleSound() {
         playGameSound.setLooping(true);
         playGameSound.start();
     }
@@ -352,7 +356,7 @@ public class GameActivity extends AppCompatActivity {
 
     public void cellClick(View view) {
 
-        final Button firebtn = (Button) findViewById(R.id.firebtn);
+        final Button firebtn = (Button) findViewById(R.id.fireBtn);
 
 
         if (firebtn.getVisibility() == View.VISIBLE) {
@@ -377,7 +381,7 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
-        firebtn.setOnLongClickListener(new View.OnLongClickListener() {
+        /*firebtn.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 counter++;
@@ -388,7 +392,7 @@ public class GameActivity extends AppCompatActivity {
 
                 return false;
             }
-        });
+        });*/
     }
 
 
@@ -461,7 +465,7 @@ public class GameActivity extends AppCompatActivity {
 
 
         //set fire button invisible agian
-        Button firebtn = (Button) findViewById(R.id.firebtn);
+        Button firebtn = (Button) findViewById(R.id.fireBtn);
         firebtn.setVisibility(View.INVISIBLE);
 
 
@@ -470,12 +474,12 @@ public class GameActivity extends AppCompatActivity {
     private void endGame(final Player winner) {
 
         playGameSound.stop();
-        if (winner.equals(myPlayer) ) {
+        if (winner.equals(myPlayer)) {
             playWinSound.start();
-            updateStats(this,true);
+            updateStats(this, true);
         } else {
             playLoseSound.start();
-            updateStats(this,false);
+            updateStats(this, false);
         }
 
         Log.d("My LOG", winner.getName() + " winner");
@@ -486,9 +490,10 @@ public class GameActivity extends AppCompatActivity {
         }
 
         waitDialog = new AlertDialog.Builder(GameActivity.this).create();
-        waitDialog.setTitle("GAME END!");
-        waitDialog.setMessage("Player: " + winner.getName() + " won!\nWant to play a new one?");
-        waitDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes!",
+        waitDialog.setTitle(getString(R.string.title_game_end));
+        waitDialog.setMessage(getString(R.string.string_fragment_player) + " " + winner.getName() +
+                " " + getString(R.string.string_fragment_won) + "\n" + getString(R.string.message_play_one_more));
+        waitDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.button_yes),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         //Disconnect
@@ -506,7 +511,7 @@ public class GameActivity extends AppCompatActivity {
                         startAgain();
                     }
                 });
-        waitDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No",
+        waitDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.button_no),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         //go to homescreen
@@ -1093,28 +1098,52 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
-    public void updateStats (Context context, boolean win){
+    public void updateStats(Context context, boolean win) {
         //for storing gamestatistics
 
-        SharedPreferences prefs = this.getSharedPreferences("stats",Context.MODE_PRIVATE);
+        SharedPreferences prefs = this.getSharedPreferences("stats", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor;
         editor = prefs.edit();
 
-        int gameCount = prefs.getInt("totalGamesPlayed",0);
-        int winCount = prefs.getInt("totalGamesWon",0);
-        int loseCount = prefs.getInt("totalGamesLost",0);
-        int roundCount = prefs.getInt("shortestGame",0);
+        int gameCount = prefs.getInt("totalGamesPlayed", 0);
+        int winCount = prefs.getInt("totalGamesWon", 0);
+        int loseCount = prefs.getInt("totalGamesLost", 0);
+        int roundCount = prefs.getInt("shortestGame", 0);
 
-        editor.putInt("totalGamesPlayed",gameCount+1);
-        if (win){
-            editor.putInt("totalGamesWon",winCount+1);
+        editor.putInt("totalGamesPlayed", gameCount + 1);
+        if (win) {
+            editor.putInt("totalGamesWon", winCount + 1);
         } else {
-            editor.putInt("totalGamesLost",loseCount+1);
+            editor.putInt("totalGamesLost", loseCount + 1);
         }
-        if(tempRoundCount<roundCount&&win){
-            editor.putInt("shortestGame",tempRoundCount);}
+        if (tempRoundCount < roundCount && win) {
+            editor.putInt("shortestGame", tempRoundCount);
+        }
 
         editor.apply();
+    }
+
+    private void setLanguage() {
+
+        // set the language
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this); // get the stored language setting
+        Configuration config = getBaseContext().getResources().getConfiguration(); // load the old config
+
+        String lang = settings.getString("LANG", "");
+        if (!"".equals(lang) && !config.locale.getLanguage().equals(lang)) {
+            Locale locale = new Locale(lang);
+            Locale.setDefault(locale);
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
+
+        // get the GUI Items
+        Button fireBtn = (Button) findViewById(R.id.fireBtn);
+
+
+        fireBtn.setText(R.string.fire);
+
+
     }
 
 }

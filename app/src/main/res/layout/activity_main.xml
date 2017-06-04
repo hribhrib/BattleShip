@@ -834,7 +834,7 @@
                             android:visibility="invisible" />
 
                         <Button
-                            android:id="@+id/firebtn"
+                            android:id="@+id/fireBtn"
                             android:layout_width="190dp"
                             android:layout_height="match_parent"
                             android:layout_column="2"

@@ -32,17 +32,27 @@ public class PreferencesActivity extends AppCompatActivity {
         sound = true;
         difficulty = "Easy";
 
-        if (!positionChanged) {
+
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        Log.d("Settings", settings.getString("POS", ""));
+
+        if (settings.getString("POS","").isEmpty()) {
+
             langPosition = 0;
-        } else {
-            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        }
+
+        else {
             String pos = settings.getString("POS", "");
             Log.d("Position ", pos);
-            langPosition = Integer.getInteger(pos);
+            langPosition = Integer.valueOf(pos);
         }
+
 
         Spinner langSelect = (Spinner) findViewById(R.id.langSelection);
         langSelect.setSelection(langPosition);
+
+
+
     }
 
     public void closePreferences(View view) {
@@ -79,8 +89,6 @@ public class PreferencesActivity extends AppCompatActivity {
 
         int position = langSelect.getSelectedItemPosition();
 
-        positionChanged = true;
-        langPosition = position;
 
         switch (position) {
 
@@ -102,9 +110,13 @@ public class PreferencesActivity extends AppCompatActivity {
                 break;
         }
 
-        // save the position of the spinner
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit()
                 .putString("POS", String.valueOf(position)).commit();
+
+
+    }
+
+    public void changeSound (View view) {
 
 
     }

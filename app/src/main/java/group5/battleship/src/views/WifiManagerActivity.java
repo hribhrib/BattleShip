@@ -4,11 +4,14 @@ package group5.battleship.src.views;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 
 import android.util.Log;
@@ -21,6 +24,7 @@ import android.widget.TextView;
 
 
 import java.net.InetAddress;
+import java.util.Locale;
 
 import group5.battleship.R;
 import group5.battleship.src.wifi.WifiBroadcastReciever;
@@ -62,6 +66,22 @@ public class WifiManagerActivity extends AppCompatActivity {
         // Indicates this device's details have changed.
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
 
+        // set the language
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this); // get the stored language setting
+        Configuration config = getBaseContext().getResources().getConfiguration(); // load the old config
+
+        String lang = settings.getString("LANG", "");
+        if (!"".equals(lang) && !config.locale.getLanguage().equals(lang)) {
+            Locale locale = new Locale(lang);
+            Locale.setDefault(locale);
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
+
+
+        Button searchBtn = (Button) findViewById(R.id.searchBtn);
+        searchBtn.setText(R.string.searchBtn);
+
 
     }
 
@@ -71,15 +91,15 @@ public class WifiManagerActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess() {
-                myTextView.setText("Wifi-Direct: Searching...");
+                myTextView.setText(R.string.connection);
             }
 
             @Override
             public void onFailure(int reason) {
                 if (reason == 0) {
-                    myTextView.setText("Error, try it again");
+                    myTextView.setText(R.string.failureOne);
                 } else if (reason == 2) {
-                    myTextView.setText("Error, wifi is disabled");
+                    myTextView.setText(R.string.failureTwo);
                 }
             }
         });
@@ -131,7 +151,7 @@ public class WifiManagerActivity extends AppCompatActivity {
         myTextView = (TextView) findViewById(R.id.textView2);
         myListView = (ListView) findViewById(R.id.listView);
 
-        searchButton = (Button) findViewById(R.id.firebtn);
+        searchButton = (Button) findViewById(R.id.searchBtn);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

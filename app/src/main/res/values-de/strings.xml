@@ -1,11 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">BattleShip</string>
 
     <!-- homescreen -->
-    <string name="app_name">BattleShip</string>
     <string name="vsFriend">gegen Freund</string>
     <string name="vsBot" >gegen Ai</string>
     <string name="textFieldHint">gib deinen Namen ein</string>
+    <string name="stats">Statistiken</string>
+
+    <!-- wifi manager -->
+    <string name="searchBtn">Suchen</string>
+    <string name="connection">"Wifi-Direct: Suchen..."</string>
+    <string name="failureOne">"Versuchen sie es erneut"</string>
+    <string name="failureTwo">"Error, Wifi ist deaktiviert!"</string>
+
+
+    <!-- set ships -->
+    <string name="acceptText">Sind Sie mit der Anordnung der Schiffe zufrieden?</string>
+    <string name="yesBtn">Ja</string>
+    <string name="noBtn">Nein</string>
+    <string name="setShips">Setze drei Schiffe!</string>
+
+    <!-- info -->
+    <string name="developer">Entwickler</string>
+    <string name="developerGui">Entwickler/GUI</string>
+    <string name="gameFrom"> ein Spiel von </string>
+    <string name="themeSong"> Titelmelodie von </string>
+    <string name="architect">Architekt</string>
+    <string name="organisation">Organisation</string>
+
+    <!-- stats -->
+    <string name="total_games" >Gespielte Spiele: </string>
+    <string name="games_won" >Gewonnene Spiele: </string>
+    <string name="games_lost" >Verlorene Spiele: </string>
+    <string name="shortest_game" >kürzestes Spiel gewonnen (in Zügen): </string>
+    <string name="button_back" >Zurück</string>
+
+
+    <!-- game Activity -->
+    <string name="myField">MEIN FELD</string>
+    <string name="opField">GEGNER FELD</string>
+    <string name="fire">Feuern !</string>
+
+    <!-- game end -->
+    <string name="title_game_end" >Spielende</string>
+    <string name="string_fragment_player" >"Spieler: </string>
+    <string name="message_play_one_more" > Wollen sie noch eine Runde spielen?</string>
+    <string name="string_fragment_won" >gewonnen!!</string>
+    <string name="button_yes" >Ja!</string>
+    <string name="button_no" >Nein</string>
+    <string name="button_ok" >Ok!</string>
+
 
 
 </resources>
