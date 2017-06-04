@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">BattleShip</string>
 
+    <!-- game Activity -->
+    <string name="myField">MY FIELD</string>
+    <string name="opField">OPPONENT FIELD</string>
+    <string name="fire">Fire!</string>
+
+
     <string name="dummy_button" translatable="false">Dummy Button</string>
     <string name="dummy_content" translatable="false">DUMMY\nCONTENT</string>
     <string name="title_activity_main2" translatable="false">Main2Activity</string>
@@ -12,13 +18,13 @@
     <string name="message_wait_for_counterattack" translatable="false">Wait for the counter attack...</string>
 
     <!-- game end -->
-    <string name="title_game_end" translatable="false">GAME END!</string>
-    <string name="string_fragment_player" translatable="false">"Player: </string>
-    <string name="message_play_one_more" translatable="false"> Want to play a new one?</string>
-    <string name="string_fragment_won" translatable="false">won!</string>
-    <string name="button_yes" translatable="false">Yes!</string>
-    <string name="button_no" translatable="false">No</string>
-    <string name="button_ok" translatable="false">Ok!</string>
+    <string name="title_game_end" >GAME END!</string>
+    <string name="string_fragment_player" >"Player: </string>
+    <string name="message_play_one_more" > Want to play a new one?</string>
+    <string name="string_fragment_won" >won!</string>
+    <string name="button_yes" >Yes!</string>
+    <string name="button_no" >No</string>
+    <string name="button_ok" >Ok!</string>
 
     <string name="message_are_you_rdy" translatable="false">\t\t\t\tAre you ready?</string>
 
