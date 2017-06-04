@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.Spinner;
 
 import java.util.Locale;
@@ -29,28 +30,29 @@ public class PreferencesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_preferences);
 
         // set defaults
-        sound = true;
+        CheckBox soundb = (CheckBox) findViewById(R.id.soundCheckbox);
         difficulty = "Easy";
 
 
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-        Log.d("Settings", settings.getString("POS", ""));
-
-        if (settings.getString("POS","").isEmpty()) {
-
-            langPosition = 0;
-        }
-
-        else {
-            String pos = settings.getString("POS", "");
-            Log.d("Position ", pos);
-            langPosition = Integer.valueOf(pos);
-        }
-
-
+        // set the spinner position
         Spinner langSelect = (Spinner) findViewById(R.id.langSelection);
         langSelect.setSelection(langPosition);
 
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        int spinnerValue = sharedPref.getInt("userChoiceSpinner", -1);
+        if (spinnerValue != -1) {
+            // set the value of the spinner
+            langSelect.setSelection(spinnerValue);
+        }
+        Log.d("POS", " " + spinnerValue);
+
+        // set the sound preferences
+        boolean sound = sharedPref.getBoolean("sound",true);
+        if (sound) {
+            soundb.setChecked(true);
+        } else {
+            soundb.setChecked(false);
+        }
 
 
     }
@@ -96,7 +98,7 @@ public class PreferencesActivity extends AppCompatActivity {
                 PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit()
                         .putString("LANG", "en").commit();
                 setLangRecreate("en");
-                return;
+                break;
             case 1: // german
                 PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit()
                         .putString("LANG", "de").commit();
@@ -110,14 +112,30 @@ public class PreferencesActivity extends AppCompatActivity {
                 break;
         }
 
-        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit()
-                .putString("POS", String.valueOf(position)).commit();
+        // safe the spinner position
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor prefEditor = sharedPref.edit();
+        prefEditor.putInt("userChoiceSpinner", position);
+        Log.d("Position nr one", ""+position);
+        prefEditor.commit();
 
 
     }
 
-    public void changeSound (View view) {
+    public void changeSound(View view) {
 
+        CheckBox sound = (CheckBox) findViewById(R.id.soundCheckbox);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if (sound.isChecked()) {
+          // sound on
+
+            sharedPreferences.edit().putBoolean("sound", true).commit();
+
+        } else {
+            //sound off
+            sharedPreferences.edit().putBoolean("sound", false).commit();
+        }
 
     }
 
