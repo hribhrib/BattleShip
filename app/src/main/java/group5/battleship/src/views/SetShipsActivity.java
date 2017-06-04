@@ -42,7 +42,7 @@ public class SetShipsActivity extends AppCompatActivity {
         CharSequence text = "Click on the area to set 3 ships!";
         int duration = Toast.LENGTH_SHORT;
 
-        Toast.makeText(context, text, duration).show();
+        //Toast.makeText(context, text, duration).show();
 
         // set the language
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this); // get the stored language setting
