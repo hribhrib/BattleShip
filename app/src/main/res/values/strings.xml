@@ -26,11 +26,11 @@
 
 
     <!-- stats -->
-    <string name="total_games" translatable="false">Total games played: </string>
-    <string name="games_won" translatable="false">Total games won: </string>
-    <string name="games_lost" translatable="false">Total games lost: </string>
-    <string name="shortest_game" translatable="false">Shortest game won (Turns): </string>
-    <string name="button_back" translatable="false">Back</string>
+    <string name="total_games" >Total games played: </string>
+    <string name="games_won" >Total games won: </string>
+    <string name="games_lost" >Total games lost: </string>
+    <string name="shortest_game" >Shortest game won (Turns): </string>
+    <string name="button_back" >Back</string>
 
     <!-- home screen -->
     <string name="vsFriend">vs. Friend </string>

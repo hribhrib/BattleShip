@@ -116,6 +116,11 @@ public class PreferencesActivity extends AppCompatActivity {
 
     }
 
+    public void changeSound (View view) {
+
+
+    }
+
     // safe the last setting to default when starting up again
     public void setLangRecreate(String langval) {
 

@@ -29,6 +29,12 @@
     <string name="architect">Architekt</string>
     <string name="organisation">Organisation</string>
 
+    <!-- stats -->
+    <string name="total_games" >Gespielte Spiele: </string>
+    <string name="games_won" >Gewonnene Spiele: </string>
+    <string name="games_lost" >Verlorene Spiele: </string>
+    <string name="shortest_game" >kürzestes Spiel gewonnen (in Zügen): </string>
+    <string name="button_back" >Zurück</string>
 
 
 </resources>
