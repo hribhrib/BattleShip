@@ -204,8 +204,13 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void onResume() {
-        playGameSound.start();
-        playGameSound.setLooping(true);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean sound = sharedPref.getBoolean("sound", true);
+
+        if (sound) {
+            playGameSound.start();
+            playGameSound.setLooping(true);
+        }
 
         Log.d("MY LOG", "RESUME");
 
@@ -321,13 +326,24 @@ public class GameActivity extends AppCompatActivity {
 
     public void onPause() {
         super.onPause();
-        playGameSound.stop();
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean sound = sharedPref.getBoolean("sound", true);
+
+        if (sound) {
+            playGameSound.stop();
+        }
         mSensorManager.unregisterListener(mShakeDetector);
     }
 
     public void playBattleSound() {
-        playGameSound.setLooping(true);
-        playGameSound.start();
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean sound = sharedPref.getBoolean("sound", true);
+
+        if (sound) {
+            playGameSound.setLooping(true);
+            playGameSound.start();
+        }
     }
 
     @Override
@@ -413,10 +429,22 @@ public class GameActivity extends AppCompatActivity {
             if (tmpOpponentShips[c.x][c.y] == -1) {
 
                 myPlayer.updateBattleField(c, -1);
-                playMissSound.start();
+                // check if sound is on or off
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+                boolean sound = sharedPref.getBoolean("sound", true);
+
+                if (sound) {
+                    playMissSound.start();
+                }
 
             } else if (tmpOpponentShips[c.x][c.y] == 1) {
-                playHitSound.start();
+                // check if sound is on or off
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+                boolean sound = sharedPref.getBoolean("sound", true);
+
+                if (sound) {
+                    playHitSound.start();
+                }
                 myPlayer.updateBattleField(c, 1);
                 if (opponent.incShipDestroyed() == opponent.getMaxShips()) {
                     endGame(myPlayer);
@@ -482,12 +510,23 @@ public class GameActivity extends AppCompatActivity {
 
     private void endGame(final Player winner) {
 
-        playGameSound.stop();
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean sound = sharedPref.getBoolean("sound", true);
+
+        if (sound) {
+            playGameSound.stop();
+        }
         if (winner.equals(myPlayer)) {
-            playWinSound.start();
+            // check if sound is on or off
+            if (sound) {
+                playWinSound.start();
+            }
             updateStats(this, true);
         } else {
-            playLoseSound.start();
+            // check if sound is on or off
+            if (sound) {
+                playLoseSound.start();
+            }
             updateStats(this, false);
         }
 
@@ -714,10 +753,22 @@ public class GameActivity extends AppCompatActivity {
 
             if (tmpMyShips[c.x][c.y] == -1) {
                 opponent.updateBattleField(c, -1);
-                playMissSound.start();
+                // check if sound is on or off
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+                boolean sound = sharedPref.getBoolean("sound", true);
+
+                if (sound) {
+                    playMissSound.start();
+                }
                 Log.d("My Log:", "nicht getroffen" + String.valueOf(tmpMyShips[c.x][c.y]));
             } else if (tmpMyShips[c.x][c.y] == 1) {
-                playHitSound.start();
+                // check if sound is on or off
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+                boolean sound = sharedPref.getBoolean("sound", true);
+
+                if (sound) {
+                    playHitSound.start();
+                }
                 phoneVibrate();
                 opponent.updateBattleField(c, 1);
                 if (myPlayer.incShipDestroyed() == myPlayer.getMaxShips()) {
@@ -1090,7 +1141,13 @@ public class GameActivity extends AppCompatActivity {
 
                 if (r.nextInt(10) >= 4) {                               // increased chance to hit a ship
                     myPlayer.updateBattleField(randomShipCordinate, 1);
-                    playHitSound.start();
+                    // check if sound is on or off
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+                    boolean sound = sharedPref.getBoolean("sound", true);
+
+                    if (sound) {
+                        playHitSound.start();
+                    }
                     if (opponent.incShipDestroyed() == opponent.getMaxShips()) {
                         endGame(myPlayer);
                     }
@@ -1103,7 +1160,13 @@ public class GameActivity extends AppCompatActivity {
 
                 } else {
                     myPlayer.updateBattleField(randomWaterCordinate, -1);
-                    playMissSound.start();
+                    // check if sound is on or off
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+                    boolean sound = sharedPref.getBoolean("sound", true);
+
+                    if (sound) {
+                        playMissSound.start();
+                    }
                     if (opponent.incShipDestroyed() == opponent.getMaxShips()) {
                         endGame(myPlayer);
                     }
