@@ -9,20 +9,20 @@ import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
+import android.net.wifi.p2p.WifiP2pManager;
+import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
 import android.widget.TabHost;
-import android.widget.TabWidget;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +47,7 @@ import group5.battleship.src.wifi.ClientThread;
 import group5.battleship.src.wifi.ServerThread;
 import group5.battleship.src.logic.randomShipCordinate;
 import group5.battleship.src.logic.randomWaterCordinate;
+import group5.battleship.src.wifi.WifiBroadcastReciever;
 
 
 public class GameActivity extends AppCompatActivity {
@@ -57,6 +58,7 @@ public class GameActivity extends AppCompatActivity {
     int[][] routingOpponentField;
     TabHost tabHost;
     boolean touchable = true;
+    boolean radarUsed = false;
 
     // for shakeDetection
     private SensorManager mSensorManager;
@@ -121,30 +123,27 @@ public class GameActivity extends AppCompatActivity {
         playGameSound = MediaPlayer.create(GameActivity.this, R.raw.battlemusic);
         playLoseSound = MediaPlayer.create(GameActivity.this, R.raw.lose);
 
-        setLanguage();
 
         tabHost = (TabHost) findViewById(R.id.tabHost);
         tabHost.setup();
 
-
         //Tab 1
         TabHost.TabSpec spec = tabHost.newTabSpec("MyField");
         spec.setContent(R.id.MyField);
-        spec.setIndicator(getString(R.string.myField));
+        spec.setIndicator("MyField");
         tabHost.addTab(spec);
 
         //Tab 2
         spec = tabHost.newTabSpec("OpponentField");
         spec.setContent(R.id.OpponentField);
-        spec.setIndicator(getString(R.string.opField));
+        spec.setIndicator("OpponentField");
         tabHost.addTab(spec);
 
         tabHost.setCurrentTab(1);
 
         // ShakeDetector initialization
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mAccelerometer = mSensorManager
-                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mShakeDetector = new ShakeDetector();
         mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
 
@@ -357,7 +356,7 @@ public class GameActivity extends AppCompatActivity {
     public void cellClick(View view) {
 
         final Button firebtn = (Button) findViewById(R.id.fireBtn);
-
+        final Button btnRadar = (Button) findViewById(R.id.radarBtn);
 
         if (firebtn.getVisibility() == View.VISIBLE) {
             // reset the view before setting the new target
@@ -372,6 +371,7 @@ public class GameActivity extends AppCompatActivity {
         // press fire Button
         firebtn.setVisibility(View.VISIBLE);
 
+        btnRadar.setVisibility(View.VISIBLE);
 
         firebtnpressed = false;
         firebtn.setOnClickListener(new View.OnClickListener() {
@@ -380,8 +380,14 @@ public class GameActivity extends AppCompatActivity {
                 shotCell(tv);
             }
         });
+        btnRadar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                radarClick(tv);
+            }
+        });
 
-        /*firebtn.setOnLongClickListener(new View.OnLongClickListener() {
+        firebtn.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 counter++;
@@ -392,7 +398,7 @@ public class GameActivity extends AppCompatActivity {
 
                 return false;
             }
-        });*/
+        });
     }
 
 
@@ -468,6 +474,9 @@ public class GameActivity extends AppCompatActivity {
         Button firebtn = (Button) findViewById(R.id.fireBtn);
         firebtn.setVisibility(View.INVISIBLE);
 
+        Button btnRadar = (Button) findViewById(R.id.radarBtn);
+        btnRadar.setVisibility(View.INVISIBLE);
+
 
     }
 
@@ -490,10 +499,9 @@ public class GameActivity extends AppCompatActivity {
         }
 
         waitDialog = new AlertDialog.Builder(GameActivity.this).create();
-        waitDialog.setTitle(getString(R.string.title_game_end));
-        waitDialog.setMessage(getString(R.string.string_fragment_player) + " " + winner.getName() +
-                " " + getString(R.string.string_fragment_won) + "\n" + getString(R.string.message_play_one_more));
-        waitDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.button_yes),
+        waitDialog.setTitle("GAME END!");
+        waitDialog.setMessage("Player: " + winner.getName() + " won!\nWant to play a new one?");
+        waitDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes!",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         //Disconnect
@@ -511,7 +519,7 @@ public class GameActivity extends AppCompatActivity {
                         startAgain();
                     }
                 });
-        waitDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.button_no),
+        waitDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         //go to homescreen
@@ -996,8 +1004,77 @@ public class GameActivity extends AppCompatActivity {
         vib.vibrate(300); //Vibration 300 milisekunden
     }
 
-    private void radar(Cordinate c) {
+    public void radarClick(TextView tv) {
+        if (!radarUsed) {
+            // sorry, quick and dirty
+            Cordinate current = getRoutingByIDOpponentField(tv.getId());
+            int[][] bField = opponent.getShips();
 
+            int xPlus = current.x + 1;
+            int xMinus = current.x - 1;
+            int yPlus = current.y + 1;
+            int yMinus = current.y - 1;
+
+
+            if (xPlus < game.getSize()) {
+                // right
+                Cordinate r = new Cordinate(xPlus, current.y);
+                TextView right = (TextView) findViewById(getRoutingByCordinateOpponentField(r));
+
+                if (bField[xPlus][current.y] == 1) {
+                    right.setBackgroundResource(R.mipmap.sea_ship);
+                }
+            }
+            if (current.x == current.y) {
+                //current field
+                TextView aktual = (TextView) findViewById(getRoutingByCordinateOpponentField(new Cordinate(current.x, current.y)));
+
+                if (bField[current.x][current.y] == 1) {
+                    aktual.setBackgroundResource(R.mipmap.sea_ship);
+                }
+            }
+
+            if (xMinus >= 0) {
+                // left
+                TextView left = (TextView) findViewById(getRoutingByCordinateOpponentField(new Cordinate(xMinus, current.y)));
+
+                if (bField[xMinus][current.y] == 1) {
+                    left.setBackgroundResource(R.mipmap.sea_ship);
+                }
+            }
+
+            if (yPlus < game.getSize()) {
+                // down
+                TextView down = (TextView) findViewById(getRoutingByCordinateOpponentField(new Cordinate(current.x, yPlus)));
+
+                if (bField[current.x][yPlus] == 1) {
+                    down.setBackgroundResource(R.mipmap.sea_ship);
+                }
+            }
+
+            if (yMinus >= 0) {
+                // up
+                TextView up = (TextView) findViewById(getRoutingByCordinateOpponentField(new Cordinate(current.x, yMinus)));
+
+                if (bField[current.x][yMinus] == 1) {
+                    up.setBackgroundResource(R.mipmap.sea_ship);
+                }
+
+            }
+
+            radarUsed = true;
+
+        } else {
+
+            System.out.println("Radar already used!");
+
+            Context context = getApplicationContext();
+            CharSequence text = "Radar Scan wurde bereits verwendet";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
     }
 
     public void randomAttack(int count) {
@@ -1098,6 +1175,7 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
     public void updateStats(Context context, boolean win) {
         //for storing gamestatistics
 
