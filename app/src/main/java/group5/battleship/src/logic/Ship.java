@@ -1,5 +1,6 @@
 package group5.battleship.src.logic;
 
+import java.io.InterruptedIOException;
 import java.io.Serializable;
 
 /**
@@ -10,17 +11,14 @@ public class Ship implements Serializable {
     private int type;   //1 small, 3 medium, 5 big
     private String direction;   //v = vertical , h = horizontal
     private Cordinate mainCordinate; //input from User
-
-
-
-    private String allCordinates; // all Cordinates used for the ship
-                                //maybe better as object array containing cordinate objects
+    private String allCordinates=""; // all Cordinates used for the ship
+                                     //maybe better as object array containing cordinate objects
     public Ship (int type, String direction, Cordinate mainCordinate){
         this.type = type;
         this.mainCordinate = mainCordinate;
         this.direction=direction;
-        allCordinates ="";
-        this.allCordinates=allCordinates+mainCordinate.x+mainCordinate.y;
+        this.allCordinates=Integer.toString(mainCordinate.x)+Integer.toString(mainCordinate.y);
+
         switch (type){
             case 1:
                 break;

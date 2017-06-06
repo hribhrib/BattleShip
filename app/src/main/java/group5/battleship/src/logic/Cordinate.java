@@ -26,7 +26,7 @@ public class Cordinate {
         }
     }
     public Cordinate (String tag){
-        this.x=tag.charAt(0);
-        this.y=tag.charAt(1);
+        this.x=Character.getNumericValue(tag.charAt(0));
+        this.y=Character.getNumericValue(tag.charAt(1));
     }
 }

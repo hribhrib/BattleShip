@@ -56,7 +56,11 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".src.views.WifiManagerActivity"
+        android:name=".src.views.WifiManagerActivity"
+        android:label="BattleShip"
+        android:screenOrientation="portrait" />
+        <activity
+            android:name=".src.views.InfoActivity"
             android:label="BattleShip"
             android:screenOrientation="portrait" />
 
