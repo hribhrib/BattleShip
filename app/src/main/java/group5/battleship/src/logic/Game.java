@@ -15,13 +15,14 @@ import java.util.List;
 
 public class Game {
     ArrayList<Move> moves;
-    int size = 5; // R x C
+    int size; // R x C
     Player player1;
     Player player2;
 
-    public Game(Player p1, Player p2) {
+    public Game(Player p1, Player p2, int size) {
         player1 = p1;
         player2 = p2;
+        this.size = size;
 
         moves = new ArrayList<>();
     }

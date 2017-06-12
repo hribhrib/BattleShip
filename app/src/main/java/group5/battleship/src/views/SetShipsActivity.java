@@ -1,4 +1,11 @@
+
+
+/**
+ * Created by seppi on 12.06.2017.
+ */
+
 package group5.battleship.src.views;
+
 
 
 import android.content.Context;
@@ -23,7 +30,8 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
-import group5.battleship.R;
+
+        import group5.battleship.R;
 
 
 public class SetShipsActivity extends AppCompatActivity {
@@ -62,6 +70,12 @@ public class SetShipsActivity extends AppCompatActivity {
         Button yesBtn = (Button) findViewById(R.id.yesbtn);
         Button noBtn = (Button) findViewById(R.id.nobtn);
 
+
+        //Get the text fot the GUI Items
+        setShips.setText(R.string.setShips);
+        acceptText.setText(R.string.acceptText);
+        yesBtn.setText(R.string.yesBtn);
+        noBtn.setText(R.string.noBtn);
 
         //Get the text fot the GUI Items
         setShips.setText(R.string.setShips);
@@ -137,7 +151,6 @@ public class SetShipsActivity extends AppCompatActivity {
 
 
 /*
-
                         // Dialog to confirm the arrangement of the ships
                         new AlertDialog.Builder(SetShipsActivity.this)
                                 .setTitle("All ships are set")
@@ -164,26 +177,20 @@ public class SetShipsActivity extends AppCompatActivity {
         } else if (currentShips == MAX_SHIPS) {
 
            /*
-
             // this code is not needed at the moment
-
             Context context = getApplicationContext();
             CharSequence text = "All ships are set";
             int duration = Toast.LENGTH_SHORT;
-
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
-
             Button b15 = (Button) findViewById(R.id.startButton);
             b15.setVisibility(View.VISIBLE);
-
             View table = findViewById(R.id.table);
-
             table.setVisibility(View.INVISIBLE);
             */
 
 
-            
+
 
 
         }
@@ -272,4 +279,6 @@ public class SetShipsActivity extends AppCompatActivity {
 
 
 
+
 }
+

@@ -174,7 +174,7 @@ public class WifiManagerActivity extends AppCompatActivity {
         myReceiver = new WifiBroadcastReciever(myManager, myChannel, this);
 
 
-        setShipIntent = new Intent(WifiManagerActivity.this, SetShipsActivity.class);
+        setShipIntent = new Intent(WifiManagerActivity.this, SetShipsActivity2.class);
 
 
         registerReceiver(myReceiver, intentFilter);

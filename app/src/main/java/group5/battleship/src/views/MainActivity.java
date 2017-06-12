@@ -92,8 +92,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     public void openPreferences(View view) {
         Intent intent = new Intent(this, PreferencesActivity.class);
+
         startActivity(intent);
 
     }
