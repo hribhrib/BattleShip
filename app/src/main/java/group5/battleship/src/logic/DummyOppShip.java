@@ -1,19 +1,26 @@
 package group5.battleship.src.logic;
 
-import java.io.InterruptedIOException;
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
- * Created by seppi on 02.06.2017.
+ * Created by seppi on 11.06.2017.
  */
 
-public class Ship {
+public class DummyOppShip extends Ship {
+    private ArrayList<Cordinate> allCordinates = new ArrayList<Cordinate>();
 
-    private ArrayList<Cordinate> allCordinates = new ArrayList<Cordinate>(); // all Cordinates used for the ship
-    public Ship(){};
-    public Ship (int type, String direction, Cordinate mainCordinate){
+    public DummyOppShip (int type){
         //this.allCordinates=Integer.toString(mainCordinate.x)+Integer.toString(mainCordinate.y);
+        Random r = new Random();
+        Random r_direction = new Random();
+        String direction;
+        if ((r_direction.nextBoolean())){
+            direction = "v";
+        }else {
+            direction = "h";
+        }
+        Cordinate mainCordinate = new Cordinate (r.nextInt(8), r.nextInt(8));
         allCordinates.add(mainCordinate);
 
         switch (type){
@@ -42,9 +49,4 @@ public class Ship {
                 }
         }
     }
-
-    public ArrayList<Cordinate> getAllCordinates() {
-        return allCordinates;
-    }
-    // TODO: 03.06.2017 add a function that checks if a shipobject has been destroyed
 }

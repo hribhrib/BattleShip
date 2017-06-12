@@ -37,13 +37,13 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void startLocalGame(View view) {
-        intent = new Intent(this, SetShipsActivity.class);
+        intent = new Intent(this, SetShipsActivity2.class);
         intent.putExtra("NAME", playername.getText().toString());
         intent.putExtra("WIFI", false);
         startActivity(intent);
 
     }
-    // TODO: 03.06.2017 add a button to start different gamemodes and call the SetShipsActivity with different contentviews 
+    // TODO: 03.06.2017 add a button to start different gamemodes and call the SetShipsActivity2 with different contentviews
 
     public void showInfo(View view) {
         intent = new Intent(this, InfoActivity.class);

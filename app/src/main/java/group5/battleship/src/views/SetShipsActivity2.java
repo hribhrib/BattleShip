@@ -2,10 +2,8 @@ package group5.battleship.src.views;
 
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.v7.app.AlertDialog;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,7 +22,7 @@ import group5.battleship.src.logic.Cordinate;
 import group5.battleship.src.logic.Ship;
 
 // this activity is meant for different shiptypes, the standart gamemode should use the old version of this activity
-public class SetShipsActivity extends AppCompatActivity {
+public class SetShipsActivity2 extends AppCompatActivity {
     String ships = ""; //XYXYXY
     int MAX_SHIPS = 6;
     int currentShips = 0;
@@ -37,6 +35,8 @@ public class SetShipsActivity extends AppCompatActivity {
     int availableBigShips = 1;
     // TODO: 03.06.2017 should get the max_ships and size of battlefield as extra
     int[][] routingMyField;
+    public MediaPlayer playPutSound;
+
 
 
 
@@ -53,6 +53,7 @@ public class SetShipsActivity extends AppCompatActivity {
         t_med.setText(String.valueOf(availableMedShips));
         t_big.setText(String.valueOf(availableBigShips));
 
+        playPutSound = MediaPlayer.create(SetShipsActivity2.this, R.raw.put_sound);
 
         Context context = getApplicationContext();
         CharSequence text = "Click on the area to set your ships!";
@@ -139,7 +140,9 @@ public class SetShipsActivity extends AppCompatActivity {
             if (tmpBattlefield.checkSpace(ship)) {
                 tmpBattlefield.addShip(ship);
                 currentShips++;
+
                 updateBattlefield();
+                playPutSound.start();
                 switch (activeShip) {
                     case 1:
                         availableSmallShips--;
@@ -228,7 +231,7 @@ public class SetShipsActivity extends AppCompatActivity {
 
                 /*
                 // Dialog to confirm the arrangement of the ships
-                new AlertDialog.Builder(SetShipsActivity.this)
+                new AlertDialog.Builder(SetShipsActivity2.this)
                         .setTitle("All ships are set")
                         .setMessage("Are you sure you want to keep this arrangement?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -279,13 +282,14 @@ public class SetShipsActivity extends AppCompatActivity {
         Log.d("My Log isHost f", String.valueOf(getIntent().getBooleanExtra("IsHost", false)));
         Log.d("My Log isHost t", String.valueOf(getIntent().getBooleanExtra("IsHost", true)));
 // TODO: 03.06.2017 putSeriazable with the battlefield and the ship objects 
-        Intent intent = new Intent(this, GameActivity.class);
+        Intent intent = new Intent(this, GameActivity2.class);
         intent.putExtra("SHIPS", ships);
         intent.putExtra("NAME", getIntent().getStringExtra("NAME"));
         intent.putExtra("HostAddress", getIntent().getStringExtra("HostAddress")); //Address of the host
         intent.putExtra("IsHost", getIntent().getBooleanExtra("IsHost", false));   //Is this device the host
         intent.putExtra("Connected", true); //Was connection succesul
         intent.putExtra("WIFI", getIntent().getBooleanExtra("WIFI", false));
+        intent.putExtra("Battlefield",tmpBattlefield);
 
         startActivity(intent);
 
