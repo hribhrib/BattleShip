@@ -49,12 +49,10 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".src.views.HighScoresActivity"
             android:label="BattleShip"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".src.views.SetShipsActivity2"
             android:label="BattleShip"
@@ -63,7 +61,6 @@
             android:name=".src.views.SetShipsActivity"
             android:label="BattleShip"
             android:screenOrientation="portrait" />
-
         <activity
         android:name=".src.views.WifiManagerActivity"
         android:label="BattleShip"
@@ -72,6 +69,15 @@
             android:name=".src.views.InfoActivity"
             android:label="BattleShip"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".src.views.PreferencesActivity"
+            android:label="BattleShip"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".src.views.InfoActivity"
+            android:label="BattleShip"
+            android:screenOrientation="portrait" />
+
 
     </application>
 
