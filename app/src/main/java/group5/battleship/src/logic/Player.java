@@ -15,7 +15,7 @@ public class Player {
     //+1 = ship
     public int[][] battleField;
     int[][] ships;
-    int MAX_SHIPS = 6;
+    int MAX_SHIPS = 3;
     int shipsDestroyed = 0;
     private int randomAttacks = 1;                  // so that random attack only works once a game, for now
 

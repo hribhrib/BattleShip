@@ -1,52 +1,59 @@
 package group5.battleship.src.views;
 
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
-import android.media.MediaPlayer;
-import android.os.CountDownTimer;
-import android.os.Handler;
-import android.os.Vibrator;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.TabHost;
-import android.widget.TextView;
-import android.widget.Toast;
+/**
+ * Created by seppi on 12.06.2017.
+ */
+        import android.content.Context;
+        import android.content.DialogInterface;
+        import android.content.Intent;
+        import android.content.SharedPreferences;
+        import android.content.res.Configuration;
+        import android.graphics.Color;
+        import android.hardware.Sensor;
+        import android.hardware.SensorManager;
+        import android.media.MediaPlayer;
+        import android.net.wifi.p2p.WifiP2pManager;
+        import android.os.Build;
+        import android.os.CountDownTimer;
+        import android.os.Handler;
+        import android.os.Vibrator;
+        import android.preference.PreferenceManager;
+        import android.support.annotation.RequiresApi;
+        import android.support.v7.app.AlertDialog;
+        import android.support.v7.app.AppCompatActivity;
+        import android.os.Bundle;
+        import android.util.Log;
+        import android.view.View;
+        import android.view.WindowManager;
+        import android.widget.TabHost;
+        import android.widget.TextView;
+        import android.widget.Toast;
 
-import java.util.Random;
+        import java.util.Locale;
+        import java.util.Random;
 
-import group5.battleship.R;
-import group5.battleship.src.logic.Battlefield;
-import group5.battleship.src.logic.Cordinate;
-import group5.battleship.src.logic.DummyOppShip;
-import group5.battleship.src.logic.Game;
-import group5.battleship.src.logic.Move;
-import group5.battleship.src.logic.Player;
-import group5.battleship.src.logic.ShakeDetector;
+        import group5.battleship.R;
+        import group5.battleship.src.logic.Cordinate;
+        import group5.battleship.src.logic.Game;
+        import group5.battleship.src.logic.Move;
+        import group5.battleship.src.logic.Player;
+        import group5.battleship.src.logic.ShakeDetector;
 
-import android.widget.Button;
+        import android.widget.Button;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Timer;
-import java.util.TimerTask;
+        import java.net.InetAddress;
+        import java.net.UnknownHostException;
+        import java.util.Timer;
+        import java.util.TimerTask;
 
-import group5.battleship.src.logic.Ship;
-import group5.battleship.src.wifi.ClientThread;
-import group5.battleship.src.wifi.ServerThread;
-import group5.battleship.src.logic.randomShipCordinate;
-import group5.battleship.src.logic.randomWaterCordinate;
+        import group5.battleship.src.wifi.ClientThread;
+        import group5.battleship.src.wifi.ServerThread;
+        import group5.battleship.src.logic.randomShipCordinate;
+        import group5.battleship.src.logic.randomWaterCordinate;
+        import group5.battleship.src.wifi.WifiBroadcastReciever;
 
 
-public class GameActivity2 extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity {
     public Game game;
     private Player myPlayer;
     private Player opponent;
@@ -54,6 +61,7 @@ public class GameActivity2 extends AppCompatActivity {
     int[][] routingOpponentField;
     TabHost tabHost;
     boolean touchable = true;
+    boolean radarUsed = false;
 
     // for shakeDetection
     private SensorManager mSensorManager;
@@ -100,7 +108,6 @@ public class GameActivity2 extends AppCompatActivity {
     public MediaPlayer playLoseSound;
 
 
-
     int tempRoundCount = 0;
     //////////////////////////////////////////
 
@@ -110,14 +117,14 @@ public class GameActivity2 extends AppCompatActivity {
 
         Log.d("MY LOG", "CREATE");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main2);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        playHitSound = MediaPlayer.create(GameActivity2.this, R.raw.ship_hit);
-        playMissSound = MediaPlayer.create(GameActivity2.this, R.raw.water_hit);
-        playWinSound = MediaPlayer.create(GameActivity2.this, R.raw.win);
-        playGameSound = MediaPlayer.create(GameActivity2.this, R.raw.battlemusic);
-        playLoseSound = MediaPlayer.create(GameActivity2.this, R.raw.lose);
+        playHitSound = MediaPlayer.create(GameActivity.this, R.raw.ship_hit);
+        playMissSound = MediaPlayer.create(GameActivity.this, R.raw.water_hit);
+        playWinSound = MediaPlayer.create(GameActivity.this, R.raw.win);
+        playGameSound = MediaPlayer.create(GameActivity.this, R.raw.battlemusic);
+        playLoseSound = MediaPlayer.create(GameActivity.this, R.raw.lose);
 
 
         tabHost = (TabHost) findViewById(R.id.tabHost);
@@ -139,8 +146,7 @@ public class GameActivity2 extends AppCompatActivity {
 
         // ShakeDetector initialization
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mAccelerometer = mSensorManager
-                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mShakeDetector = new ShakeDetector();
         mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
 
@@ -177,7 +183,7 @@ public class GameActivity2 extends AppCompatActivity {
             if (host) {
                 serverThread = new ServerThread(port);
                 new Thread(serverThread).start();
-                waitDialog = new AlertDialog.Builder(GameActivity2.this).create();
+                waitDialog = new AlertDialog.Builder(GameActivity.this).create();
                 waitDialog.setMessage("Wait for the attack...");
                 waitDialog.setCancelable(false);
                 waitDialog.setCanceledOnTouchOutside(false);
@@ -198,12 +204,16 @@ public class GameActivity2 extends AppCompatActivity {
         }
 
 
-
     }
 
     public void onResume() {
-        playGameSound.start();
-        playGameSound.setLooping(true);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean sound = sharedPref.getBoolean("sound", true);
+
+        if (sound) {
+            playGameSound.start();
+            playGameSound.setLooping(true);
+        }
 
         Log.d("MY LOG", "RESUME");
 
@@ -319,13 +329,24 @@ public class GameActivity2 extends AppCompatActivity {
 
     public void onPause() {
         super.onPause();
-        playGameSound.stop();
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean sound = sharedPref.getBoolean("sound", true);
+
+        if (sound) {
+            playGameSound.stop();
+        }
         mSensorManager.unregisterListener(mShakeDetector);
     }
 
-    public void playBattleSound(){
-        playGameSound.setLooping(true);
-        playGameSound.start();
+    public void playBattleSound() {
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean sound = sharedPref.getBoolean("sound", true);
+
+        if (sound) {
+            playGameSound.setLooping(true);
+            playGameSound.start();
+        }
     }
 
     @Override
@@ -353,7 +374,8 @@ public class GameActivity2 extends AppCompatActivity {
 
     public void cellClick(View view) {
 
-        final Button firebtn = (Button) findViewById(R.id.firebtn);
+        final Button firebtn = (Button) findViewById(R.id.fireBtn);
+        final Button btnRadar = (Button) findViewById(R.id.radarBtn);
 
         if (firebtn.getVisibility() == View.VISIBLE) {
             // reset the view before setting the new target
@@ -367,11 +389,20 @@ public class GameActivity2 extends AppCompatActivity {
 
         // press fire Button
         firebtn.setVisibility(View.VISIBLE);
+
+        btnRadar.setVisibility(View.VISIBLE);
+
         firebtnpressed = false;
         firebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 shotCell(tv);
+            }
+        });
+        btnRadar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                radarClick(tv);
             }
         });
 
@@ -401,10 +432,22 @@ public class GameActivity2 extends AppCompatActivity {
             if (tmpOpponentShips[c.x][c.y] == -1) {
 
                 myPlayer.updateBattleField(c, -1);
-                playMissSound.start();
+                // check if sound is on or off
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+                boolean sound = sharedPref.getBoolean("sound", true);
+
+                if (sound) {
+                    playMissSound.start();
+                }
 
             } else if (tmpOpponentShips[c.x][c.y] == 1) {
-                playHitSound.start();
+                // check if sound is on or off
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+                boolean sound = sharedPref.getBoolean("sound", true);
+
+                if (sound) {
+                    playHitSound.start();
+                }
                 myPlayer.updateBattleField(c, 1);
                 if (opponent.incShipDestroyed() == opponent.getMaxShips()) {
                     endGame(myPlayer);
@@ -440,7 +483,7 @@ public class GameActivity2 extends AppCompatActivity {
 
                 }
                 if (!gameEnd) {
-                    waitDialog = new AlertDialog.Builder(GameActivity2.this).create();
+                    waitDialog = new AlertDialog.Builder(GameActivity.this).create();
                     waitDialog.setMessage("Wait for the counter attack...");
                     waitDialog.setCancelable(false);
                     waitDialog.setCanceledOnTouchOutside(false);
@@ -459,21 +502,35 @@ public class GameActivity2 extends AppCompatActivity {
 
 
         //set fire button invisible agian
-        Button firebtn = (Button) findViewById(R.id.firebtn);
+        Button firebtn = (Button) findViewById(R.id.fireBtn);
         firebtn.setVisibility(View.INVISIBLE);
+
+        Button btnRadar = (Button) findViewById(R.id.radarBtn);
+        btnRadar.setVisibility(View.INVISIBLE);
 
 
     }
 
     private void endGame(final Player winner) {
 
-        playGameSound.stop();
-        if (winner.equals(myPlayer) ) {
-            playWinSound.start();
-            updateStats(this,true);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean sound = sharedPref.getBoolean("sound", true);
+
+        if (sound) {
+            playGameSound.stop();
+        }
+        if (winner.equals(myPlayer)) {
+            // check if sound is on or off
+            if (sound) {
+                playWinSound.start();
+            }
+            updateStats(this, true);
         } else {
-            playLoseSound.start();
-            updateStats(this,false);
+            // check if sound is on or off
+            if (sound) {
+                playLoseSound.start();
+            }
+            updateStats(this, false);
         }
 
         Log.d("My LOG", winner.getName() + " winner");
@@ -483,7 +540,7 @@ public class GameActivity2 extends AppCompatActivity {
             waitDialog.dismiss();
         }
 
-        waitDialog = new AlertDialog.Builder(GameActivity2.this).create();
+        waitDialog = new AlertDialog.Builder(GameActivity.this).create();
         waitDialog.setTitle("GAME END!");
         waitDialog.setMessage("Player: " + winner.getName() + " won!\nWant to play a new one?");
         waitDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes!",
@@ -523,7 +580,7 @@ public class GameActivity2 extends AppCompatActivity {
     }
 
     private void startAgain() {
-        Intent restart = new Intent(this, SetShipsActivity2.class);
+        Intent restart = new Intent(this, SetShipsActivity.class);
         Log.d("MY LOG", intent.getStringExtra("NAME"));
         restart.putExtra("NAME", intent.getStringExtra("NAME"));
         restart.putExtra("WIFI", getIntent().getBooleanExtra("WIFI", false));
@@ -555,19 +612,18 @@ public class GameActivity2 extends AppCompatActivity {
     }
 
     private void initGame() {
-        myPlayer = new Player(getIntent().getStringExtra("NAME"),8);
-        opponent = new Player("Opponent",8);
-        game = new Game(myPlayer, opponent, 8);
+        myPlayer = new Player(getIntent().getStringExtra("NAME"),5);
+        opponent = new Player("Opponent",5);
+        game = new Game(myPlayer, opponent,5);
         playBattleSound();
-        Battlefield passedBattlefield = (Battlefield) getIntent().getSerializableExtra("Battlefield");
-        myPlayer.setShips(passedBattlefield);
+        myPlayer.setShips(getIntent().getStringExtra("SHIPS"));
 
         startCounter();
 
 /*
         //Startbutton
         //On button click the coordinates get send to opp
-        AlertDialog alertDialog = new AlertDialog.Builder(GameActivity2.this).create();
+        AlertDialog alertDialog = new AlertDialog.Builder(GameActivity.this).create();
         alertDialog.setMessage("\t\t\t\tAre you ready?");
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes!",
                 new DialogInterface.OnClickListener() {
@@ -581,7 +637,6 @@ public class GameActivity2 extends AppCompatActivity {
                             } else if (!host) {
                                 Log.d("My Log", "send" + send);
                                 clientThread.dataReady(send);
-
                             }
                         }
                         dialog.dismiss();
@@ -590,9 +645,7 @@ public class GameActivity2 extends AppCompatActivity {
         alertDialog.setCancelable(false);
         alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
-
         Log.d("My Log", "init Game nach Dialog");
-
 */
         Log.d("My Log", "after start()");
         routingToTableLayout();
@@ -600,21 +653,24 @@ public class GameActivity2 extends AppCompatActivity {
 
     }
 
+    private void initDummyOpp() {
+        Random r = new Random();
+        Cordinate ship1, ship2, ship3;
 
-            private void initDummyOpp() {
-                Battlefield tmpBattlefield = new Battlefield(8);
+        ship1 = new Cordinate(r.nextInt(5), r.nextInt(5));
 
-                DummyOppShip ship1 = new DummyOppShip(5);
-                tmpBattlefield.addShip(ship1);
-                opponent.setShips(ship1);
+        do {
+            ship2 = new Cordinate(r.nextInt(5), r.nextInt(5));
+        } while (ship1.equals(ship2));
 
-                // dont know
+        do {
+            ship3 = new Cordinate(r.nextInt(5), r.nextInt(5));
+        } while (ship1.equals(ship3) && ship2.equals(ship3));
 
-
-
-
-
-            }
+        oppShips = String.valueOf(ship1.x + "" + ship1.y + "" + ship2.x + ""
+                + ship2.y + "" + ship3.x + "" + ship3.y);
+        opponent.setShips(ship1, ship2, ship3);
+    }
 
     private void initRealOpp() {
         Cordinate ship1, ship2, ship3;
@@ -642,7 +698,7 @@ public class GameActivity2 extends AppCompatActivity {
         Cordinate c;
 
         do {
-            c = new Cordinate(r.nextInt(8), r.nextInt(8));
+            c = new Cordinate(r.nextInt(5), r.nextInt(5));
         } while (opponent.getBattleFieldByCordinate(c) != 0);
 
         int[][] tmpMyShips = myPlayer.getShips();
@@ -697,10 +753,22 @@ public class GameActivity2 extends AppCompatActivity {
 
             if (tmpMyShips[c.x][c.y] == -1) {
                 opponent.updateBattleField(c, -1);
-                playMissSound.start();
+                // check if sound is on or off
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+                boolean sound = sharedPref.getBoolean("sound", true);
+
+                if (sound) {
+                    playMissSound.start();
+                }
                 Log.d("My Log:", "nicht getroffen" + String.valueOf(tmpMyShips[c.x][c.y]));
             } else if (tmpMyShips[c.x][c.y] == 1) {
-                playHitSound.start();
+                // check if sound is on or off
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+                boolean sound = sharedPref.getBoolean("sound", true);
+
+                if (sound) {
+                    playHitSound.start();
+                }
                 phoneVibrate();
                 opponent.updateBattleField(c, 1);
                 if (myPlayer.incShipDestroyed() == myPlayer.getMaxShips()) {
@@ -739,7 +807,7 @@ public class GameActivity2 extends AppCompatActivity {
             host = getIntent().getBooleanExtra("IsHost", true);
             send = getIntent().getStringExtra("SHIPS");
             //On coordinates of the ships get send on zero
-            alertDialog = new AlertDialog.Builder(GameActivity2.this).create();
+            alertDialog = new AlertDialog.Builder(GameActivity.this).create();
 
             if (host) {
                 Log.d("My Log", "send" + send);
@@ -902,155 +970,61 @@ public class GameActivity2 extends AppCompatActivity {
     }
 
     private void routingToTableLayout() {
-        routingMyField = new int[8][8];
+        routingMyField = new int[game.getSize()][game.getSize()];
 
         routingMyField[0][0] = findViewById(R.id.textView00).getId();
         routingMyField[0][1] = findViewById(R.id.textView01).getId();
         routingMyField[0][2] = findViewById(R.id.textView02).getId();
         routingMyField[0][3] = findViewById(R.id.textView03).getId();
         routingMyField[0][4] = findViewById(R.id.textView04).getId();
-        routingMyField[0][5] = findViewById(R.id.textView05).getId();
-        routingMyField[0][6] = findViewById(R.id.textView06).getId();
-        routingMyField[0][7] = findViewById(R.id.textView07).getId();
-
         routingMyField[1][0] = findViewById(R.id.textView10).getId();
         routingMyField[1][1] = findViewById(R.id.textView11).getId();
         routingMyField[1][2] = findViewById(R.id.textView12).getId();
         routingMyField[1][3] = findViewById(R.id.textView13).getId();
         routingMyField[1][4] = findViewById(R.id.textView14).getId();
-        routingMyField[1][5] = findViewById(R.id.textView15).getId();
-        routingMyField[1][6] = findViewById(R.id.textView16).getId();
-        routingMyField[1][7] = findViewById(R.id.textView17).getId();
-
         routingMyField[2][0] = findViewById(R.id.textView20).getId();
         routingMyField[2][1] = findViewById(R.id.textView21).getId();
         routingMyField[2][2] = findViewById(R.id.textView22).getId();
         routingMyField[2][3] = findViewById(R.id.textView23).getId();
         routingMyField[2][4] = findViewById(R.id.textView24).getId();
-        routingMyField[2][5] = findViewById(R.id.textView25).getId();
-        routingMyField[2][6] = findViewById(R.id.textView26).getId();
-        routingMyField[2][7] = findViewById(R.id.textView27).getId();
-
         routingMyField[3][0] = findViewById(R.id.textView30).getId();
         routingMyField[3][1] = findViewById(R.id.textView31).getId();
         routingMyField[3][2] = findViewById(R.id.textView32).getId();
         routingMyField[3][3] = findViewById(R.id.textView33).getId();
         routingMyField[3][4] = findViewById(R.id.textView34).getId();
-        routingMyField[3][5] = findViewById(R.id.textView35).getId();
-        routingMyField[3][6] = findViewById(R.id.textView36).getId();
-        routingMyField[3][7] = findViewById(R.id.textView37).getId();
-
         routingMyField[4][0] = findViewById(R.id.textView40).getId();
         routingMyField[4][1] = findViewById(R.id.textView41).getId();
         routingMyField[4][2] = findViewById(R.id.textView42).getId();
         routingMyField[4][3] = findViewById(R.id.textView43).getId();
         routingMyField[4][4] = findViewById(R.id.textView44).getId();
-        routingMyField[4][5] = findViewById(R.id.textView45).getId();
-        routingMyField[4][6] = findViewById(R.id.textView46).getId();
-        routingMyField[4][7] = findViewById(R.id.textView47).getId();
 
-        routingMyField[5][0] = findViewById(R.id.textView50).getId();
-        routingMyField[5][1] = findViewById(R.id.textView51).getId();
-        routingMyField[5][2] = findViewById(R.id.textView52).getId();
-        routingMyField[5][3] = findViewById(R.id.textView53).getId();
-        routingMyField[5][4] = findViewById(R.id.textView54).getId();
-        routingMyField[5][5] = findViewById(R.id.textView55).getId();
-        routingMyField[5][6] = findViewById(R.id.textView56).getId();
-        routingMyField[5][7] = findViewById(R.id.textView57).getId();
-
-        routingMyField[6][0] = findViewById(R.id.textView60).getId();
-        routingMyField[6][1] = findViewById(R.id.textView61).getId();
-        routingMyField[6][2] = findViewById(R.id.textView62).getId();
-        routingMyField[6][3] = findViewById(R.id.textView63).getId();
-        routingMyField[6][4] = findViewById(R.id.textView64).getId();
-        routingMyField[6][5] = findViewById(R.id.textView65).getId();
-        routingMyField[6][6] = findViewById(R.id.textView66).getId();
-        routingMyField[6][7] = findViewById(R.id.textView67).getId();
-
-        routingMyField[7][0] = findViewById(R.id.textView70).getId();
-        routingMyField[7][1] = findViewById(R.id.textView71).getId();
-        routingMyField[7][2] = findViewById(R.id.textView72).getId();
-        routingMyField[7][3] = findViewById(R.id.textView73).getId();
-        routingMyField[7][4] = findViewById(R.id.textView74).getId();
-        routingMyField[7][5] = findViewById(R.id.textView75).getId();
-        routingMyField[7][6] = findViewById(R.id.textView76).getId();
-        routingMyField[7][7] = findViewById(R.id.textView77).getId();
-
-
-        routingOpponentField = new int[8][8];
+        routingOpponentField = new int[game.getSize()][game.getSize()];
 
         routingOpponentField[0][0] = findViewById(R.id.opponentTextView00).getId();
         routingOpponentField[0][1] = findViewById(R.id.opponentTextView01).getId();
         routingOpponentField[0][2] = findViewById(R.id.opponentTextView02).getId();
         routingOpponentField[0][3] = findViewById(R.id.opponentTextView03).getId();
         routingOpponentField[0][4] = findViewById(R.id.opponentTextView04).getId();
-        routingOpponentField[0][5] = findViewById(R.id.opponentTextView05).getId();
-        routingOpponentField[0][6] = findViewById(R.id.opponentTextView06).getId();
-        routingOpponentField[0][7] = findViewById(R.id.opponentTextView07).getId();
-
         routingOpponentField[1][0] = findViewById(R.id.opponentTextView10).getId();
         routingOpponentField[1][1] = findViewById(R.id.opponentTextView11).getId();
         routingOpponentField[1][2] = findViewById(R.id.opponentTextView12).getId();
         routingOpponentField[1][3] = findViewById(R.id.opponentTextView13).getId();
         routingOpponentField[1][4] = findViewById(R.id.opponentTextView14).getId();
-        routingOpponentField[1][5] = findViewById(R.id.opponentTextView15).getId();
-        routingOpponentField[1][6] = findViewById(R.id.opponentTextView16).getId();
-        routingOpponentField[1][7] = findViewById(R.id.opponentTextView17).getId();
-
         routingOpponentField[2][0] = findViewById(R.id.opponentTextView20).getId();
         routingOpponentField[2][1] = findViewById(R.id.opponentTextView21).getId();
         routingOpponentField[2][2] = findViewById(R.id.opponentTextView22).getId();
         routingOpponentField[2][3] = findViewById(R.id.opponentTextView23).getId();
         routingOpponentField[2][4] = findViewById(R.id.opponentTextView24).getId();
-        routingOpponentField[2][5] = findViewById(R.id.opponentTextView25).getId();
-        routingOpponentField[2][6] = findViewById(R.id.opponentTextView26).getId();
-        routingOpponentField[2][7] = findViewById(R.id.opponentTextView27).getId();
-
         routingOpponentField[3][0] = findViewById(R.id.opponentTextView30).getId();
         routingOpponentField[3][1] = findViewById(R.id.opponentTextView31).getId();
         routingOpponentField[3][2] = findViewById(R.id.opponentTextView32).getId();
         routingOpponentField[3][3] = findViewById(R.id.opponentTextView33).getId();
         routingOpponentField[3][4] = findViewById(R.id.opponentTextView34).getId();
-        routingOpponentField[3][5] = findViewById(R.id.opponentTextView35).getId();
-        routingOpponentField[3][6] = findViewById(R.id.opponentTextView36).getId();
-        routingOpponentField[3][7] = findViewById(R.id.opponentTextView37).getId();
-
         routingOpponentField[4][0] = findViewById(R.id.opponentTextView40).getId();
         routingOpponentField[4][1] = findViewById(R.id.opponentTextView41).getId();
         routingOpponentField[4][2] = findViewById(R.id.opponentTextView42).getId();
         routingOpponentField[4][3] = findViewById(R.id.opponentTextView43).getId();
         routingOpponentField[4][4] = findViewById(R.id.opponentTextView44).getId();
-        routingOpponentField[4][5] = findViewById(R.id.opponentTextView45).getId();
-        routingOpponentField[4][6] = findViewById(R.id.opponentTextView46).getId();
-        routingOpponentField[4][7] = findViewById(R.id.opponentTextView47).getId();
-
-        routingOpponentField[5][0] = findViewById(R.id.opponentTextView50).getId();
-        routingOpponentField[5][1] = findViewById(R.id.opponentTextView51).getId();
-        routingOpponentField[5][2] = findViewById(R.id.opponentTextView52).getId();
-        routingOpponentField[5][3] = findViewById(R.id.opponentTextView53).getId();
-        routingOpponentField[5][4] = findViewById(R.id.opponentTextView54).getId();
-        routingOpponentField[5][5] = findViewById(R.id.opponentTextView55).getId();
-        routingOpponentField[5][6] = findViewById(R.id.opponentTextView56).getId();
-        routingOpponentField[5][7] = findViewById(R.id.opponentTextView57).getId();
-
-        routingOpponentField[6][0] = findViewById(R.id.opponentTextView60).getId();
-        routingOpponentField[6][1] = findViewById(R.id.opponentTextView61).getId();
-        routingOpponentField[6][2] = findViewById(R.id.opponentTextView62).getId();
-        routingOpponentField[6][3] = findViewById(R.id.opponentTextView63).getId();
-        routingOpponentField[6][4] = findViewById(R.id.opponentTextView64).getId();
-        routingOpponentField[6][5] = findViewById(R.id.opponentTextView65).getId();
-        routingOpponentField[6][6] = findViewById(R.id.opponentTextView66).getId();
-        routingOpponentField[6][7] = findViewById(R.id.opponentTextView67).getId();
-
-        routingOpponentField[7][0] = findViewById(R.id.opponentTextView70).getId();
-        routingOpponentField[7][1] = findViewById(R.id.opponentTextView71).getId();
-        routingOpponentField[7][2] = findViewById(R.id.opponentTextView72).getId();
-        routingOpponentField[7][3] = findViewById(R.id.opponentTextView73).getId();
-        routingOpponentField[7][4] = findViewById(R.id.opponentTextView74).getId();
-        routingOpponentField[7][5] = findViewById(R.id.opponentTextView75).getId();
-        routingOpponentField[7][6] = findViewById(R.id.opponentTextView76).getId();
-        routingOpponentField[7][7] = findViewById(R.id.opponentTextView77).getId();
-
     }
 
     private int getRoutingByCordinateMyField(Cordinate c) {
@@ -1081,8 +1055,77 @@ public class GameActivity2 extends AppCompatActivity {
         vib.vibrate(300); //Vibration 300 milisekunden
     }
 
-    private void radar(Cordinate c) {
+    public void radarClick(TextView tv) {
+        if (!radarUsed) {
+            // sorry, quick and dirty
+            Cordinate current = getRoutingByIDOpponentField(tv.getId());
+            int[][] bField = opponent.getShips();
 
+            int xPlus = current.x + 1;
+            int xMinus = current.x - 1;
+            int yPlus = current.y + 1;
+            int yMinus = current.y - 1;
+
+
+            if (xPlus < game.getSize()) {
+                // right
+                Cordinate r = new Cordinate(xPlus, current.y);
+                TextView right = (TextView) findViewById(getRoutingByCordinateOpponentField(r));
+
+                if (bField[xPlus][current.y] == 1) {
+                    right.setBackgroundResource(R.mipmap.sea_ship);
+                }
+            }
+            if (current.x == current.y) {
+                //current field
+                TextView aktual = (TextView) findViewById(getRoutingByCordinateOpponentField(new Cordinate(current.x, current.y)));
+
+                if (bField[current.x][current.y] == 1) {
+                    aktual.setBackgroundResource(R.mipmap.sea_ship);
+                }
+            }
+
+            if (xMinus >= 0) {
+                // left
+                TextView left = (TextView) findViewById(getRoutingByCordinateOpponentField(new Cordinate(xMinus, current.y)));
+
+                if (bField[xMinus][current.y] == 1) {
+                    left.setBackgroundResource(R.mipmap.sea_ship);
+                }
+            }
+
+            if (yPlus < game.getSize()) {
+                // down
+                TextView down = (TextView) findViewById(getRoutingByCordinateOpponentField(new Cordinate(current.x, yPlus)));
+
+                if (bField[current.x][yPlus] == 1) {
+                    down.setBackgroundResource(R.mipmap.sea_ship);
+                }
+            }
+
+            if (yMinus >= 0) {
+                // up
+                TextView up = (TextView) findViewById(getRoutingByCordinateOpponentField(new Cordinate(current.x, yMinus)));
+
+                if (bField[current.x][yMinus] == 1) {
+                    up.setBackgroundResource(R.mipmap.sea_ship);
+                }
+
+            }
+
+            radarUsed = true;
+
+        } else {
+
+            System.out.println("Radar already used!");
+
+            Context context = getApplicationContext();
+            CharSequence text = "Radar Scan wurde bereits verwendet";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
     }
 
     public void randomAttack(int count) {
@@ -1098,7 +1141,13 @@ public class GameActivity2 extends AppCompatActivity {
 
                 if (r.nextInt(10) >= 4) {                               // increased chance to hit a ship
                     myPlayer.updateBattleField(randomShipCordinate, 1);
-                    playHitSound.start();
+                    // check if sound is on or off
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+                    boolean sound = sharedPref.getBoolean("sound", true);
+
+                    if (sound) {
+                        playHitSound.start();
+                    }
                     if (opponent.incShipDestroyed() == opponent.getMaxShips()) {
                         endGame(myPlayer);
                     }
@@ -1111,7 +1160,13 @@ public class GameActivity2 extends AppCompatActivity {
 
                 } else {
                     myPlayer.updateBattleField(randomWaterCordinate, -1);
-                    playMissSound.start();
+                    // check if sound is on or off
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+                    boolean sound = sharedPref.getBoolean("sound", true);
+
+                    if (sound) {
+                        playMissSound.start();
+                    }
                     if (opponent.incShipDestroyed() == opponent.getMaxShips()) {
                         endGame(myPlayer);
                     }
@@ -1183,34 +1238,53 @@ public class GameActivity2 extends AppCompatActivity {
 
     }
 
-    public void updateStats (Context context, boolean win){
+    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
+    public void updateStats(Context context, boolean win) {
         //for storing gamestatistics
 
-        SharedPreferences prefs = this.getSharedPreferences("stats",Context.MODE_PRIVATE);
+        SharedPreferences prefs = this.getSharedPreferences("stats", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor;
         editor = prefs.edit();
 
-        int gameCount = prefs.getInt("totalGamesPlayed",0);
-        int winCount = prefs.getInt("totalGamesWon",0);
-        int loseCount = prefs.getInt("totalGamesLost",0);
-        int roundCount = prefs.getInt("shortestGame",0);
+        int gameCount = prefs.getInt("totalGamesPlayed", 0);
+        int winCount = prefs.getInt("totalGamesWon", 0);
+        int loseCount = prefs.getInt("totalGamesLost", 0);
+        int roundCount = prefs.getInt("shortestGame", 0);
 
-        editor.putInt("totalGamesPlayed",gameCount+1);
-        if (win){
-            editor.putInt("totalGamesWon",winCount+1);
+        editor.putInt("totalGamesPlayed", gameCount + 1);
+        if (win) {
+            editor.putInt("totalGamesWon", winCount + 1);
         } else {
-            editor.putInt("totalGamesLost",loseCount+1);
+            editor.putInt("totalGamesLost", loseCount + 1);
         }
-        if(tempRoundCount<roundCount&&win){
-            editor.putInt("shortestGame",tempRoundCount);}
+        if (tempRoundCount < roundCount && win) {
+            editor.putInt("shortestGame", tempRoundCount);
+        }
 
         editor.apply();
     }
 
+    private void setLanguage() {
+
+        // set the language
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this); // get the stored language setting
+        Configuration config = getBaseContext().getResources().getConfiguration(); // load the old config
+
+        String lang = settings.getString("LANG", "");
+        if (!"".equals(lang) && !config.locale.getLanguage().equals(lang)) {
+            Locale locale = new Locale(lang);
+            Locale.setDefault(locale);
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
+
+        // get the GUI Items
+        Button fireBtn = (Button) findViewById(R.id.fireBtn);
+
+
+        fireBtn.setText(R.string.fire);
+
+
+    }
+
 }
-
-
-
-
-
-

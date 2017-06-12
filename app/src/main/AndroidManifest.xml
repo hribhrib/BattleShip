@@ -44,6 +44,11 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".src.views.GameActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".src.views.HighScoresActivity"
@@ -52,6 +57,10 @@
 
         <activity
             android:name=".src.views.SetShipsActivity2"
+            android:label="BattleShip"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".src.views.SetShipsActivity"
             android:label="BattleShip"
             android:screenOrientation="portrait" />
 
