@@ -59,6 +59,7 @@ public class GameActivity extends AppCompatActivity {
     TabHost tabHost;
     boolean touchable = true;
     boolean radarUsed = false;
+    boolean exitUsed = false ;
 
     // for shakeDetection
     private SensorManager mSensorManager;
@@ -373,7 +374,26 @@ public class GameActivity extends AppCompatActivity {
 
         final Button firebtn = (Button) findViewById(R.id.fireBtn);
         final Button btnRadar = (Button) findViewById(R.id.radarBtn);
+        final Button btnExit = (Button) findViewById(R.id.exitBtn);
 
+        if(btnExit.getVisibility()==View.VISIBLE){
+           // press exit Button
+           btnExit.setVisibility(View.VISIBLE);
+           exitUsed = false;
+           btnExit.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   shotCell(tv);
+               }
+           });
+           btnExit.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   finish();
+                   System.exit(0);
+               }
+           });
+    }
         if (firebtn.getVisibility() == View.VISIBLE) {
             // reset the view before setting the new target
             displayMyBattleField();
@@ -504,6 +524,7 @@ public class GameActivity extends AppCompatActivity {
 
         Button btnRadar = (Button) findViewById(R.id.radarBtn);
         btnRadar.setVisibility(View.INVISIBLE);
+
 
 
     }
@@ -1054,6 +1075,10 @@ public class GameActivity extends AppCompatActivity {
         Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         vib.vibrate(300); //Vibration 300 milisekunden
     }
+
+
+
+
 
     public void radarClick(TextView tv) {
         if (!radarUsed) {

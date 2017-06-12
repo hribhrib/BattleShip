@@ -9,9 +9,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.Reader;
 import java.util.Locale;
 
 import group5.battleship.R;
+import java.io.InputStreamReader;
 
 public class InfoActivity extends AppCompatActivity {
 
@@ -48,8 +52,6 @@ public class InfoActivity extends AppCompatActivity {
         themeSong.setText(R.string.themeSong);
         architect.setText(R.string.architect);
         organisation.setText(R.string.organisation);
-
-
 
     }
 
