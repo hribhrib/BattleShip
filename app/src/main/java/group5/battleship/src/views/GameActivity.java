@@ -52,7 +52,6 @@ import group5.battleship.src.logic.randomWaterCordinate;
 import group5.battleship.src.wifi.WifiBroadcastReciever;
 
 
-
 public class GameActivity extends AppCompatActivity {
     public Game game;
     private Player myPlayer;
@@ -630,9 +629,9 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void initGame() {
-        myPlayer = new Player(getIntent().getStringExtra("NAME"),5);
-        opponent = new Player("Opponent",5);
-        game = new Game(myPlayer, opponent,5);
+        myPlayer = new Player(getIntent().getStringExtra("NAME"), 5);
+        opponent = new Player("Opponent", 5);
+        game = new Game(myPlayer, opponent, 5);
         playBattleSound();
         myPlayer.setShips(getIntent().getStringExtra("SHIPS"));
 
@@ -727,8 +726,8 @@ public class GameActivity extends AppCompatActivity {
                 for (int j = 0; j < game.getSize(); j++) {
 
                     if (battleField[i][j] == 1) {
-                        fc= fc+2;
-                        sc = sc+2;
+                        fc = fc + 2;
+                        sc = sc + 2;
                         Log.d("AI:", "ships " + i + " " + j);
                         hits[fc] = i;
                         hits[sc] = j;
@@ -744,13 +743,13 @@ public class GameActivity extends AppCompatActivity {
 
             int first = hits[fc];
             int second = hits[sc];
-            int [][] opBattleField = opponent.getBattleField();
+            int[][] opBattleField = opponent.getBattleField();
 
             if (opBattleField[first][second] == 1) {
 
                 // for the case that if the ship had been shot before
-                fc= fc -2;
-                sc = sc -2;
+                fc = fc - 2;
+                sc = sc - 2;
 
                 first = hits[fc];
                 second = hits[sc];
@@ -763,9 +762,8 @@ public class GameActivity extends AppCompatActivity {
             }
 
 
-
-            fc= fc -2;
-            sc = sc -2;
+            fc = fc - 2;
+            sc = sc - 2;
             Log.d("AI:", "coordinate1 " + first);
             Log.d("AI:", "coordinate2 " + second);
 
@@ -1147,7 +1145,6 @@ public class GameActivity extends AppCompatActivity {
             int yMinus = current.y - 1;
 
 
-
             if (xPlus < game.getSize()) {
                 // right
                 Cordinate r = new Cordinate(xPlus, current.y);
@@ -1373,25 +1370,3 @@ public class GameActivity extends AppCompatActivity {
 }
 
 
-        // set the language
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this); // get the stored language setting
-        Configuration config = getBaseContext().getResources().getConfiguration(); // load the old config
-
-        String lang = settings.getString("LANG", "");
-        if (!"".equals(lang) && !config.locale.getLanguage().equals(lang)) {
-            Locale locale = new Locale(lang);
-            Locale.setDefault(locale);
-            config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        }
-
-        // get the GUI Items
-        Button fireBtn = (Button) findViewById(R.id.fireBtn);
-
-
-        fireBtn.setText(R.string.fire);
-
-
-    }
-
-}

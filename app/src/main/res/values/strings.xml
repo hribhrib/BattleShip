@@ -72,16 +72,7 @@
         <item>German</item>
     </string-array>
 
-    <!-- set ships -->
-    <string name="acceptText">Are you sure you want to keep this arrangement?</string>
-    <string name="yesBtn">Yes</string>
-    <string name="noBtn">No</string>
-    <string name="setShips">Set your three Ships!</string>
 
-    <!-- game Activity -->
-    <string name="myField">MY FIELD</string>
-    <string name="opField">OPPONENT FIELD</string>
-    <string name="fire">Fire!</string>
 
 
 </resources>
