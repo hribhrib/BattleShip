@@ -555,8 +555,8 @@ public class GameActivity2 extends AppCompatActivity {
     }
 
     private void initGame() {
-        myPlayer = new Player(getIntent().getStringExtra("NAME"),8);
-        opponent = new Player("Opponent",8);
+        myPlayer = new Player(getIntent().getStringExtra("NAME"),8,14);
+        opponent = new Player("Opponent",8,14);
         game = new Game(myPlayer, opponent, 8);
         playBattleSound();
         Battlefield passedBattlefield = (Battlefield) getIntent().getSerializableExtra("Battlefield");
@@ -617,7 +617,7 @@ public class GameActivity2 extends AppCompatActivity {
             }
 
     private void initRealOpp() {
-        Cordinate ship1, ship2, ship3;
+        Cordinate ship1, ship2, ship3,ship4, ship5, ship6,ship7, ship8, ship9,ship10, ship11,ship12,ship13,ship14;
         Log.d("My Log", "HOST DEB" + String.valueOf(host));
         Log.d("My Log", "oppShips String" + oppShips);
 
@@ -629,8 +629,36 @@ public class GameActivity2 extends AppCompatActivity {
         ship3 = new Cordinate(Character.getNumericValue(oppShips.charAt(4)),
                 Character.getNumericValue(oppShips.charAt(5)));
 
+        if (oppShips.length()>6) {
+            ship4 = new Cordinate(Character.getNumericValue(oppShips.charAt(6)),
+                    Character.getNumericValue(oppShips.charAt(7)));
+            ship5 = new Cordinate(Character.getNumericValue(oppShips.charAt(8)),
+                    Character.getNumericValue(oppShips.charAt(9)));
+            ship6 = new Cordinate(Character.getNumericValue(oppShips.charAt(10)),
+                    Character.getNumericValue(oppShips.charAt(11)));
+            ship7 = new Cordinate(Character.getNumericValue(oppShips.charAt(12)),
+                    Character.getNumericValue(oppShips.charAt(13)));
+            ship8 = new Cordinate(Character.getNumericValue(oppShips.charAt(14)),
+                    Character.getNumericValue(oppShips.charAt(15)));
+            ship9 = new Cordinate(Character.getNumericValue(oppShips.charAt(16)),
+                    Character.getNumericValue(oppShips.charAt(17)));
+            ship10 = new Cordinate(Character.getNumericValue(oppShips.charAt(18)),
+                    Character.getNumericValue(oppShips.charAt(19)));
+            ship11 = new Cordinate(Character.getNumericValue(oppShips.charAt(20)),
+                    Character.getNumericValue(oppShips.charAt(21)));
+            ship12 = new Cordinate(Character.getNumericValue(oppShips.charAt(22)),
+                    Character.getNumericValue(oppShips.charAt(23)));
+            ship13 = new Cordinate(Character.getNumericValue(oppShips.charAt(24)),
+                    Character.getNumericValue(oppShips.charAt(25)));
+            ship14 = new Cordinate(Character.getNumericValue(oppShips.charAt(26)),
+                    Character.getNumericValue(oppShips.charAt(27)));
+            opponent.setShips(ship1, ship2, ship3,ship4, ship5, ship6,ship7, ship8, ship9,ship10, ship11,ship12,ship13,ship14);
+        } else {
+            opponent.setShips(ship1, ship2, ship3);
+        }
 
-        opponent.setShips(ship1, ship2, ship3);
+
+
 
         Log.d("My Log", "Opponents Ships: " + oppShips);
     }

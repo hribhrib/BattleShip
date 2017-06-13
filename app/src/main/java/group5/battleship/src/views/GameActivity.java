@@ -612,8 +612,8 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void initGame() {
-        myPlayer = new Player(getIntent().getStringExtra("NAME"),5);
-        opponent = new Player("Opponent",5);
+        myPlayer = new Player(getIntent().getStringExtra("NAME"),5,3);
+        opponent = new Player("Opponent",5,3);
         game = new Game(myPlayer, opponent,5);
         playBattleSound();
         myPlayer.setShips(getIntent().getStringExtra("SHIPS"));
@@ -671,7 +671,6 @@ public class GameActivity extends AppCompatActivity {
                 + ship2.y + "" + ship3.x + "" + ship3.y);
         opponent.setShips(ship1, ship2, ship3);
     }
-
     private void initRealOpp() {
         Cordinate ship1, ship2, ship3;
         Log.d("My Log", "HOST DEB" + String.valueOf(host));
@@ -690,6 +689,8 @@ public class GameActivity extends AppCompatActivity {
 
         Log.d("My Log", "Opponents Ships: " + oppShips);
     }
+
+
 
     private void aiOpponentsMove() {
         //tabHost.setCurrentTab(0);

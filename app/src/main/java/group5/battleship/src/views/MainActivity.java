@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void startLocalGame(View view) {
-        intent = new Intent(this, SetShipsActivity.class);
+        intent = new Intent(this, SetShipsActivity2.class);
         intent.putExtra("NAME", playername.getText().toString());
         intent.putExtra("WIFI", false);
         startActivity(intent);

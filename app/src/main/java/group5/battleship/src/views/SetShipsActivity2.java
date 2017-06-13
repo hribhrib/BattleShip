@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -45,6 +46,7 @@ public class SetShipsActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         // TODO: 03.06.2017 contentview should be received from the button in main 
         setContentView(R.layout.activity_set_ships_2);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         TextView t_small = (TextView) findViewById(R.id.numberSmallShips);
         TextView t_med = (TextView) findViewById(R.id.numbeMedShips);
@@ -70,8 +72,8 @@ public class SetShipsActivity2 extends AppCompatActivity {
         super.onResume();
         Log.d("my tag", getIntent().getStringExtra("NAME") + " debug");
         Log.d("my tag", "Resume in set ship");
-        ships = "";
         currentShips = 0;
+        ships="";
 
     }
 
@@ -140,9 +142,12 @@ public class SetShipsActivity2 extends AppCompatActivity {
             if (tmpBattlefield.checkSpace(ship)) {
                 tmpBattlefield.addShip(ship);
                 currentShips++;
-
                 updateBattlefield();
-                playPutSound.start();
+
+                ships += ship.returnAllCordinatesAsString(ship);
+                Log.d("SHIPS Set ship activity", String.valueOf(ships.length()) );
+                Log.d("SHIPS Set ship activity", ships );
+                //playPutSound.start();
                 switch (activeShip) {
                     case 1:
                         availableSmallShips--;
@@ -281,7 +286,6 @@ public class SetShipsActivity2 extends AppCompatActivity {
         Log.d("My Log t", String.valueOf(getIntent().getBooleanExtra("WIFI", true)));
         Log.d("My Log isHost f", String.valueOf(getIntent().getBooleanExtra("IsHost", false)));
         Log.d("My Log isHost t", String.valueOf(getIntent().getBooleanExtra("IsHost", true)));
-// TODO: 03.06.2017 putSeriazable with the battlefield and the ship objects 
         Intent intent = new Intent(this, GameActivity2.class);
         intent.putExtra("SHIPS", ships);
         intent.putExtra("NAME", getIntent().getStringExtra("NAME"));
