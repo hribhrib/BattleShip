@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 
 import java.util.Locale;
@@ -47,12 +48,33 @@ public class PreferencesActivity extends AppCompatActivity {
         Log.d("POS", " " + spinnerValue);
 
         // set the sound preferences
-        boolean sound = sharedPref.getBoolean("sound",true);
+        boolean sound = sharedPref.getBoolean("sound", true);
         if (sound) {
             soundb.setChecked(true);
         } else {
             soundb.setChecked(false);
         }
+
+
+        // set the difficulties
+        RadioButton diffEasy = (RadioButton) findViewById(R.id.diffEasy);
+        RadioButton diffMid = (RadioButton) findViewById(R.id.diffMedium);
+        RadioButton diffHard = (RadioButton) findViewById(R.id.diffHard);
+
+        int diff = sharedPref.getInt("diff", 10);
+
+        switch (diff){
+
+            case 3: diffHard.setChecked(true);
+                break;
+
+            case 5: diffMid.setChecked(true);
+                break;
+
+            case 10: diffEasy.setChecked(true);
+                break;
+        }
+
 
 
     }
@@ -116,7 +138,7 @@ public class PreferencesActivity extends AppCompatActivity {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor prefEditor = sharedPref.edit();
         prefEditor.putInt("userChoiceSpinner", position);
-        Log.d("Position nr one", ""+position);
+        Log.d("Position nr one", "" + position);
         prefEditor.commit();
 
 
@@ -128,13 +150,36 @@ public class PreferencesActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         if (sound.isChecked()) {
-          // sound on
+            // sound on
 
             sharedPreferences.edit().putBoolean("sound", true).commit();
 
         } else {
             //sound off
             sharedPreferences.edit().putBoolean("sound", false).commit();
+        }
+
+    }
+
+    public void changeDifficulty(View view) {
+
+        RadioButton diffEasy = (RadioButton) findViewById(R.id.diffEasy);
+        RadioButton diffMid = (RadioButton) findViewById(R.id.diffMedium);
+        RadioButton diffHard = (RadioButton) findViewById(R.id.diffHard);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if (diffEasy.isChecked()) {
+
+            sharedPreferences.edit().putInt("diff", 10).commit();
+
+        } else if (diffMid.isChecked()) {
+
+            sharedPreferences.edit().putInt("diff", 5).commit();
+
+        } else if (diffHard.isChecked()) {
+
+            sharedPreferences.edit().putInt("diff", 3).commit();
         }
 
     }
