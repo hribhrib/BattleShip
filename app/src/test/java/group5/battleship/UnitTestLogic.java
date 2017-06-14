@@ -22,7 +22,7 @@ public class UnitTestLogic {
 
     Cordinate c = new Cordinate(2, 3);
 
-    Player pl = new Player("paul");
+    Player pl = new Player("paul", 5);
 
     @Test
     public void cordinateIsCorrect() throws Exception {
@@ -67,7 +67,7 @@ public class UnitTestLogic {
     @Test
     public void PlayerSetShips() throws Exception {
         pl.setShips("122311");
-        Player tmp = new Player("tmp");
+        Player tmp = new Player("tmp",5);
         tmp.setShips(new Cordinate(1, 2), new Cordinate(2, 3), new Cordinate(1, 1));
 
         for (int i = 0; i < 5; i++) {
@@ -114,7 +114,7 @@ public class UnitTestLogic {
 
     @Test
     public void PlayerGetBattleField() throws Exception {
-        Player p1 = new Player("p1");
+        Player p1 = new Player("p1",5);
 
         int [][] bla = p1.getBattleField();
 
@@ -127,20 +127,20 @@ public class UnitTestLogic {
 
     @Test
     public void Move() throws Exception {
-        Move m = new Move(pl, new Player("hallo"), new Cordinate(2, 2));
+        Move m = new Move(pl, new Player("hallo", 5), new Cordinate(2, 2));
         assertNotNull(m);
     }
 
     @Test
     public void Game() throws Exception {
-        Player p1 = new Player("p1");
-        Player p2 = new Player("p2");
+        Player p1 = new Player("p1",5);
+        Player p2 = new Player("p2", 5);
 
         Move m1 = new Move(p1, p2, new Cordinate(2, 2));
         Move m2 = new Move(p2, p1, new Cordinate(2, 2));
         Move m3 = new Move(p1, p2, new Cordinate(3, 3));
 
-        Game g = new Game(p1, p2);
+        Game g = new Game(p1, p2, 5);
 
         assertEquals(g.getPlayer1(), p1);
         assertEquals(g.getPlayer2(), p2);
