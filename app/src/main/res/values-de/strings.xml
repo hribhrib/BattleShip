@@ -10,7 +10,7 @@
 
     <!-- wifi manager -->
     <string name="searchBtn">Suchen</string>
-    <string name="connection">"Wifi-Direct: Suchen..."</string>
+    <string name="connection">"Wifi-Direkt: Suchen..."</string>
     <string name="failureOne">"Versuchen sie es erneut"</string>
     <string name="failureTwo">"Error, Wifi ist deaktiviert!"</string>
 

@@ -353,7 +353,7 @@ public class GameActivity2 extends AppCompatActivity {
 
     public void cellClick(View view) {
 
-        final Button firebtn = (Button) findViewById(R.id.firebtn);
+        final Button firebtn = (Button) findViewById(R.id.fireBtn);
 
         if (firebtn.getVisibility() == View.VISIBLE) {
             // reset the view before setting the new target
@@ -459,7 +459,7 @@ public class GameActivity2 extends AppCompatActivity {
 
 
         //set fire button invisible agian
-        Button firebtn = (Button) findViewById(R.id.firebtn);
+        Button firebtn = (Button) findViewById(R.id.fireBtn);
         firebtn.setVisibility(View.INVISIBLE);
 
 
