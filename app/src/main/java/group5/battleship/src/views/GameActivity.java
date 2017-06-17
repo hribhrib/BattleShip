@@ -1,56 +1,55 @@
 package group5.battleship.src.views;
 
-/**
- * Created by seppi on 12.06.2017.
- */
-        import android.content.Context;
-        import android.content.DialogInterface;
-        import android.content.Intent;
-        import android.content.SharedPreferences;
-        import android.content.res.Configuration;
-        import android.graphics.Color;
-        import android.hardware.Sensor;
-        import android.hardware.SensorManager;
-        import android.media.MediaPlayer;
-        import android.net.wifi.p2p.WifiP2pManager;
-        import android.os.Build;
-        import android.os.CountDownTimer;
-        import android.os.Handler;
-        import android.os.Vibrator;
-        import android.preference.PreferenceManager;
-        import android.support.annotation.RequiresApi;
-        import android.support.v7.app.AlertDialog;
-        import android.support.v7.app.AppCompatActivity;
-        import android.os.Bundle;
-        import android.util.Log;
-        import android.view.View;
-        import android.view.WindowManager;
-        import android.widget.TabHost;
-        import android.widget.TextView;
-        import android.widget.Toast;
 
-        import java.util.Locale;
-        import java.util.Random;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
+import android.media.MediaPlayer;
+import android.net.wifi.p2p.WifiP2pManager;
+import android.os.Build;
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Vibrator;
+import android.preference.PreferenceManager;
+import android.support.annotation.RequiresApi;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.TabHost;
+import android.widget.TextView;
+import android.widget.Toast;
 
-        import group5.battleship.R;
-        import group5.battleship.src.logic.Cordinate;
-        import group5.battleship.src.logic.Game;
-        import group5.battleship.src.logic.Move;
-        import group5.battleship.src.logic.Player;
-        import group5.battleship.src.logic.ShakeDetector;
+import java.util.Locale;
+import java.util.Random;
 
-        import android.widget.Button;
+import group5.battleship.R;
+import group5.battleship.src.logic.Cordinate;
+import group5.battleship.src.logic.Game;
+import group5.battleship.src.logic.Move;
+import group5.battleship.src.logic.Player;
+import group5.battleship.src.logic.ShakeDetector;
 
-        import java.net.InetAddress;
-        import java.net.UnknownHostException;
-        import java.util.Timer;
-        import java.util.TimerTask;
+import android.widget.Button;
 
-        import group5.battleship.src.wifi.ClientThread;
-        import group5.battleship.src.wifi.ServerThread;
-        import group5.battleship.src.logic.randomShipCordinate;
-        import group5.battleship.src.logic.randomWaterCordinate;
-        import group5.battleship.src.wifi.WifiBroadcastReciever;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import group5.battleship.src.wifi.ClientThread;
+import group5.battleship.src.wifi.ServerThread;
+import group5.battleship.src.logic.randomShipCordinate;
+import group5.battleship.src.logic.randomWaterCordinate;
+import group5.battleship.src.wifi.WifiBroadcastReciever;
+
 
 
 public class GameActivity extends AppCompatActivity {
@@ -1068,10 +1067,12 @@ public class GameActivity extends AppCompatActivity {
             int yMinus = current.y - 1;
 
 
+
             if (xPlus < game.getSize()) {
                 // right
                 Cordinate r = new Cordinate(xPlus, current.y);
                 TextView right = (TextView) findViewById(getRoutingByCordinateOpponentField(r));
+
 
                 if (bField[xPlus][current.y] == 1) {
                     right.setBackgroundResource(R.mipmap.sea_ship);
@@ -1266,6 +1267,31 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void setLanguage() {
+
+
+        // set the language
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this); // get the stored language setting
+        Configuration config = getBaseContext().getResources().getConfiguration(); // load the old config
+
+        String lang = settings.getString("LANG", "");
+        if (!"".equals(lang) && !config.locale.getLanguage().equals(lang)) {
+            Locale locale = new Locale(lang);
+            Locale.setDefault(locale);
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
+
+        // get the GUI Items
+        Button fireBtn = (Button) findViewById(R.id.fireBtn);
+
+
+        fireBtn.setText(R.string.fire);
+
+
+    }
+
+}
+
 
         // set the language
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this); // get the stored language setting
