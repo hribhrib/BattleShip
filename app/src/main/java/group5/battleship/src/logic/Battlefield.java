@@ -53,6 +53,12 @@ public class Battlefield implements Serializable {
             }
         }
     }
+    public String battlefieldToString (Battlefield battlefield){
+        String ships = "";
+
+
+        return ships;
+    }
     public int[][] getBattlefield() {
         return battlefield;
     }

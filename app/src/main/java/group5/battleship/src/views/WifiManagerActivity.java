@@ -46,6 +46,7 @@ public class WifiManagerActivity extends AppCompatActivity {
     static WifiBroadcastReciever myReceiver;
     static IntentFilter intentFilter;
     Intent setShipIntent;
+    boolean standartMod;
 
 
     @Override
@@ -116,7 +117,7 @@ public class WifiManagerActivity extends AppCompatActivity {
         setShipIntent.putExtra("Connected", true); //Was connection succesul
         setShipIntent.putExtra("NAME", getIntent().getStringExtra("NAME"));
         setShipIntent.putExtra("WIFI", true);
-
+        setShipIntent.putExtra("Standart Mod",getIntent().getBooleanExtra("Standart Mod",false));
         startActivity(setShipIntent);
     }
 
@@ -172,10 +173,13 @@ public class WifiManagerActivity extends AppCompatActivity {
         myManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         myChannel = myManager.initialize(this, getMainLooper(), null);
         myReceiver = new WifiBroadcastReciever(myManager, myChannel, this);
-
-
-        setShipIntent = new Intent(WifiManagerActivity.this, SetShipsActivity2.class);
-
+        standartMod = getIntent().getBooleanExtra("Standart Mod",false);
+        //standart Mod true starts a 8x8 game
+        if (standartMod) {
+            setShipIntent = new Intent(WifiManagerActivity.this, SetShipsActivity2.class);
+        } else {
+            setShipIntent = new Intent(WifiManagerActivity.this, SetShipsActivity.class);
+        }
 
         registerReceiver(myReceiver, intentFilter);
     }

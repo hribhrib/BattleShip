@@ -40,11 +40,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".src.views.GameActivity2"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".src.views.GameActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"

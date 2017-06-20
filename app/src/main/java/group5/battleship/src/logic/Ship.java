@@ -1,5 +1,7 @@
 package group5.battleship.src.logic;
 
+import android.util.Log;
+
 import java.io.InterruptedIOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -32,6 +34,7 @@ public class Ship {
                     allCordinates.add(new Cordinate(mainCordinate.x,mainCordinate.y-2));
                     allCordinates.add(new Cordinate(mainCordinate.x,mainCordinate.y+2));
                 }
+                break;
             case 3:
                 if (direction.equals("v")){
                     allCordinates.add(new Cordinate(mainCordinate.x-1,mainCordinate.y));
@@ -40,9 +43,19 @@ public class Ship {
                     allCordinates.add(new Cordinate(mainCordinate.x,mainCordinate.y-1));
                     allCordinates.add(new Cordinate(mainCordinate.x,mainCordinate.y+1));
                 }
+                break;
         }
     }
+    public String returnAllCordinatesAsString (Ship ship){
+        ArrayList<Cordinate>cordinates = ship.getAllCordinates();
+        String ships = "";
+        for (Cordinate c : cordinates){
+            ships = ships + c.cordinateToString(c);
 
+        }
+        Log.d("SHIP DEP", String.valueOf(ships.length()));
+        return ships;
+    }
     public ArrayList<Cordinate> getAllCordinates() {
         return allCordinates;
     }

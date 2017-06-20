@@ -29,4 +29,8 @@ public class Cordinate {
         this.x=Character.getNumericValue(tag.charAt(0));
         this.y=Character.getNumericValue(tag.charAt(1));
     }
+    public String cordinateToString (Cordinate cordinate){
+        String string =""+ cordinate.x+cordinate.y;
+        return string;
+    }
 }

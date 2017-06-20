@@ -1,10 +1,7 @@
 <resources>
     <string name="app_name">BattleShip</string>
 
-    <!-- game Activity -->
-    <string name="myField">MY FIELD</string>
-    <string name="opField">OPPONENT FIELD</string>
-    <string name="fire">Fire!</string>
+
 
 
     <string name="dummy_button" translatable="false">Dummy Button</string>
@@ -51,11 +48,6 @@
     <string name="failureOne">"Error, try it again"</string>
     <string name="failureTwo">"Error, wifi is disabled"</string>
 
-    <!-- set ships -->
-    <string name="acceptText">Are you sure you want to keep this arrangement?</string>
-    <string name="yesBtn">Yes</string>
-    <string name="noBtn">No</string>
-    <string name="setShips">Set your three Ships!</string>
 
     <!-- info -->
     <string name="developer">Developer</string>

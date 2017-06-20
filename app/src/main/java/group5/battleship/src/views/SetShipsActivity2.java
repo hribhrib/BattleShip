@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -35,9 +36,7 @@ public class SetShipsActivity2 extends AppCompatActivity {
     int availableBigShips = 1;
     // TODO: 03.06.2017 should get the max_ships and size of battlefield as extra
     int[][] routingMyField;
-    public MediaPlayer playPutSound;
-
-
+    public MediaPlayer playPutSound = new MediaPlayer();
 
 
     @Override
@@ -45,6 +44,7 @@ public class SetShipsActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         // TODO: 03.06.2017 contentview should be received from the button in main 
         setContentView(R.layout.activity_set_ships_2);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         TextView t_small = (TextView) findViewById(R.id.numberSmallShips);
         TextView t_med = (TextView) findViewById(R.id.numbeMedShips);
@@ -70,8 +70,8 @@ public class SetShipsActivity2 extends AppCompatActivity {
         super.onResume();
         Log.d("my tag", getIntent().getStringExtra("NAME") + " debug");
         Log.d("my tag", "Resume in set ship");
-        ships = "";
         currentShips = 0;
+        ships = "";
 
     }
 
@@ -86,19 +86,19 @@ public class SetShipsActivity2 extends AppCompatActivity {
 
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
-        CharSequence text ="";
-
+        CharSequence text = "";
+        activeShip = 0;
         switch (view.getId()) {
             case R.id.smallShip:
                 activeShip = 1;
-                text = "Small Ship selected! "+activeShip;
+                text = "Small Ship selected! " + activeShip;
                 break;
             case R.id.mediumShip:
                 activeShip = 3;
-                text = "Medium Ship selected! "+activeShip;
+                text = "Medium Ship selected! " + activeShip;
                 break;
             case R.id.bigShip:
-                text = "Big Ship selected! "+activeShip;
+                text = "Big Ship selected! " + activeShip;
                 activeShip = 5;
         }
         Toast toast = Toast.makeText(context, text, duration);
@@ -110,8 +110,8 @@ public class SetShipsActivity2 extends AppCompatActivity {
         t_med.setVisibility(View.INVISIBLE);
         t_big.setVisibility(View.INVISIBLE);
 
-        ImageView iv = (ImageView)findViewById(R.id.imageView);
-        Button b = (Button)findViewById(R.id.button2);
+        ImageView iv = (ImageView) findViewById(R.id.imageView);
+        Button b = (Button) findViewById(R.id.button2);
 
         iv.setVisibility(View.INVISIBLE);
         b.setVisibility(View.INVISIBLE);
@@ -131,6 +131,7 @@ public class SetShipsActivity2 extends AppCompatActivity {
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
     }
+
     public void cellClick(View view) {
 
         if (currentShips < MAX_SHIPS) {
@@ -140,8 +141,11 @@ public class SetShipsActivity2 extends AppCompatActivity {
             if (tmpBattlefield.checkSpace(ship)) {
                 tmpBattlefield.addShip(ship);
                 currentShips++;
-
                 updateBattlefield();
+
+                ships += ship.returnAllCordinatesAsString(ship);
+                Log.d("SHIPS Set ship activity", String.valueOf(ships.length()));
+                Log.d("SHIPS Set ship activity", ships);
                 playPutSound.start();
                 switch (activeShip) {
                     case 1:
@@ -177,8 +181,8 @@ public class SetShipsActivity2 extends AppCompatActivity {
                     big.setVisibility(View.VISIBLE);
                     t_big.setVisibility(View.VISIBLE);
                 }
-                ImageView iv = (ImageView)findViewById(R.id.imageView);
-                Button b = (Button)findViewById(R.id.button2);
+                ImageView iv = (ImageView) findViewById(R.id.imageView);
+                Button b = (Button) findViewById(R.id.button2);
 
                 iv.setVisibility(View.VISIBLE);
                 b.setVisibility(View.VISIBLE);
@@ -193,41 +197,41 @@ public class SetShipsActivity2 extends AppCompatActivity {
             }
         }
 
-            if (currentShips == MAX_SHIPS) {
+        if (currentShips == MAX_SHIPS) {
 
-                ImageButton small = (ImageButton) findViewById(R.id.smallShip);
-                ImageButton medium = (ImageButton) findViewById(R.id.mediumShip);
-                ImageButton big = (ImageButton) findViewById(R.id.bigShip);
-                TextView t_small = (TextView) findViewById(R.id.numberSmallShips);
-                TextView t_med = (TextView) findViewById(R.id.numbeMedShips);
-                TextView t_big = (TextView) findViewById(R.id.numberBigShips);
-                small.setVisibility(View.INVISIBLE);
-                medium.setVisibility(View.INVISIBLE);
-                big.setVisibility(View.INVISIBLE);
-                t_small.setVisibility(View.INVISIBLE);
-                t_med.setVisibility(View.INVISIBLE);
-                t_big.setVisibility(View.INVISIBLE);
+            ImageButton small = (ImageButton) findViewById(R.id.smallShip);
+            ImageButton medium = (ImageButton) findViewById(R.id.mediumShip);
+            ImageButton big = (ImageButton) findViewById(R.id.bigShip);
+            TextView t_small = (TextView) findViewById(R.id.numberSmallShips);
+            TextView t_med = (TextView) findViewById(R.id.numbeMedShips);
+            TextView t_big = (TextView) findViewById(R.id.numberBigShips);
+            small.setVisibility(View.INVISIBLE);
+            medium.setVisibility(View.INVISIBLE);
+            big.setVisibility(View.INVISIBLE);
+            t_small.setVisibility(View.INVISIBLE);
+            t_med.setVisibility(View.INVISIBLE);
+            t_big.setVisibility(View.INVISIBLE);
 
-                ImageView iv = (ImageView)findViewById(R.id.imageView);
-                Button b = (Button)findViewById(R.id.button2);
+            ImageView iv = (ImageView) findViewById(R.id.imageView);
+            Button b = (Button) findViewById(R.id.button2);
 
-                iv.setVisibility(View.INVISIBLE);
-                b.setVisibility(View.INVISIBLE);
+            iv.setVisibility(View.INVISIBLE);
+            b.setVisibility(View.INVISIBLE);
 
 
-                // set the text and the button visible to confirm the arrangement
+            // set the text and the button visible to confirm the arrangement
 
-                TextView setShipsText = (TextView) findViewById(R.id.setShips);
-                setShipsText.setVisibility(View.INVISIBLE);
+            TextView setShipsText = (TextView) findViewById(R.id.setShips);
+            setShipsText.setVisibility(View.INVISIBLE);
 
-                TextView acceptText = (TextView) findViewById(R.id.acceptText);
-                acceptText.setVisibility(View.VISIBLE);
+            TextView acceptText = (TextView) findViewById(R.id.acceptText);
+            acceptText.setVisibility(View.VISIBLE);
 
-                Button yesbtn = (Button) findViewById(R.id.yesbtn);
-                Button nobtn = (Button) findViewById(R.id.nobtn);
+            Button yesbtn = (Button) findViewById(R.id.yesbtn);
+            Button nobtn = (Button) findViewById(R.id.nobtn);
 
-                yesbtn.setVisibility(View.VISIBLE);
-                nobtn.setVisibility(View.VISIBLE);
+            yesbtn.setVisibility(View.VISIBLE);
+            nobtn.setVisibility(View.VISIBLE);
 
                 /*
                 // Dialog to confirm the arrangement of the ships
@@ -249,10 +253,10 @@ public class SetShipsActivity2 extends AppCompatActivity {
                         .show();*/
 
 
-            } else if (currentShips == MAX_SHIPS) {
+        } else if (currentShips == MAX_SHIPS) {
 
 
-                // this code is not needed at the moment
+            // this code is not needed at the moment
 
                /* Context context = getApplicationContext();
                 CharSequence text = "All ships are set";
@@ -269,10 +273,9 @@ public class SetShipsActivity2 extends AppCompatActivity {
                 table.setVisibility(View.INVISIBLE);*/
 
 
-            }
-
         }
 
+    }
 
 
     public void settingFinished(View view) {
@@ -281,15 +284,15 @@ public class SetShipsActivity2 extends AppCompatActivity {
         Log.d("My Log t", String.valueOf(getIntent().getBooleanExtra("WIFI", true)));
         Log.d("My Log isHost f", String.valueOf(getIntent().getBooleanExtra("IsHost", false)));
         Log.d("My Log isHost t", String.valueOf(getIntent().getBooleanExtra("IsHost", true)));
-// TODO: 03.06.2017 putSeriazable with the battlefield and the ship objects 
-        Intent intent = new Intent(this, GameActivity2.class);
+        Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra("SHIPS", ships);
         intent.putExtra("NAME", getIntent().getStringExtra("NAME"));
         intent.putExtra("HostAddress", getIntent().getStringExtra("HostAddress")); //Address of the host
         intent.putExtra("IsHost", getIntent().getBooleanExtra("IsHost", false));   //Is this device the host
         intent.putExtra("Connected", true); //Was connection succesul
         intent.putExtra("WIFI", getIntent().getBooleanExtra("WIFI", false));
-        intent.putExtra("Battlefield",tmpBattlefield);
+        intent.putExtra("Standart Mod", getIntent().getBooleanExtra("Standart Mod", false));
+        intent.putExtra("Battlefield", tmpBattlefield);
 
         startActivity(intent);
 
@@ -327,8 +330,8 @@ public class SetShipsActivity2 extends AppCompatActivity {
             for (int j = 0; j < 8; j++) {
                 tv = (TextView) findViewById(getRoutingByCordinateMyField(new Cordinate(i, j)));
                 tv.setBackgroundResource(R.mipmap.meer_neu);
-                }
             }
+        }
         tmpBattlefield.resetBattlefield();
 
         // clear all variables
@@ -374,8 +377,8 @@ public class SetShipsActivity2 extends AppCompatActivity {
         big.setVisibility(View.VISIBLE);
         t_big.setVisibility(View.VISIBLE);
 
-        ImageView iv = (ImageView)findViewById(R.id.imageView);
-        Button b = (Button)findViewById(R.id.button2);
+        ImageView iv = (ImageView) findViewById(R.id.imageView);
+        Button b = (Button) findViewById(R.id.button2);
 
         iv.setVisibility(View.VISIBLE);
         b.setVisibility(View.VISIBLE);
@@ -423,7 +426,7 @@ public class SetShipsActivity2 extends AppCompatActivity {
 
                 tv = (TextView) findViewById(getRoutingByCordinateMyField(new Cordinate(i, j)));
 
-                if (tmpBattlefield.getValueOfCell(new Cordinate(i,j)) == 1) {
+                if (tmpBattlefield.getValueOfCell(new Cordinate(i, j)) == 1) {
                     //tv.setText("o");
                     tv.setBackgroundResource(R.mipmap.sea_ship);
                 } else {

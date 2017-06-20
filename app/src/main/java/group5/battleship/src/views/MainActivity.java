@@ -76,6 +76,15 @@ public class MainActivity extends AppCompatActivity {
         intent = new Intent(this, WifiManagerActivity.class);
         intent.putExtra("NAME", playername.getText().toString());
         intent.putExtra("WIFI", true);
+        intent.putExtra("Standart Mod",false);
+        startActivity(intent);
+    }
+    public void startWifiGameStandart(View view) {
+        Log.d("my Log", "start Wifi MainAct");
+        intent = new Intent(this, WifiManagerActivity.class);
+        intent.putExtra("NAME", playername.getText().toString());
+        intent.putExtra("WIFI", true);
+        intent.putExtra("Standart Mod", true);
         startActivity(intent);
     }
 
@@ -83,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         intent = new Intent(this, SetShipsActivity.class);
         intent.putExtra("NAME", playername.getText().toString());
         intent.putExtra("WIFI", false);
-
+        intent.putExtra("Standart Mod",false);
         //pass on settings
         intent.putExtra("sound", getIntent().getBooleanExtra("sound", true));
         intent.putExtra("language", getIntent().getStringExtra("language"));

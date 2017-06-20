@@ -11,9 +11,9 @@
     <Button
         android:id="@+id/vsBot"
         style="@android:style/Widget.Button.Inset"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="69dp"
+        android:layout_width="164dp"
+        android:layout_height="47dp"
+        android:layout_marginBottom="64dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:width="200dp"
@@ -21,14 +21,31 @@
         android:text="vs. Bot"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.039" />
+
+    <Button
+        android:id="@+id/standartGame"
+        style="@android:style/Widget.Button.Inset"
+        android:layout_width="164dp"
+        android:layout_height="47dp"
+        android:layout_marginBottom="116dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:width="200dp"
+        android:onClick="startWifiGameStandart"
+        android:text="vs. Friend"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.96"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
     <Button
         android:id="@+id/vsFriend"
         style="@android:style/Widget.Button.Inset"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="117dp"
+        android:layout_width="164dp"
+        android:layout_height="47dp"
+        android:layout_marginBottom="116dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:width="200dp"
@@ -36,7 +53,8 @@
         android:text="vs. Friend"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.039" />
 
     <TextView
         android:id="@+id/game_Title"
@@ -54,11 +72,45 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/fastModus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="312dp"
+        android:text="Fast Game"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@android:color/background_light"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0.151"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/standartModus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="312dp"
+        android:text="Standart Game"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@android:color/background_light"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0.905"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
         android:id="@+id/textfieldName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="7dp"
+        android:layout_marginBottom="69dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:ems="10"
@@ -67,7 +119,8 @@
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toTopOf="@+id/vsFriend"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.503" />
 
     <TextView
         android:id="@+id/info"
