@@ -25,6 +25,12 @@ public class Player {
         this.max_ships=maxShips;
         initFieldArrays(gamesize);
     }
+    public Player(String name, int gamesize) {
+        this.name = name;
+        this.max_ships=3;
+        initFieldArrays(gamesize);
+    }
+
 
     public void setShips(String s) {
         for (int i = 0; i < s.length(); i = i + 2) {
@@ -57,12 +63,7 @@ public class Player {
         ships[ship14.x][ship14.y] = 1;
     }
 
-    public void setShips(DummyOppShip ship) {
-        ArrayList<Cordinate> cordinates = ship.getAllCordinates();
-        for (Cordinate c : cordinates) {
-            ships[c.x][c.y] = 1;
-        }
-    }
+
     public void setShips(Battlefield battlefield){
         ships = battlefield.getBattlefield();
     }

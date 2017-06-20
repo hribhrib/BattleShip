@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         intent = new Intent(this, SetShipsActivity.class);
         intent.putExtra("NAME", playername.getText().toString());
         intent.putExtra("WIFI", false);
-
+        intent.putExtra("Standart Mod",false);
         //pass on settings
         intent.putExtra("sound", getIntent().getBooleanExtra("sound", true));
         intent.putExtra("language", getIntent().getStringExtra("language"));

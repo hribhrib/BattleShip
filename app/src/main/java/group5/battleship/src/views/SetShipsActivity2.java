@@ -36,7 +36,7 @@ public class SetShipsActivity2 extends AppCompatActivity {
     int availableBigShips = 1;
     // TODO: 03.06.2017 should get the max_ships and size of battlefield as extra
     int[][] routingMyField;
-    public MediaPlayer playPutSound;
+    public MediaPlayer playPutSound = new MediaPlayer();
 
 
 
@@ -286,7 +286,7 @@ public class SetShipsActivity2 extends AppCompatActivity {
         Log.d("My Log t", String.valueOf(getIntent().getBooleanExtra("WIFI", true)));
         Log.d("My Log isHost f", String.valueOf(getIntent().getBooleanExtra("IsHost", false)));
         Log.d("My Log isHost t", String.valueOf(getIntent().getBooleanExtra("IsHost", true)));
-        Intent intent = new Intent(this, GameActivity2.class);
+        Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra("SHIPS", ships);
         intent.putExtra("NAME", getIntent().getStringExtra("NAME"));
         intent.putExtra("HostAddress", getIntent().getStringExtra("HostAddress")); //Address of the host

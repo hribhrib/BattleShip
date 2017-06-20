@@ -112,7 +112,7 @@ public class GameActivity extends AppCompatActivity {
             if (getIntent().getBooleanExtra("Standart Mod", false)) {
                 setContentView(R.layout.activity_main2);
             } else {
-                setContentView(R.layout.activity_main2);
+                setContentView(R.layout.activity_main);
             }
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -586,8 +586,8 @@ public class GameActivity extends AppCompatActivity {
                 Battlefield passedBattlefield = (Battlefield) getIntent().getSerializableExtra("Battlefield");
                 myPlayer.setShips(passedBattlefield);
             } else {
-                myPlayer = new Player(getIntent().getStringExtra("NAME"), 5, 3);
-                opponent = new Player("Opponent", 5, 3);
+                myPlayer = new Player(getIntent().getStringExtra("NAME"), 5);
+                opponent = new Player("Opponent", 5);
                 game = new Game(myPlayer, opponent, 5);
                 playBattleSound();
                 myPlayer.setShips(getIntent().getStringExtra("SHIPS"));
@@ -597,7 +597,7 @@ public class GameActivity extends AppCompatActivity {
 /*
         //Startbutton
         //On button click the coordinates get send to opp
-        AlertDialog alertDialog = new AlertDialog.Builder(GameActivity2.this).create();
+        AlertDialog alertDialog = new AlertDialog.Builder(GameActivity.this).create();
         alertDialog.setMessage("\t\t\t\tAre you ready?");
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes!",
                 new DialogInterface.OnClickListener() {
