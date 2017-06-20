@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -39,6 +40,7 @@ public class SetShipsActivity extends AppCompatActivity {
     int MAX_SHIPS = 3;
     int currentShips = 0;
     ArrayList<TextView> textViews = new ArrayList<>();
+    public MediaPlayer playPutSound;
 
 
     @Override
@@ -49,6 +51,7 @@ public class SetShipsActivity extends AppCompatActivity {
         Context context = getApplicationContext();
         CharSequence text = "Click on the area to set 3 ships!";
         int duration = Toast.LENGTH_SHORT;
+        playPutSound = MediaPlayer.create(SetShipsActivity.this, R.raw.put_sound);
 
         //Toast.makeText(context, text, duration).show();
 
@@ -105,6 +108,7 @@ public class SetShipsActivity extends AppCompatActivity {
         if (currentShips < MAX_SHIPS) {
             if (ships.length() < 2) {
                 ships = (ships + (String) view.getTag());
+                playPutSound.start();
                 currentShips++;
 
                 tv.setTextColor(Color.WHITE);
@@ -126,6 +130,7 @@ public class SetShipsActivity extends AppCompatActivity {
                 if (shipSet == true && dublicate == false) {
                     ships = (ships + (String) view.getTag());
                     currentShips++;
+                    playPutSound.start();
 
                     tv.setTextColor(Color.WHITE);
                     //tv.setText("o");

@@ -89,7 +89,7 @@ public class SetShipsActivity2 extends AppCompatActivity {
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
         CharSequence text ="";
-
+        activeShip = 0;
         switch (view.getId()) {
             case R.id.smallShip:
                 activeShip = 1;
@@ -147,7 +147,7 @@ public class SetShipsActivity2 extends AppCompatActivity {
                 ships += ship.returnAllCordinatesAsString(ship);
                 Log.d("SHIPS Set ship activity", String.valueOf(ships.length()) );
                 Log.d("SHIPS Set ship activity", ships );
-                //playPutSound.start();
+                playPutSound.start();
                 switch (activeShip) {
                     case 1:
                         availableSmallShips--;
@@ -293,6 +293,7 @@ public class SetShipsActivity2 extends AppCompatActivity {
         intent.putExtra("IsHost", getIntent().getBooleanExtra("IsHost", false));   //Is this device the host
         intent.putExtra("Connected", true); //Was connection succesul
         intent.putExtra("WIFI", getIntent().getBooleanExtra("WIFI", false));
+        intent.putExtra("Standart Mod", getIntent().getBooleanExtra("Standart Mod", false));
         intent.putExtra("Battlefield",tmpBattlefield);
 
         startActivity(intent);
