@@ -903,6 +903,7 @@
             android:id="@+id/imageView"
             android:layout_width="306dp"
             android:layout_height="274dp"
+            android:background="@mipmap/wood"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="0dp" />
 
