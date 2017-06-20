@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Random;
 
@@ -279,6 +280,7 @@ public class GameActivity extends AppCompatActivity {
                                     Handler handler = new Handler();
                                     handler.postDelayed(new Runnable() {
                                         public void run() {
+                                            displayOpponentsBattleField();
                                             tabHost.setCurrentTab(0);
                                         }
                                     }, 1200);
@@ -396,50 +398,54 @@ public class GameActivity extends AppCompatActivity {
 
     public void cellClick(View view) {
 
-        final Button firebtn = (Button) findViewById(R.id.fireBtn);
-        final Button btnRadar = (Button) findViewById(R.id.radarBtn);
+        if (tabHost.getCurrentTab() == 1) {
 
-        if (firebtn.getVisibility() == View.VISIBLE) {
-            // reset the view before setting the new target
-            displayMyBattleField();
-        }
+            final Button firebtn = (Button) findViewById(R.id.fireBtn);
+            final Button btnRadar = (Button) findViewById(R.id.radarBtn);
 
-        tv = (TextView) findViewById(view.getId());
-
-        tv.setBackgroundResource(R.mipmap.crosshair_sea);
-
-
-        // press fire Button
-        firebtn.setVisibility(View.VISIBLE);
-
-        btnRadar.setVisibility(View.VISIBLE);
-
-        firebtnpressed = false;
-        firebtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shotCell(tv);
+            if (firebtn.getVisibility() == View.VISIBLE) {
+                // reset the view before setting the new target
+                displayMyBattleField();
             }
-        });
-        btnRadar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                radarClick(tv);
-            }
-        });
 
-        firebtn.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                counter++;
-                if (counter >= 5) {
-                    Toast.makeText(getBaseContext(), oppShips,
-                            Toast.LENGTH_LONG).show();
+            tv = (TextView) findViewById(view.getId());
+
+            tv.setBackgroundResource(R.mipmap.crosshair_sea);
+
+
+            // press fire Button
+            firebtn.setVisibility(View.VISIBLE);
+
+            btnRadar.setVisibility(View.VISIBLE);
+
+            firebtnpressed = false;
+            firebtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    shotCell(tv);
                 }
+            });
+            btnRadar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    radarClick(tv);
+                }
+            });
 
-                return false;
-            }
-        });
+            firebtn.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    counter++;
+                    if (counter >= 5) {
+                        Toast.makeText(getBaseContext(), oppShips,
+                                Toast.LENGTH_LONG).show();
+                    }
+
+                    return false;
+                }
+            });
+
+        }
     }
 
 
@@ -835,10 +841,10 @@ public class GameActivity extends AppCompatActivity {
         }
 
         displayOpponentsBattleField();
-        Context context = getApplicationContext();
-        CharSequence text = c.x + "" + c.y;
-        int duration = Toast.LENGTH_SHORT;
-        Toast.makeText(context, text, duration).show();
+//        Context context = getApplicationContext();
+        //      CharSequence text = c.x + "" + c.y;
+        //    int duration = Toast.LENGTH_SHORT;
+        //  Toast.makeText(context, text, duration).show();
 
         game.newMove(new Move(opponent, myPlayer, c));
 
@@ -870,10 +876,10 @@ public class GameActivity extends AppCompatActivity {
         } else {
             Cordinate c = new Cordinate((int) oppMove.charAt(0) - 48, (int) oppMove.charAt(1) - 48);
 
-            int[][] tmpMyShips = myPlayer.getShips();
+           // int[][] tmpMyShips = myPlayer.getShips();
 
 
-            if (tmpMyShips[c.x][c.y] == -1) {
+            if (myPlayer.getShipByCordinate(c) == -1) {
                 opponent.updateBattleField(c, -1);
                 // check if sound is on or off
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -882,8 +888,8 @@ public class GameActivity extends AppCompatActivity {
                 if (sound) {
                     playMissSound.start();
                 }
-                Log.d("My Log:", "nicht getroffen" + String.valueOf(tmpMyShips[c.x][c.y]));
-            } else if (tmpMyShips[c.x][c.y] == 1) {
+                Log.d("My Log:", "nicht getroffen" + String.valueOf(myPlayer.getShipByCordinate(c)));
+            } else if (myPlayer.getShipByCordinate(c) == 1) {
                 // check if sound is on or off
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
                 boolean sound = sharedPref.getBoolean("sound", true);
@@ -902,10 +908,10 @@ public class GameActivity extends AppCompatActivity {
 
 
                 //display Opponents shot
-                Context context = getApplicationContext();
-                CharSequence text = c.x + "" + c.y;
-                int duration = Toast.LENGTH_SHORT;
-                Toast.makeText(context, text, duration).show();
+//                Context context = getApplicationContext();
+                //              CharSequence text = c.x + "" + c.y;
+                //            int duration = Toast.LENGTH_SHORT;
+                //          Toast.makeText(context, text, duration).show();
 
             }
             game.newMove(new Move(opponent, myPlayer, c));
@@ -921,6 +927,13 @@ public class GameActivity extends AppCompatActivity {
             }
         }, 1000);
 
+
+        for(int i = 0; i<opponent.getBattleField().length;i++){
+            for(int j = 0; j<opponent.getBattleField().length;j++){
+                System.out.print(opponent.getBattleFieldByCordinate(new Cordinate(i,j)));
+            }
+        }
+        System.out.println();
     }
 
     private void startCounter() {

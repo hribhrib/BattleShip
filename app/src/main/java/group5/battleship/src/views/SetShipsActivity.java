@@ -286,10 +286,6 @@ public class SetShipsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        Intent back = new Intent(this, MainActivity.class);
-        startActivity(back);
-
     }
 
 

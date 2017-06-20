@@ -4,6 +4,8 @@ package group5.battleship.src.views;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -83,6 +85,9 @@ public class SetShipsActivity2 extends AppCompatActivity {
         TextView t_small = (TextView) findViewById(R.id.numberSmallShips);
         TextView t_med = (TextView) findViewById(R.id.numbeMedShips);
         TextView t_big = (TextView) findViewById(R.id.numberBigShips);
+        TextView sizesmall = (TextView) findViewById(R.id.shiptype_small);
+        TextView sizemed = (TextView) findViewById(R.id.shiptype_medium);
+        TextView sizebig = (TextView) findViewById(R.id.shiptype_big);
 
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
@@ -109,6 +114,9 @@ public class SetShipsActivity2 extends AppCompatActivity {
         t_small.setVisibility(View.INVISIBLE);
         t_med.setVisibility(View.INVISIBLE);
         t_big.setVisibility(View.INVISIBLE);
+        sizesmall.setVisibility(View.INVISIBLE);
+        sizemed.setVisibility(View.INVISIBLE);
+        sizebig.setVisibility(View.INVISIBLE);
 
         ImageView iv = (ImageView) findViewById(R.id.imageView);
         Button b = (Button) findViewById(R.id.button2);
@@ -132,6 +140,7 @@ public class SetShipsActivity2 extends AppCompatActivity {
         toast.show();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void cellClick(View view) {
 
         if (currentShips < MAX_SHIPS) {
@@ -146,7 +155,12 @@ public class SetShipsActivity2 extends AppCompatActivity {
                 ships += ship.returnAllCordinatesAsString(ship);
                 Log.d("SHIPS Set ship activity", String.valueOf(ships.length()));
                 Log.d("SHIPS Set ship activity", ships);
-                playPutSound.start();
+                try {
+                    playPutSound.start();
+                }catch(Exception e){
+                    System.out.println(e.toString());
+                }
+
                 switch (activeShip) {
                     case 1:
                         availableSmallShips--;
@@ -165,21 +179,28 @@ public class SetShipsActivity2 extends AppCompatActivity {
                 ImageButton small = (ImageButton) findViewById(R.id.smallShip);
                 ImageButton medium = (ImageButton) findViewById(R.id.mediumShip);
                 ImageButton big = (ImageButton) findViewById(R.id.bigShip);
-
+                TextView sizesmall = (TextView) findViewById(R.id.shiptype_small);
+                TextView sizemed = (TextView) findViewById(R.id.shiptype_medium);
+                TextView sizebig = (TextView) findViewById(R.id.shiptype_big);
                 TextView t_small = (TextView) findViewById(R.id.numberSmallShips);
                 TextView t_med = (TextView) findViewById(R.id.numbeMedShips);
                 TextView t_big = (TextView) findViewById(R.id.numberBigShips);
                 if (availableSmallShips > 0) {
                     small.setVisibility(View.VISIBLE);
                     t_small.setVisibility(View.VISIBLE);
+                    sizesmall.setVisibility(View.VISIBLE);
+
+
                 }
                 if (availableMedShips > 0) {
                     medium.setVisibility(View.VISIBLE);
                     t_med.setVisibility(View.VISIBLE);
+                    sizemed.setVisibility(View.VISIBLE);
                 }
                 if (availableBigShips > 0) {
                     big.setVisibility(View.VISIBLE);
                     t_big.setVisibility(View.VISIBLE);
+                    sizebig.setVisibility(View.VISIBLE);
                 }
                 ImageView iv = (ImageView) findViewById(R.id.imageView);
                 Button b = (Button) findViewById(R.id.button2);
@@ -392,10 +413,6 @@ public class SetShipsActivity2 extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        Intent back = new Intent(this, MainActivity.class);
-        startActivity(back);
-
     }
 
     public void updateTempBattlefield(Cordinate c, String tempDirection) {
