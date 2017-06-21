@@ -484,7 +484,7 @@ public class GameActivity extends AppCompatActivity {
 
             game.newMove(new Move(myPlayer, opponent, c));
             displayMyBattleField();
-
+            tempRoundCount++;
 
             if (!intent.getBooleanExtra("WIFI", false)) {
                 toggleWindowTouchable();
@@ -1266,9 +1266,11 @@ public class GameActivity extends AppCompatActivity {
 
     public void randomAttack(int count) {
 
+        if (intent.getBooleanExtra("WIFI", true)) {
+
 
             if (myPlayer.getRandomAttacks() > 0) {
-
+                tempRoundCount++;
                 Cordinate randomShipCordinate = (new randomShipCordinate(opponent, game)).c;
                 Cordinate randomWaterCordinate = (new randomWaterCordinate(opponent)).c;
                 Random r = new Random();
@@ -1290,51 +1292,9 @@ public class GameActivity extends AppCompatActivity {
                     displayMyBattleField();
                     Toast.makeText(getBaseContext(), "Verbleibende Zufallsangriffe: " + myPlayer.getRandomAttacks(),
                             Toast.LENGTH_LONG).show();
+                    aiOpponentsMove();
 
-                    if (!intent.getBooleanExtra("WIFI", false)) {
-                        toggleWindowTouchable();
-
-                        //waiting.run(tabHost,0);
-
-                        handlerAi.postDelayed(new Runnable() {
-                            public void run() {
-                                tabHost.setCurrentTab(0);
-                            }
-                        }, 1200);
-
-                    }
-
-
-                    if (intent.getBooleanExtra("WIFI", true)) {
-
-                        send = String.valueOf(randomShipCordinate.x) + String.valueOf(randomShipCordinate.y);
-                        host = getIntent().getBooleanExtra("IsHost", true);
-                        if (host) {
-                            serverThread.dataReady(send);
-                        } else if (!host) {
-                            clientThread.dataReady(send);
-
-                        }
-                        if (!gameEnd) {
-                            waitDialog = new AlertDialog.Builder(GameActivity.this).create();
-                            waitDialog.setMessage("Wait for the counter attack...");
-                            waitDialog.setCancelable(false);
-                            waitDialog.setCanceledOnTouchOutside(false);
-                            waitDialog.show();
-                        }
-
-                    } else {
-                        // Handler handler = new Handler();
-                        handlerAi.postDelayed(new Runnable() {
-                            public void run() {
-                                aiOpponentsMove();
-                            }
-                        }, 2500);
-                    }
-
-                }
-
-                 else {
+                } else {
                     myPlayer.updateBattleField(randomWaterCordinate, -1);
                     // check if sound is on or off
                     SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -1349,57 +1309,19 @@ public class GameActivity extends AppCompatActivity {
                     myPlayer.decRandomAttacks();
                     game.newMove(new Move(myPlayer, opponent, randomWaterCordinate));
                     displayMyBattleField();
-
-
-                    if (!intent.getBooleanExtra("WIFI", false)) {
-                        toggleWindowTouchable();
-
-                        //waiting.run(tabHost,0);
-
-                        handlerAi.postDelayed(new Runnable() {
-                            public void run() {
-                                tabHost.setCurrentTab(0);
-                            }
-                        }, 1200);
-
-                    }
-
-
-                    if (intent.getBooleanExtra("WIFI", true)) {
-
-                        send = String.valueOf(randomWaterCordinate.x) + String.valueOf(randomWaterCordinate.y);
-                        host = getIntent().getBooleanExtra("IsHost", true);
-                        if (host) {
-                            serverThread.dataReady(send);
-                        } else if (!host) {
-                            clientThread.dataReady(send);
-
-                        }
-                        if (!gameEnd) {
-                            waitDialog = new AlertDialog.Builder(GameActivity.this).create();
-                            waitDialog.setMessage("Wait for the counter attack...");
-                            waitDialog.setCancelable(false);
-                            waitDialog.setCanceledOnTouchOutside(false);
-                            waitDialog.show();
-                        }
-
-                    } else {
-                        // Handler handler = new Handler();
-                        handlerAi.postDelayed(new Runnable() {
-                            public void run() {
-                                aiOpponentsMove();
-                            }
-                        }, 2500);
-                    }
+                    aiOpponentsMove();
                 }
 
             } else {
                 Toast.makeText(getBaseContext(), "Bleib doch fair...",
                         Toast.LENGTH_LONG).show();
                 displayMyBattleField();
+
+                aiOpponentsMove();
+
             }
         }
-
+    }
 
     @Override
     public void onBackPressed() {

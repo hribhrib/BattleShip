@@ -24,11 +24,13 @@ public class HighScoresActivity extends AppCompatActivity {
 
         TextView countTotalGames = (TextView)findViewById(R.id.countTotalGames);
         TextView countTotalGamesWon = (TextView)findViewById(R.id.CountTotalGamesWon);
-
+        TextView countTotalGamesLost = (TextView)findViewById(R.id.countTotalGamesLost);
+        TextView countShortestGame = (TextView)findViewById(R.id.shortestGame);
 
         countTotalGames.setText(getStats(this,"totalGamesPlayed"));
         countTotalGamesWon.setText(getStats(this,"totalGamesWon"));
-
+        countTotalGamesLost.setText(getStats(this,"totalGamesLost"));
+        countShortestGame.setText((getStats(this,"shortestGame")));
 
         // set the language
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this); // get the stored language setting
@@ -44,15 +46,15 @@ public class HighScoresActivity extends AppCompatActivity {
 
         TextView totalGames = (TextView) findViewById(R.id.games_played);
         TextView gamesWon = (TextView) findViewById(R.id.games_won);
-        /*TextView gamesLost = (TextView) findViewById(R.id.games_lost);
-        TextView shortestGame = (TextView) findViewById(R.id.CountShortestGame);*/
+        TextView gamesLost = (TextView) findViewById(R.id.games_lost);
+        TextView shortestGame = (TextView) findViewById(R.id.CountShortestGame);
         Button back = (Button) findViewById(R.id.button_back);
 
 
         totalGames.setText(R.string.total_games);
         gamesWon.setText(R.string.games_won);
-       /* gamesLost.setText(R.string.games_lost);
-        shortestGame.setText(R.string.shortest_game);*/
+        gamesLost.setText(R.string.games_lost);
+        shortestGame.setText(R.string.shortest_game);
         back.setText(R.string.button_back);
 
 
