@@ -126,18 +126,21 @@ public class SetShipsActivity2 extends AppCompatActivity {
     }
 
     public void rotate(View view) {
-        CharSequence text;
-        if (tempDirection.equals("v")) {
-            tempDirection = "h";
-            text = "Your ships will be set horizontal";
-        } else {
-            tempDirection = "v";
-            text = "Your ships will be set vertical ";
+        boolean rotateable = true;
+        if (rotateable ) {
+            CharSequence text;
+            if (tempDirection.equals("v")) {
+                tempDirection = "h";
+                text = "Your ships will be set horizontal";
+            } else {
+                tempDirection = "v";
+                text = "Your ships will be set vertical ";
+            }
+            Context context = getApplicationContext();
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
         }
-        Context context = getApplicationContext();
-        int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)

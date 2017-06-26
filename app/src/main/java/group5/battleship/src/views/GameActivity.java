@@ -1460,19 +1460,15 @@ public class GameActivity extends AppCompatActivity {
         SharedPreferences.Editor editor;
         editor = prefs.edit();
 
-        int gameCount = prefs.getInt("totalGamesPlayed", 0);
+        int gameCount = prefs.getInt("totalGamesPlayed",0);
         int winCount = prefs.getInt("totalGamesWon", 0);
         int loseCount = prefs.getInt("totalGamesLost", 0);
-        int roundCount = prefs.getInt("shortestGame", 0);
 
         editor.putInt("totalGamesPlayed", gameCount + 1);
         if (win) {
             editor.putInt("totalGamesWon", winCount + 1);
         } else {
             editor.putInt("totalGamesLost", loseCount + 1);
-        }
-        if (tempRoundCount < roundCount && win) {
-            editor.putInt("shortestGame", tempRoundCount);
         }
 
         editor.apply();
